@@ -1,0 +1,35 @@
+{
+  "scan_id": "aa9a726b-6377-43bd-957f-8360d792af60",
+  "mcpsafe_version": "0.1.0",
+  "started_at": "2026-04-12T22:03:28.457056+00:00",
+  "finished_at": "2026-04-12T22:03:28.607735+00:00",
+  "server_info": null,
+  "summary": {
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "critical": 1,
+    "high": 0,
+    "medium": 0,
+    "low": 0,
+    "overall_severity": "CRITICAL",
+    "duration_ms": 147.33
+  },
+  "results": [
+    {
+      "test_id": "T00-001",
+      "test_name": "Connection Failed",
+      "category": "SECURITY",
+      "severity": "CRITICAL",
+      "passed": false,
+      "description": "Failed to connect to 'python -m mcp_server_fetch': stdio command not found: 'python -m mcp_server_fetch' (caused by FileNotFoundError: [WinError 2] The system cannot find the file specified)",
+      "details": "stdio command not found: 'python -m mcp_server_fetch' (caused by FileNotFoundError: [WinError 2] The system cannot find the file specified)",
+      "duration_ms": 147.3264999949606,
+      "remediation": "Verify the target command or URL, ensure the server process starts correctly, and check network/firewall settings.",
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-12T22:03:28.604092+00:00",
+      "result_id": "938885d4-376a-4457-802b-3593cc53be55"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "scan_id": "707750b3-0ca8-453b-aa3d-1b6f658f6e24",
+  "mcpsafe_version": "0.1.0",
+  "started_at": "2026-04-12T22:00:59.375965+00:00",
+  "finished_at": "2026-04-12T22:00:59.389779+00:00",
+  "server_info": null,
+  "summary": {
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "critical": 1,
+    "high": 0,
+    "medium": 0,
+    "low": 0,
+    "overall_severity": "CRITICAL",
+    "duration_ms": 10.08
+  },
+  "results": [
+    {
+      "test_id": "T00-001",
+      "test_name": "Connection Failed",
+      "category": "SECURITY",
+      "severity": "CRITICAL",
+      "passed": false,
+      "description": "Failed to connect to 'C:\\\\Users\\\\bantw\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python311\\\\python.exe tests\\\\fixtures\\\\mock_server.py': stdio command not found: 'C:\\\\Users\\\\bantw\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python311\\\\python.exe tests\\\\fixtures\\\\mock_server.py' (caused by FileNotFoundError: [WinError 2] The system cannot find the file specified)",
+      "details": "stdio command not found: 'C:\\\\Users\\\\bantw\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python311\\\\python.exe tests\\\\fixtures\\\\mock_server.py' (caused by FileNotFoundError: [WinError 2] The system cannot find the file specified)",
+      "duration_ms": 10.078100007376634,
+      "remediation": "Verify the target command or URL, ensure the server process starts correctly, and check network/firewall settings.",
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-12T22:00:59.386558+00:00",
+      "result_id": "fc5c73ed-acf3-4c8a-b4ec-3441103064af"
+    }
+  ]
+}

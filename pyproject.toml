@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcpsafe"
+version = "0.1.0"
+description = "Security and stress-testing framework for MCP (Model Context Protocol) servers"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+keywords = ["mcp", "security", "testing", "llm", "ai", "anthropic"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    "mcp>=1.0.0",
+    "click>=8.0",
+    "rich>=13.0",
+    "jinja2>=3.0",
+    "httpx>=0.25",
+    "anyio>=4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.23",
+    "black>=24.0",
+    "ruff>=0.3",
+]
+
+[project.scripts]
+mcpsafe = "mcpsafe.cli:cli"
+
+[project.urls]
+Homepage = "https://github.com/your-handle/mcpsafe"
+Repository = "https://github.com/your-handle/mcpsafe"
+Issues = "https://github.com/your-handle/mcpsafe/issues"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["mcpsafe"]
+include = ["mcpsafe/**", "templates/**"]
