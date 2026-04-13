@@ -33,8 +33,37 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 from mcpsafe.models import ScanReport
+from mcpsafe.reporter._common import server_slug as _server_slug
+from mcpsafe.tests._helpers import sanitise_server_string as _san
+
+
+# ---------------------------------------------------------------------------
+# Sanitise helper — strips control chars from server-supplied strings
+# ---------------------------------------------------------------------------
+
+def _sanitise_value(val: Any, depth: int = 0) -> Any:
+    """
+    Recursively sanitise string values in nested dicts/lists.
+
+    Applied to the serialised report dict so that NUL bytes, ANSI escapes,
+    and other control characters from an untrusted server cannot corrupt
+    downstream log consumers or SIEM parsers that ingest the JSON.
+
+    Recursion is capped at depth 10 to guard against pathological structures.
+    """
+    if depth > 10:
+        return val
+    if isinstance(val, str):
+        return _san(val, max_len=20_000)
+    if isinstance(val, dict):
+        return {k: _sanitise_value(v, depth + 1) for k, v in val.items()}
+    if isinstance(val, list):
+        return [_sanitise_value(item, depth + 1) for item in val]
+    return val
+
 
 
 class JsonReporter:
@@ -86,21 +115,35 @@ class JsonReporter:
         Return the full JSON report as a string (suitable for piping or
         printing to stdout).
 
+        Server-supplied strings (tool names, descriptions, server name, etc.)
+        are sanitised before serialisation to strip NUL bytes, ANSI escapes,
+        and other control characters that can corrupt log consumers.
+
         Returns
         -------
         str:
             Indented JSON text.
         """
-        return json.dumps(self._report.to_dict(), indent=self._indent, ensure_ascii=False)
+        raw = self._report.to_dict()
+        raw["legal"] = (
+            "MCPSafe is intended for use against MCP servers you own or have "
+            "explicit written permission to test. Unauthorised scanning of "
+            "third-party servers may violate computer fraud laws in your "
+            "jurisdiction. Treat findings as confidential until disclosed to "
+            "the server operator."
+        )
+        sanitised = _sanitise_value(raw)
+        return json.dumps(sanitised, indent=self._indent, ensure_ascii=False)
 
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
 
     def _filename(self) -> str:
-        """Build the output filename from the scan ID and current timestamp."""
+        """Build the output filename from the server name, scan ID, and timestamp."""
         scan_id_short = self._report.scan_id[:8]
         ts = (self._report.started_at or datetime.now(timezone.utc)).strftime(
             "%Y%m%d-%H%M%S"
         )
-        return f"mcpsafe-{scan_id_short}-{ts}.json"
+        server_slug = _server_slug(self._report)
+        return f"mcpsafe-{server_slug}-{scan_id_short}-{ts}.json"

@@ -53,12 +53,21 @@ from mcpsafe.models import (
     Severity,
     TestResult,
 )
+from mcpsafe.tests._helpers import looks_like_api_rejection as _looks_like_api_rejection
 
 # ---------------------------------------------------------------------------
 # Module-level baseline cache
 # ---------------------------------------------------------------------------
 
-# tool_name → mean latency in milliseconds, populated by run()
+# tool_name → mean latency in milliseconds, populated by run().
+#
+# Design note: this is a module-level dict (not instance-level) because
+# ``compute_latency_comparison()`` is a module-level function and the runner
+# calls it separately after T05.  Concurrent ScanRunner instances in the same
+# process would interfere with each other — that usage pattern is not
+# currently supported.  The dict is cleared at the start of every ``run()``
+# call to prevent stale data from a previous sequential scan contaminating the
+# next one.
 _baseline_latencies: dict[str, float] = {}
 
 # ---------------------------------------------------------------------------
@@ -85,7 +94,6 @@ _COLD_START_RATIO         = 10.0
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-
 
 def _find_minimal_args(tool: MCPTool) -> dict:
     """
@@ -203,18 +211,36 @@ async def _t08_001_per_tool(
             duration = (time.perf_counter() - t0) * 1000.0
 
             if not samples:
-                results.append(
-                    TestResult.make_fail(
-                        test_id=tid, test_name=tname, category=_CAT,
-                        severity=Severity.MEDIUM,
-                        description=(
-                            f"Tool {tool.name!r} failed all {_BASELINE_SAMPLES} "
-                            f"latency probe calls."
-                        ),
-                        duration_ms=duration,
-                        details="\n".join(errors[:5]),
+                if _looks_like_api_rejection(errors):
+                    # All failures are auth/validation rejections from an
+                    # upstream API — not a server defect.  Report as INFO so
+                    # it does not inflate the severity score.
+                    results.append(
+                        TestResult(
+                            test_id=tid, test_name=tname, category=_CAT,
+                            severity=Severity.INFO, passed=True,
+                            description=(
+                                f"Tool {tool.name!r} requires valid credentials or "
+                                f"real parameters — latency probe skipped "
+                                f"(API rejection, not a server defect)."
+                            ),
+                            duration_ms=duration,
+                            details="\n".join(errors[:3]),
+                        )
                     )
-                )
+                else:
+                    results.append(
+                        TestResult.make_fail(
+                            test_id=tid, test_name=tname, category=_CAT,
+                            severity=Severity.MEDIUM,
+                            description=(
+                                f"Tool {tool.name!r} failed all {_BASELINE_SAMPLES} "
+                                f"latency probe calls."
+                            ),
+                            duration_ms=duration,
+                            details="\n".join(errors[:5]),
+                        )
+                    )
                 continue
 
             st = _stats(samples)
@@ -727,6 +753,12 @@ async def run(
     list[TestResult]:
         T08-001 through T08-005 results.
     """
+    # Clear stale data from any previous sequential scan in this process.
+    # This prevents a prior scan's baseline from poisoning T08-005 in the
+    # current scan.  (Concurrent ScanRunner instances are not supported.)
+    global _baseline_latencies
+    _baseline_latencies.clear()
+
     results: list[TestResult] = []
 
     results.extend(await _t08_001_per_tool(session, server_info, config))

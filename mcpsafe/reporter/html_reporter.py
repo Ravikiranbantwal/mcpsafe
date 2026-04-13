@@ -22,13 +22,16 @@ Usage
 
 from __future__ import annotations
 
+import dataclasses
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoescape
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from mcpsafe.models import Category, ScanReport, Severity
+from mcpsafe.reporter._common import server_slug as _server_slug
+from mcpsafe.tests._helpers import sanitise_server_string as _san
 
 # ---------------------------------------------------------------------------
 # Template resolution
@@ -158,6 +161,7 @@ def _truncate(text: str | None, max_len: int = 500) -> str:
 # ---------------------------------------------------------------------------
 
 
+
 class HtmlReporter:
     """
     Render a ``ScanReport`` to a self-contained HTML file.
@@ -222,7 +226,7 @@ class HtmlReporter:
         if self._env is None:
             self._env = Environment(
                 loader=FileSystemLoader(str(_TEMPLATE_DIR)),
-                autoescape=select_autoescape(["html", "j2"]),
+                autoescape=True,          # unconditional — never trust server strings
                 undefined=StrictUndefined,
                 trim_blocks=True,
                 lstrip_blocks=True,
@@ -274,7 +278,44 @@ class HtmlReporter:
             key=lambda r: (severity_order.get(r.severity.value, 99), r.test_id),
         )
 
+        # ── Server info convenience fields ───────────────────────────────
+        # Sanitise all server-supplied strings: strips null bytes, ANSI escapes,
+        # and other control chars that could confuse the browser or template
+        # even after HTML auto-escaping.
+        si = report.server_info
+        server_dict: dict[str, Any] = {}
+        if si:
+            server_dict = {
+                "name":             _san(si.name),
+                "version":          _san(si.version),
+                "protocol_version": _san(si.protocol_version),
+                "transport":        si.transport.value.upper(),
+                "target":           _san(si.target),
+                "tool_count":       len(si.tools),
+                "resource_count":   len(si.resources),
+                "prompt_count":     len(si.prompts),
+                "tool_names":       [_san(n) for n in si.tool_names[:30]],
+                "discovered_at":    si.discovered_at.strftime("%Y-%m-%d %H:%M:%S UTC"),
+            }
+
+        # Sanitise TestResult string fields so control chars don't reach the
+        # template even though Jinja2 autoescape handles HTML injection.
+        # Use dataclasses.replace() to create sanitised copies — never mutate
+        # the originals, which would corrupt the ScanReport object in memory
+        # (e.g. if the caller writes a JSON report *after* an HTML report).
+        sorted_results = [
+            dataclasses.replace(
+                r,
+                description=_san(r.description, max_len=1000),
+                details=(_san(r.details, max_len=5000) if r.details else None),
+                remediation=(_san(r.remediation, max_len=1000) if r.remediation else None),
+                test_name=_san(r.test_name),
+            )
+            for r in sorted_results
+        ]
+
         # ── Category groups for the findings table ───────────────────────
+        # Built *after* sanitisation so category_groups references the copies.
         categories_ordered = [
             Category.SECURITY,
             Category.DISCOVERY,
@@ -292,23 +333,6 @@ class HtmlReporter:
                         "results": cat_results,
                     }
                 )
-
-        # ── Server info convenience fields ───────────────────────────────
-        si = report.server_info
-        server_dict: dict[str, Any] = {}
-        if si:
-            server_dict = {
-                "name":             si.name,
-                "version":          si.version,
-                "protocol_version": si.protocol_version,
-                "transport":        si.transport.value.upper(),
-                "target":           si.target,
-                "tool_count":       len(si.tools),
-                "resource_count":   len(si.resources),
-                "prompt_count":     len(si.prompts),
-                "tool_names":       si.tool_names[:30],  # cap for display
-                "discovered_at":    si.discovered_at.strftime("%Y-%m-%d %H:%M:%S UTC"),
-            }
 
         # ── Duration formatting ──────────────────────────────────────────
         dur_s = report.duration_ms / 1000.0 if report.duration_ms else 0.0
@@ -359,9 +383,10 @@ class HtmlReporter:
     # ------------------------------------------------------------------
 
     def _filename(self) -> str:
-        """Build the output filename from the scan ID and current timestamp."""
+        """Build the output filename from the server name, scan ID, and timestamp."""
         scan_id_short = self._report.scan_id[:8]
         ts = (self._report.started_at or datetime.now(timezone.utc)).strftime(
             "%Y%m%d-%H%M%S"
         )
-        return f"mcpsafe-{scan_id_short}-{ts}.html"
+        server_slug = _server_slug(self._report)
+        return f"mcpsafe-{server_slug}-{scan_id_short}-{ts}.html"

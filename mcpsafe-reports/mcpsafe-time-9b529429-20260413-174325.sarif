@@ -1,0 +1,1815 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "MCPSafe",
+          "version": "0.1.0",
+          "informationUri": "https://github.com/Ravikiranbantwal/mcpsafe",
+          "rules": [
+            {
+              "id": "T01-001",
+              "name": "Server Identity",
+              "shortDescription": {
+                "text": "Server Identity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T01-002",
+              "name": "Tool Enumeration",
+              "shortDescription": {
+                "text": "Tool Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-003",
+              "name": "Resource Enumeration",
+              "shortDescription": {
+                "text": "Resource Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-004",
+              "name": "Prompt Enumeration",
+              "shortDescription": {
+                "text": "Prompt Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-005",
+              "name": "Tool Description Completeness",
+              "shortDescription": {
+                "text": "Tool Description Completeness"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-006",
+              "name": "Tool Schema Validity",
+              "shortDescription": {
+                "text": "Tool Schema Validity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-007",
+              "name": "Duplicate Tool Names",
+              "shortDescription": {
+                "text": "Duplicate Tool Names"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-008",
+              "name": "Tool Description Length",
+              "shortDescription": {
+                "text": "Tool Description Length"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-001",
+              "name": "Schema Structural Validity",
+              "shortDescription": {
+                "text": "Schema Structural Validity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-get_current_time",
+              "name": "Required Enforcement: get_current_time",
+              "shortDescription": {
+                "text": "Required Enforcement: get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-get_current_time.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-convert_time",
+              "name": "Required Enforcement: convert_time",
+              "shortDescription": {
+                "text": "Required Enforcement: convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-convert_time.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-003",
+              "name": "additionalProperties Strictness",
+              "shortDescription": {
+                "text": "additionalProperties Strictness"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-003.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-004",
+              "name": "Return Type Consistency",
+              "shortDescription": {
+                "text": "Return Type Consistency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-004.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-005",
+              "name": "Overly Permissive Schema Detection",
+              "shortDescription": {
+                "text": "Overly Permissive Schema Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-get_current_time",
+              "name": "Description Quality: get_current_time",
+              "shortDescription": {
+                "text": "Description Quality: get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-get_current_time.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-006-convert_time",
+              "name": "Description Quality: convert_time",
+              "shortDescription": {
+                "text": "Description Quality: convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-convert_time.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T08-001-01",
+              "name": "Baseline Latency: get_current_time",
+              "shortDescription": {
+                "text": "Baseline Latency: get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-01.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-02",
+              "name": "Baseline Latency: convert_time",
+              "shortDescription": {
+                "text": "Baseline Latency: convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-02.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-002",
+              "name": "Tool Discovery Latency",
+              "shortDescription": {
+                "text": "Tool Discovery Latency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-003-00",
+              "name": "Resource Read Latency",
+              "shortDescription": {
+                "text": "Resource Read Latency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-003-00.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T08-004",
+              "name": "Cold Start Detection",
+              "shortDescription": {
+                "text": "Cold Start Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-001",
+              "name": "Unauthenticated Access",
+              "shortDescription": {
+                "text": "Unauthenticated Access"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-002",
+              "name": "Malformed Token Rejection",
+              "shortDescription": {
+                "text": "Malformed Token Rejection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-002.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-003",
+              "name": "Resource URI Path Traversal",
+              "shortDescription": {
+                "text": "Resource URI Path Traversal"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-003.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-004",
+              "name": "Credentials in Error Messages",
+              "shortDescription": {
+                "text": "Credentials in Error Messages"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-005",
+              "name": "CORS Misconfiguration",
+              "shortDescription": {
+                "text": "CORS Misconfiguration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-005.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-006",
+              "name": "Process Privilege Check",
+              "shortDescription": {
+                "text": "Process Privilege Check"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-006.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-007",
+              "name": "Environment Variable Probe",
+              "shortDescription": {
+                "text": "Environment Variable Probe"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-008",
+              "name": "Invalid Tool Name Rejection",
+              "shortDescription": {
+                "text": "Invalid Tool Name Rejection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-008.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T07-009",
+              "name": "Oversized Argument Rejection",
+              "shortDescription": {
+                "text": "Oversized Argument Rejection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-009.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T07-010",
+              "name": "Duplicate Initialize (Replay Attack)",
+              "shortDescription": {
+                "text": "Duplicate Initialize (Replay Attack)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-010.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T07-011",
+              "name": "Deeply Nested Argument (JSON Bomb)",
+              "shortDescription": {
+                "text": "Deeply Nested Argument (JSON Bomb)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-012",
+              "name": "Unicode Homoglyph Tool Name Spoofing",
+              "shortDescription": {
+                "text": "Unicode Homoglyph Tool Name Spoofing"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-012.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T07-013",
+              "name": "Protocol Version Abuse",
+              "shortDescription": {
+                "text": "Protocol Version Abuse"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-013.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-001",
+              "name": "Injection PI-001 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-001 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-001.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-002",
+              "name": "Injection PI-002 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-002 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-002.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-003",
+              "name": "Injection PI-003 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-003 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-003.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-004",
+              "name": "Injection PI-004 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-004 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-004.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-005",
+              "name": "Injection PI-005 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-005 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-005.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-006",
+              "name": "Injection PI-006 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-006 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-006.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-007",
+              "name": "Injection PI-007 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-007 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-007.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-008",
+              "name": "Injection PI-008 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-008 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-009",
+              "name": "Injection PI-009 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-009 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-010",
+              "name": "Injection PI-010 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-010 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-011",
+              "name": "Injection PI-011 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-011 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-011.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-012",
+              "name": "Injection PI-012 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-012 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-012.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-013",
+              "name": "Injection PI-013 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-013 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-014",
+              "name": "Injection PI-014 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-014 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-015",
+              "name": "Injection PI-015 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-015 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-015.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_current_time-PI-016",
+              "name": "Injection PI-016 → get_current_time",
+              "shortDescription": {
+                "text": "Injection PI-016 → get_current_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_current_time-PI-016.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-001",
+              "name": "Injection PI-001 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-001 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-002",
+              "name": "Injection PI-002 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-002 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-003",
+              "name": "Injection PI-003 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-003 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-004",
+              "name": "Injection PI-004 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-004 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-005",
+              "name": "Injection PI-005 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-005 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-006",
+              "name": "Injection PI-006 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-006 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-007",
+              "name": "Injection PI-007 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-007 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-008",
+              "name": "Injection PI-008 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-008 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-009",
+              "name": "Injection PI-009 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-009 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-010",
+              "name": "Injection PI-010 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-010 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-011",
+              "name": "Injection PI-011 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-011 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-012",
+              "name": "Injection PI-012 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-012 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-013",
+              "name": "Injection PI-013 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-013 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-014",
+              "name": "Injection PI-014 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-014 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-015",
+              "name": "Injection PI-015 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-015 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-015.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-convert_time-PI-016",
+              "name": "Injection PI-016 → convert_time",
+              "shortDescription": {
+                "text": "Injection PI-016 → convert_time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-convert_time-PI-016.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-timezone-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → get_current_time.timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → get_current_time.timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-timezone-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-source_timez-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → convert_time.source_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → convert_time.source_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-source_timez-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-time-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → convert_time.time",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → convert_time.time"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-time-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-target_timez-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → convert_time.target_timezone",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → convert_time.target_timezone"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-target_timez-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-001",
+              "name": "Rug Pull Detection (Mutation Check)",
+              "shortDescription": {
+                "text": "Rug Pull Detection (Mutation Check)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-002",
+              "name": "Hidden Instruction Scan",
+              "shortDescription": {
+                "text": "Hidden Instruction Scan"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-003",
+              "name": "Cross-Tool Reference Detection",
+              "shortDescription": {
+                "text": "Cross-Tool Reference Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-004",
+              "name": "Schema Field Injection Check",
+              "shortDescription": {
+                "text": "Schema Field Injection Check"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-005",
+              "name": "Tool Count Stability Check",
+              "shortDescription": {
+                "text": "Tool Count Stability Check"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-001",
+              "name": "10 Simultaneous Calls",
+              "shortDescription": {
+                "text": "10 Simultaneous Calls"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-002",
+              "name": "50 Sequential Rapid Calls",
+              "shortDescription": {
+                "text": "50 Sequential Rapid Calls"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-003",
+              "name": "100 Concurrent Calls (Stress Test)",
+              "shortDescription": {
+                "text": "100 Concurrent Calls (Stress Test)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-004",
+              "name": "Connection Stability Under Rapid Reconnect",
+              "shortDescription": {
+                "text": "Connection Stability Under Rapid Reconnect"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-005",
+              "name": "Latency Degradation Under Load",
+              "shortDescription": {
+                "text": "Latency Degradation Under Load"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T01-001",
+          "level": "note",
+          "message": {
+            "text": "Server did not advertise: name, version. Got name='unknown' version='unknown' protocol='unknown'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-003",
+          "level": "note",
+          "message": {
+            "text": "2/2 tool(s) missing 'additionalProperties': false."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-004",
+          "level": "note",
+          "message": {
+            "text": "All tools have required fields — return-type consistency test skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-006-get_current_time",
+          "level": "note",
+          "message": {
+            "text": "Tool 'get_current_time' description does not mention its parameters (timezone)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-006-convert_time",
+          "level": "note",
+          "message": {
+            "text": "Tool 'convert_time' description does not mention its parameters (source_timezone, time, target_timezone)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T08-003-00",
+          "level": "note",
+          "message": {
+            "text": "No resources to benchmark."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-001",
+          "level": "note",
+          "message": {
+            "text": "Unauthenticated Access test requires HTTP transport — skipped (transport='stdio')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-002",
+          "level": "note",
+          "message": {
+            "text": "Malformed Token Rejection test requires HTTP transport — skipped (transport='stdio')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-003",
+          "level": "note",
+          "message": {
+            "text": "Server advertises no resources — path traversal test skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-005",
+          "level": "note",
+          "message": {
+            "text": "CORS check requires HTTP transport — skipped (transport='stdio')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-006",
+          "level": "note",
+          "message": {
+            "text": "Privilege check not available on Windows."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-008",
+          "level": "warning",
+          "message": {
+            "text": "Server accepted call to invalid tool name '' without error."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-009",
+          "level": "warning",
+          "message": {
+            "text": "Server accepted a 1 MB argument value without error — no input size limit enforced."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-010",
+          "level": "note",
+          "message": {
+            "text": "Server accepted a second initialize() call on an already active session. The session remained usable, but the server state may have been silently reset."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-012",
+          "level": "warning",
+          "message": {
+            "text": "Server accepted unicode homoglyph of tool name 'get_current_time' → 'gеt_current_time'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-013",
+          "level": "note",
+          "message": {
+            "text": "Server did not negotiate a recognised MCP protocol version (version is empty or unknown)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-001",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-001: Classic override)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-002",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-002: Newline injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-003",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-003: XML tag injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-004",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-004: SQL injection probe)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-005",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-005: Shell injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-006",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-006: Backtick injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-007",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-007: Path traversal)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-011",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-011: Rug pull attempt)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-012",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-012: Exfiltration instruction)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-015",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-015: Jinja template injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_current_time-PI-016",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_current_time' echoed the raw injection payload back in its response (PI-016: Python format injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-time"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

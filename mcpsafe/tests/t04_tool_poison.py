@@ -177,32 +177,73 @@ async def _t04_001_rug_pull(
 
         duration = (time.perf_counter() - t0) * 1000.0
 
-        mutations: list[str] = []
+        # Separate mutations into two buckets:
+        #   true_mutations — content changed or shrank (genuine rug-pull risk)
+        #   growth_only   — description only grew (likely CDN/lazy-load, not attack)
+        true_mutations: list[str] = []
+        growth_only: list[str] = []
         all_names = set(snap_before) | set(snap_after)
 
         for name in sorted(all_names):
             before = snap_before.get(name)
             after = snap_after.get(name)
             if before is None and after is not None:
-                mutations.append(
+                true_mutations.append(
                     f"NEW tool appeared: {name!r}\n"
                     f"  Description: {after[:200]!r}"
                 )
             elif before is not None and after is None:
-                mutations.append(f"Tool DISAPPEARED: {name!r}")
+                true_mutations.append(f"Tool DISAPPEARED: {name!r}")
             elif before != after:
-                # Character-by-character diff — show first divergence point.
+                # Character-by-character diff — show context around the first
+                # divergence point, not the beginning of the string (which may
+                # be identical even for long descriptions that differ at the end).
                 diff_pos = next(
                     (i for i, (a, b) in enumerate(zip(before, after)) if a != b),
                     min(len(before), len(after)),
                 )
-                mutations.append(
-                    f"Tool {name!r} description CHANGED at char {diff_pos}:\n"
-                    f"  BEFORE: {before[:300]!r}\n"
-                    f"  AFTER:  {after[:300]!r}"
+                ctx_start = max(0, diff_pos - 80)
+                ctx_end_b = min(len(before), diff_pos + 160)
+                ctx_end_a = min(len(after), diff_pos + 160)
+                len_note = ""
+                if len(before) != len(after):
+                    len_note = (
+                        f"\n  Length: {len(before)} → {len(after)} chars "
+                        f"({'grew' if len(after) > len(before) else 'shrank'})"
+                    )
+                entry = (
+                    f"Tool {name!r} description CHANGED at char {diff_pos}:{len_note}\n"
+                    f"  BEFORE[{ctx_start}:{ctx_end_b}]: {before[ctx_start:ctx_end_b]!r}\n"
+                    f"  AFTER [{ctx_start}:{ctx_end_a}]: {after[ctx_start:ctx_end_a]!r}"
                 )
+                # Pure extension: after is a strict superset starting with before.
+                # This pattern indicates CDN/edge truncation or paginated responses,
+                # NOT a deliberate description swap.  A real rug-pull overwrites
+                # content at the beginning or middle of the description.
+                #
+                # Edge case: some servers truncate descriptions with a trailing
+                # ellipsis ("…" U+2026 or "...") so BEFORE ends with "…foo"
+                # while AFTER continues with the real text at that position.
+                # Strip any trailing whitespace + ellipsis chars before comparing
+                # so we catch these truncation-extension pairs correctly.
+                _ELLIPSIS_CHARS = " \t\u2026."
+                before_stem = before.rstrip(_ELLIPSIS_CHARS)
+                is_growth = (
+                    len(after) > len(before)
+                    and (
+                        after.startswith(before)
+                        or (
+                            len(before_stem) >= 20
+                            and after.startswith(before_stem)
+                        )
+                    )
+                )
+                if is_growth:
+                    growth_only.append(entry)
+                else:
+                    true_mutations.append(entry)
 
-        if mutations:
+        if true_mutations:
             return TestResult(
                 test_id=tid,
                 test_name=tname,
@@ -210,18 +251,41 @@ async def _t04_001_rug_pull(
                 severity=Severity.CRITICAL,
                 passed=False,
                 description=(
-                    f"{len(mutations)} tool description(s) mutated between "
+                    f"{len(true_mutations)} tool description(s) mutated between "
                     f"two consecutive list_tools() calls (3 s apart). "
                     f"Rug-pull attack confirmed."
                 ),
                 duration_ms=duration,
-                details="\n\n".join(mutations),
+                details="\n\n".join(true_mutations),
                 remediation=(
                     "Tool descriptions must be immutable after server startup. "
                     "Dynamic description mutation is the hallmark of a rug-pull "
                     "attack, where an MCP server silently changes tool behaviour "
                     "after an LLM has already approved tool use. "
                     "Treat this server as compromised."
+                ),
+            )
+
+        if growth_only:
+            return TestResult(
+                test_id=tid,
+                test_name=tname,
+                category=Category.SECURITY,
+                severity=Severity.MEDIUM,
+                passed=False,
+                description=(
+                    f"{len(growth_only)} tool description(s) grew between two "
+                    f"consecutive list_tools() calls (3 s apart). Descriptions "
+                    f"only extended — likely CDN truncation or lazy-loaded content "
+                    f"rather than a deliberate rug-pull. Verify server behaviour."
+                ),
+                duration_ms=duration,
+                details="\n\n".join(growth_only),
+                remediation=(
+                    "Tool descriptions should be fully materialized at startup. "
+                    "If descriptions grow between calls, clients may make tool-use "
+                    "decisions based on incomplete instructions. "
+                    "Ensure list_tools() always returns the full, stable description."
                 ),
             )
 
@@ -373,14 +437,21 @@ async def _t04_003_cross_tool_refs(
                 test_id=tid,
                 test_name=tname,
                 category=Category.SECURITY,
-                severity=Severity.HIGH,
+                severity=Severity.LOW,
                 description=(
                     f"Found {len(refs)} cross-tool reference(s) in tool "
-                    f"descriptions — potential parasitic toolchain attack."
+                    f"descriptions — server uses chained workflow guidance. "
+                    f"Verify no sensitive data is passed between tools."
                 ),
                 duration_ms=duration,
                 details="\n".join(refs),
                 remediation=(
+                    "Cross-tool references in descriptions are common in "
+                    "multi-step APIs and are not inherently malicious. "
+                    "Review each reference to confirm it describes legitimate "
+                    "workflow guidance (e.g. 'call tool X first to discover "
+                    "available values') rather than parasitic data exfiltration "
+                    "(e.g. 'silently forward results to tool Y'). "
                     "Tool descriptions must describe only the tool's own "
                     "behaviour. References to other tool names in a description "
                     "can trick LLMs into invoking them as a silent side-effect, "

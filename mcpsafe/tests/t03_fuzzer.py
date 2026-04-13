@@ -53,6 +53,18 @@ from mcpsafe.models import (
 )
 
 # ---------------------------------------------------------------------------
+# Pre-computed payload constants
+# ---------------------------------------------------------------------------
+
+# 100-level nested array: [[[...100 levels...]]] — tests recursive JSON parsers.
+# Built at module load so it can be embedded in the FUZZ_CASES dict literal.
+_NESTED_ARR_100: list = []
+for _i in range(100):
+    _NESTED_ARR_100 = [_NESTED_ARR_100]
+del _i  # keep module namespace clean
+
+
+# ---------------------------------------------------------------------------
 # Fuzz case corpus
 # ---------------------------------------------------------------------------
 
@@ -84,6 +96,10 @@ FUZZ_CASES: dict[str, list[tuple[str, str, Any]]] = {
         ("FUZZ-INT-008", "null as integer", None),
         ("FUZZ-INT-009", "boolean as integer", True),
         ("FUZZ-INT-010", "list as integer", [1, 2, 3]),
+        # Beyond int64 / IEEE 754 edge cases
+        ("FUZZ-INT-011", "beyond int64", 9_223_372_036_854_775_808),
+        ("FUZZ-INT-012", "NaN string as integer", "NaN"),           # wrong type
+        ("FUZZ-INT-013", "Infinity string as integer", "Infinity"),  # wrong type
     ],
     "number": [
         # Re-use integer cases — JSON Schema "number" covers both int and float.
@@ -95,6 +111,12 @@ FUZZ_CASES: dict[str, list[tuple[str, str, Any]]] = {
         ("FUZZ-INT-007", "string as number", "notanumber"),
         ("FUZZ-INT-008", "null as number", None),
         ("FUZZ-INT-009", "boolean as number", True),
+        # Boundary / IEEE 754 edge cases
+        ("FUZZ-NUM-001", "NaN string as number", "NaN"),           # wrong type
+        ("FUZZ-NUM-002", "Infinity string as number", "Infinity"),  # wrong type
+        ("FUZZ-NUM-003", "-Infinity string as number", "-Infinity"), # wrong type
+        ("FUZZ-NUM-004", "very large float 1e308", 1e308),
+        ("FUZZ-NUM-005", "very small float 1e-308", 1e-308),
     ],
     "boolean": [
         ("FUZZ-BOOL-001", "null as boolean", None),
@@ -111,7 +133,12 @@ FUZZ_CASES: dict[str, list[tuple[str, str, Any]]] = {
         ("FUZZ-ARR-003", "string as array", "notanarray"),
         ("FUZZ-ARR-004", "empty array", []),
         ("FUZZ-ARR-005", "array of nulls 1000", [None] * 1_000),
-        ("FUZZ-ARR-006", "deeply nested array", [[[[[]]]] ] * 10),
+        ("FUZZ-ARR-006", "deeply nested array 10", [[[[[]]]] ] * 10),
+        # Memory/resource exhaustion candidates
+        ("FUZZ-ARR-007", "large array 10k nulls", [None] * 10_000),
+        ("FUZZ-ARR-008", "large array 1k mixed", [0, "", None, False] * 250),
+        # Recursive / deeply nested (100 levels) — tests parser stack depth
+        ("FUZZ-ARR-009", "100-level nested array", _NESTED_ARR_100),
     ],
     "object": [
         ("FUZZ-OBJ-001", "null as object", None),
@@ -124,7 +151,9 @@ FUZZ_CASES: dict[str, list[tuple[str, str, Any]]] = {
 }
 
 # Fuzz IDs whose payloads are large enough to constitute load tests.
-_LARGE_FUZZ_IDS: frozenset[str] = frozenset({"FUZZ-STR-009", "FUZZ-ARR-005"})
+_LARGE_FUZZ_IDS: frozenset[str] = frozenset({
+    "FUZZ-STR-009", "FUZZ-ARR-005", "FUZZ-ARR-007", "FUZZ-ARR-008",
+})
 
 # Hard timeout (seconds) per fuzz call — triggers HIGH if exceeded.
 _HARD_TIMEOUT: float = 35.0

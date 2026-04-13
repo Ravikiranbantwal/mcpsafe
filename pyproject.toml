@@ -7,9 +7,12 @@ name = "mcpsafe"
 version = "0.1.0"
 description = "Security and stress-testing framework for MCP (Model Context Protocol) servers"
 readme = "README.md"
-license = {text = "MIT"}
+license = {file = "LICENSE"}
 requires-python = ">=3.11"
-keywords = ["mcp", "security", "testing", "llm", "ai", "anthropic"]
+authors = [
+    {name = "Ravikiran Bantwal", email = "bantwalravikiran@gmail.com"},
+]
+keywords = ["mcp", "security", "testing", "llm", "ai", "anthropic", "model-context-protocol"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -40,9 +43,11 @@ dev = [
 mcpsafe = "mcpsafe.cli:cli"
 
 [project.urls]
-Homepage = "https://github.com/your-handle/mcpsafe"
-Repository = "https://github.com/your-handle/mcpsafe"
-Issues = "https://github.com/your-handle/mcpsafe/issues"
+Homepage = "https://github.com/Ravikiranbantwal/mcpsafe"
+Repository = "https://github.com/Ravikiranbantwal/mcpsafe"
+Issues = "https://github.com/Ravikiranbantwal/mcpsafe/issues"
+Documentation = "https://ravikiranbantwal.github.io/mcpsafe/mcpsafe-learning-guide.html"
+Changelog = "https://github.com/Ravikiranbantwal/mcpsafe/releases"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

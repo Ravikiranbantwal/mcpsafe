@@ -1,0 +1,3395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCPSafe Report — 470643ac — 2026-04-13 18:32:41 UTC</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   MCPSafe Report — Self-contained, zero-CDN stylesheet
+   ═══════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:      #0f172a;
+  --navy-2:    #1e293b;
+  --navy-3:    #334155;
+  --slate:     #64748b;
+  --light:     #f1f5f9;
+  --white:     #ffffff;
+  --border:    #e2e8f0;
+
+  --critical:  #dc2626;
+  --high:      #ea580c;
+  --medium:    #d97706;
+  --low:       #2563eb;
+  --info-col:  #6b7280;
+  --pass:      #16a34a;
+
+  --radius:    8px;
+  --shadow:    0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,.14);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--light);
+  color: var(--navy);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+a { color: var(--low); }
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+.page-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+  color: var(--white);
+  padding: 32px 40px 28px;
+  border-bottom: 3px solid var(--low);
+}
+.page-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -.5px; }
+.page-header .subtitle { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+.page-header .meta { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 24px; }
+.page-header .meta-item { font-size: 12px; color: #cbd5e1; }
+.page-header .meta-item strong { color: var(--white); font-size: 13px; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; }
+
+section { margin-bottom: 36px; }
+section h2 {
+  font-size: 16px; font-weight: 700; color: var(--navy-2);
+  margin-bottom: 16px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  text-transform: uppercase; letter-spacing: .6px;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────── */
+.card {
+  background: var(--white); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px 24px;
+}
+
+/* ── Stat cards row ──────────────────────────────────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+.stat-card {
+  background: var(--white); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px 20px;
+  border-left: 4px solid var(--border);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stat-card .label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--slate);
+}
+.stat-card .count { font-size: 32px; font-weight: 800; line-height: 1; }
+
+.stat-card.sev-critical { border-color: var(--critical); }
+.stat-card.sev-critical .count { color: var(--critical); }
+.stat-card.sev-high     { border-color: var(--high); }
+.stat-card.sev-high     .count { color: var(--high); }
+.stat-card.sev-medium   { border-color: var(--medium); }
+.stat-card.sev-medium   .count { color: var(--medium); }
+.stat-card.sev-low      { border-color: var(--low); }
+.stat-card.sev-low      .count { color: var(--low); }
+.stat-card.sev-info     { border-color: var(--info-col); }
+.stat-card.sev-info     .count { color: var(--info-col); }
+.stat-card.sev-pass     { border-color: var(--pass); }
+.stat-card.sev-pass     .count { color: var(--pass); }
+
+/* ── Overall badge ────────────────────────────────────────────────── */
+.overall-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; padding: 4px 14px;
+  border-radius: 999px; text-transform: uppercase; letter-spacing: .5px;
+}
+.overall-badge.sev-critical { background: #fef2f2; color: var(--critical); border: 1px solid #fecaca; }
+.overall-badge.sev-high     { background: #fff7ed; color: var(--high);     border: 1px solid #fed7aa; }
+.overall-badge.sev-medium   { background: #fffbeb; color: var(--medium);   border: 1px solid #fde68a; }
+.overall-badge.sev-low      { background: #eff6ff; color: var(--low);      border: 1px solid #bfdbfe; }
+.overall-badge.sev-info     { background: #f9fafb; color: var(--info-col); border: 1px solid #e5e7eb; }
+.overall-badge.sev-pass     { background: #f0fdf4; color: var(--pass);     border: 1px solid #bbf7d0; }
+
+/* ── Summary row (donut + stats) ─────────────────────────────────── */
+.summary-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 700px) {
+  .summary-row { grid-template-columns: 1fr; }
+}
+
+/* ── Donut chart (pure CSS conic-gradient) ───────────────────────── */
+.donut-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.donut {
+  width: 160px; height: 160px; border-radius: 50%;
+  background: conic-gradient(
+  #d97706 0.0deg 4.77deg,
+  #2563eb 4.77deg 7.15deg,
+  #6b7280 7.15deg 28.61deg,
+  #16a34a 28.61deg 379.07deg
+);
+  position: relative;
+}
+.donut::after {
+  content: ""; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 90px; height: 90px; border-radius: 50%;
+  background: var(--white);
+  box-shadow: inset 0 2px 8px rgba(0,0,0,.1);
+}
+.donut-centre {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2; text-align: center; pointer-events: none;
+}
+.donut-centre .big { font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1; }
+.donut-centre .small { font-size: 10px; color: var(--slate); text-transform: uppercase; letter-spacing: .5px; }
+.donut-legend { width: 100%; }
+.donut-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; padding: 2px 0;
+}
+.donut-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.donut-legend-label { color: var(--slate); flex: 1; }
+.donut-legend-count { font-weight: 700; color: var(--navy); }
+
+/* ── Server info card ─────────────────────────────────────────────── */
+.info-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+}
+.info-item .key {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .6px; color: var(--slate); margin-bottom: 2px;
+}
+.info-item .val { font-size: 13px; color: var(--navy); word-break: break-all; }
+.tool-pills {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;
+}
+.tool-pill {
+  background: var(--light); border: 1px solid var(--border);
+  border-radius: 4px; padding: 2px 8px; font-size: 11px;
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  color: var(--navy-3);
+}
+
+/* ── Findings table ──────────────────────────────────────────────── */
+.findings-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+.findings-table thead th {
+  background: var(--navy-2); color: #e2e8f0;
+  padding: 10px 14px; text-align: left; font-weight: 600;
+  font-size: 11px; text-transform: uppercase; letter-spacing: .6px;
+  position: sticky; top: 0; z-index: 1;
+}
+.findings-table tbody tr { border-bottom: 1px solid var(--border); }
+.findings-table tbody tr:last-child { border-bottom: none; }
+.findings-table tbody tr:hover { background: #f8fafc; }
+.findings-table td { padding: 10px 14px; vertical-align: top; }
+
+/* Severity pill */
+.sev-pill {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
+  white-space: nowrap;
+}
+.sev-pill.sev-critical { background: #fef2f2; color: var(--critical); }
+.sev-pill.sev-high     { background: #fff7ed; color: var(--high); }
+.sev-pill.sev-medium   { background: #fffbeb; color: var(--medium); }
+.sev-pill.sev-low      { background: #eff6ff; color: var(--low); }
+.sev-pill.sev-info     { background: #f9fafb; color: var(--info-col); }
+.sev-pill.sev-pass     { background: #f0fdf4; color: var(--pass); }
+
+/* Expandable detail rows */
+details { cursor: pointer; }
+details summary {
+  list-style: none; display: flex; align-items: center; gap: 6px;
+}
+details summary::before { content: "▶"; font-size: 10px; color: var(--slate); transition: transform .15s; }
+details[open] summary::before { transform: rotate(90deg); }
+details summary::-webkit-details-marker { display: none; }
+
+.detail-box {
+  margin-top: 8px; padding: 10px 14px;
+  background: #f8fafc; border-radius: 4px;
+  border-left: 3px solid var(--border);
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  font-size: 12px; white-space: pre-wrap; word-break: break-all;
+  color: var(--navy-3);
+}
+.remediation-box {
+  margin-top: 6px; padding: 8px 12px;
+  background: #f0fdf4; border-radius: 4px;
+  border-left: 3px solid var(--pass);
+  font-size: 12px; color: #166534;
+}
+.remediation-box strong { font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
+
+/* Category header row */
+.cat-header td {
+  background: var(--light); font-weight: 700; font-size: 12px;
+  text-transform: uppercase; letter-spacing: .6px; color: var(--navy-3);
+  padding: 8px 14px; border-top: 2px solid var(--border);
+}
+
+/* test-id monospace */
+.tid {
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  font-size: 11px; color: var(--slate);
+  white-space: nowrap;
+}
+
+/* duration */
+.dur { font-size: 11px; color: var(--slate); white-space: nowrap; }
+
+/* ── Footer ──────────────────────────────────────────────────────── */
+.page-footer {
+  background: var(--navy); color: #64748b;
+  text-align: center; padding: 16px;
+  font-size: 11px;
+}
+.page-footer a { color: #94a3b8; }
+
+/* ── Print ───────────────────────────────────────────────────────── */
+@media print {
+  body { background: white; font-size: 11px; }
+  .page-header { background: white; color: black; border-bottom: 2px solid black; }
+  .page-header h1 { color: black; }
+  .page-header .subtitle, .page-header .meta-item { color: #555; }
+  .page-header .meta-item strong { color: black; }
+  details { open: true; }
+  details[open] .detail-box { display: block; }
+  .findings-table thead th { background: #f1f5f9; color: black; }
+  .card { box-shadow: none; border: 1px solid #e2e8f0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE HEADER
+     ═══════════════════════════════════════════════════════════════ -->
+<header class="page-header">
+  <h1>🔒 MCPSafe Security Report</h1>
+  <p class="subtitle">MCP Server Security &amp; Performance Analysis — v0.1.0</p>
+  <div class="meta">
+    <div class="meta-item"><strong>Scan ID</strong><br>470643ac…</div>
+    <div class="meta-item"><strong>Started</strong><br>2026-04-13 18:32:41 UTC</div>
+    <div class="meta-item"><strong>Finished</strong><br>2026-04-13 18:38:06 UTC</div>
+    <div class="meta-item"><strong>Duration</strong><br>703.4s</div>
+    <div class="meta-item"><strong>Overall</strong><br>
+      <span class="overall-badge sev-medium">MEDIUM</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SUMMARY
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <h2>Summary</h2>
+    <div class="summary-row">
+
+      <!-- Donut chart -->
+      <div class="card donut-wrap">
+        <div class="donut">
+          <div class="donut-centre">
+            <div class="big">151</div>
+            <div class="small">tests</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#d97706"></div>
+            <span class="donut-legend-label">MEDIUM</span>
+            <span class="donut-legend-count">2</span>
+            <span style="color:var(--slate);font-size:11px">(1.3%)</span>
+          </div>
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#2563eb"></div>
+            <span class="donut-legend-label">LOW</span>
+            <span class="donut-legend-count">1</span>
+            <span style="color:var(--slate);font-size:11px">(0.7%)</span>
+          </div>
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#6b7280"></div>
+            <span class="donut-legend-label">INFO</span>
+            <span class="donut-legend-count">9</span>
+            <span style="color:var(--slate);font-size:11px">(6.0%)</span>
+          </div>
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#16a34a"></div>
+            <span class="donut-legend-label">PASS</span>
+            <span class="donut-legend-count">147</span>
+            <span style="color:var(--slate);font-size:11px">(97.4%)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat cards -->
+      <div>
+        <div class="stat-grid">
+          <div class="stat-card sev-critical">
+            <span class="label">CRITICAL</span>
+            <span class="count">0</span>
+          </div>
+          <div class="stat-card sev-high">
+            <span class="label">HIGH</span>
+            <span class="count">0</span>
+          </div>
+          <div class="stat-card sev-medium">
+            <span class="label">MEDIUM</span>
+            <span class="count">2</span>
+          </div>
+          <div class="stat-card sev-low">
+            <span class="label">LOW</span>
+            <span class="count">1</span>
+          </div>
+          <div class="stat-card sev-info">
+            <span class="label">INFO</span>
+            <span class="count">9</span>
+          </div>
+          <div class="stat-card sev-pass">
+            <span class="label">PASS</span>
+            <span class="count">147</span>
+          </div>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:24px; flex-wrap:wrap; font-size:13px; color:var(--slate);">
+          <span>Total: <strong style="color:var(--navy)">151</strong></span>
+          <span>Passed: <strong style="color:var(--pass)">147</strong></span>
+          <span>Failed: <strong style="color:var(--critical)">4</strong></span>
+          <span>Duration: <strong style="color:var(--navy)">703.4s</strong></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SERVER INFO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <h2>Server Information</h2>
+    <div class="card">
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="key">Server Name</div>
+          <div class="val">unknown</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Version</div>
+          <div class="val">unknown</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Protocol</div>
+          <div class="val">unknown</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Transport</div>
+          <div class="val">HTTP</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Target</div>
+          <div class="val" style="font-family:monospace;font-size:12px">https://observability.mcp.cloudflare.com/mcp</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Discovered At</div>
+          <div class="val">2026-04-13 18:32:52 UTC</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Tools</div>
+          <div class="val">9</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Resources</div>
+          <div class="val">0</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Prompts</div>
+          <div class="val">1</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <div class="key" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--slate);margin-bottom:6px;">Exposed Tools</div>
+        <div class="tool-pills">
+          <span class="tool-pill">accounts_list</span>
+          <span class="tool-pill">workers_list</span>
+          <span class="tool-pill">workers_get_worker</span>
+          <span class="tool-pill">workers_get_worker_code</span>
+          <span class="tool-pill">query_worker_observability</span>
+          <span class="tool-pill">observability_keys</span>
+          <span class="tool-pill">observability_values</span>
+          <span class="tool-pill">search_cloudflare_documentation</span>
+          <span class="tool-pill">migrate_pages_to_workers_guide</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FINDINGS TABLE
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <h2>Findings (151 tests)</h2>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="findings-table">
+        <thead>
+          <tr>
+            <th style="width:90px">Test ID</th>
+            <th style="width:100px">Severity</th>
+            <th>Test Name</th>
+            <th>Description / Details</th>
+            <th style="width:80px">Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cat-header">
+            <td colspan="5">SECURITY &nbsp;·&nbsp; 107 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-001</td>
+            <td>
+              <span class="sev-pill sev-medium">MEDIUM</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Rug Pull Detection (Mutation Check)</td>
+            <td>
+              <details>
+                <summary>1 tool description(s) grew between two consecutive list_tools() calls (3 s apart). Descriptions only extended — likely C…</summary>
+                <div class="detail-box">Tool &#39;query_worker_observability&#39; description CHANGED at char 1000:
+  Length: 1001 → 1603 chars (grew)
+  BEFORE[920:1001]: &#39;ore applying filters, use the observability_keys and observability_values tools …&#39;
+  AFTER [920:1160]: &#39;ore applying filters, use the observability_keys and observability_values tools to confirm available filter fields and the correct filter value to add unless you have the data in a response from a previous query.\n- Common filter fields:  $m&#39;</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Tool descriptions should be fully materialized at startup. If descriptions grow between calls, clients may make tool-use decisions based on incomplete instructions. Ensure list_tools() always returns the full, stable description.
+                </div>
+              </details>
+            </td>
+            <td class="dur">4319ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-003</td>
+            <td>
+              <span class="sev-pill sev-low">LOW</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Cross-Tool Reference Detection</td>
+            <td>
+              <details>
+                <summary>Found 4 cross-tool reference(s) in tool descriptions — server uses chained workflow guidance. Verify no sensitive data i…</summary>
+                <div class="detail-box">  Tool &#39;workers_list&#39; description references &#39;workers_get_worker&#39;
+  Tool &#39;query_worker_observability&#39; description references &#39;observability_keys&#39;
+  Tool &#39;query_worker_observability&#39; description references &#39;observability_values&#39;
+  Tool &#39;observability_values&#39; description references &#39;observability_keys&#39;</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Cross-tool references in descriptions are common in multi-step APIs and are not inherently malicious. Review each reference to confirm it describes legitimate workflow guidance (e.g. &#39;call tool X first to discover available values&#39;) rather than parasitic data exfiltration (e.g. &#39;silently forward results to tool Y&#39;). Tool descriptions must describe only the tool&#39;s own behaviour. References to other tool names in a description can trick LLMs into invoking them as a silent side-effect, creating an unaudited tool chain.
+                </div>
+              </details>
+            </td>
+            <td class="dur">2ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-001 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-001 (Classic override) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/waf/detections/ai-security-for-apps/prompt-injection/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n### Why a score instead of a boolea&#39;</div>
+              </details>
+            </td>
+            <td class="dur">3219ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-002 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-002 (Newline injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/ai-search/configuration/system-prompt/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n# System prompt\n\nSystem prompts allow you to guide&#39;</div>
+              </details>
+            </td>
+            <td class="dur">3204ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-003 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-003 (XML tag injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">4449ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-004 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-004 (SQL injection probe) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2388ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-005 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-005 (Shell injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/workers/wrangler/commands/general/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n## `auth`\n\n### `auth token`\n\nRetrieve your current aut&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1985ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-006 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-006 (Backtick injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/workers-ai/models/kimi-k2.5/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n* `id` ` string ` required  \n                               &#39;</div>
+              </details>
+            </td>
+            <td class="dur">2741ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-007 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-007 (Path traversal) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">3614ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-008 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-008 (Right-to-left override unicode) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2577ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-009 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-009 (Null byte injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/workers/best-practices/workers-best-practices/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n// ✅ Good: test the null case explicitly\n\n&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2580ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-010 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-010 (BOM character) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2824ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-011 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-011 (Rug pull attempt) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2172ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-012 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-012 (Exfiltration instruction) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2840ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-013</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-013 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-013 (Large payload DoS probe 10k) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">4121ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-014</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-014 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-014 (Large payload DoS probe 100k) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">7266ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-015</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-015 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-015 (Jinja template injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2800ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-016</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-016 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-016 (Python format injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2480ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-001 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-001 (Classic override) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1327ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-002 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-002 (Newline injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1234ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-003 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-003 (XML tag injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1082ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-004 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-004 (SQL injection probe) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1292ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-005 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-005 (Shell injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1427ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-006 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-006 (Backtick injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1099ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-007 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-007 (Path traversal) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">822ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-008 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-008 (Right-to-left override unicode) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1029ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-009 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-009 (Null byte injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1088ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-010 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-010 (BOM character) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1101ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-011 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-011 (Rug pull attempt) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1195ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-012 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-012 (Exfiltration instruction) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1025ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-013</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-013 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-013 (Large payload DoS probe 10k) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1603ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-014</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-014 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-014 (Large payload DoS probe 100k) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1163ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-015</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-015 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-015 (Jinja template injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1189ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker-PI-016</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-016 → workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled PI-016 (Python format injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: Cloudflare API request failed&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1324ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-001 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-001 (Classic override) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1140ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-002 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-002 (Newline injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1379ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-003 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-003 (XML tag injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">956ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-004 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-004 (SQL injection probe) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2524ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-005 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-005 (Shell injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 &lt;!DOCTYPE html&gt;\n&lt;!--[if lt IE 7]&gt; &lt;html class=&#34;no-js ie6 oldie&#34; lang=&#34;en-US&#34;&gt; &lt;![endif]--&gt;\n&lt;!--[if IE 7]&gt;    &lt;html class=&#34;no-js ie7 oldie&#34; lang=&#34;en-US&#34;&gt; &lt;![endif]--&#39;</div>
+              </details>
+            </td>
+            <td class="dur">799ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-006 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-006 (Backtick injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">964ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-007 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-007 (Path traversal) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 404 {&#34;result&#34;:null,&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:7003,&#34;message&#34;:&#34;Could not route to /client/v4/accounts/etc/passwd, perhaps your object identifier is invalid?&#34;}],&#34;m&#39;</div>
+              </details>
+            </td>
+            <td class="dur">854ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-008 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-008 (Right-to-left override unicode) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1028ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-009 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-009 (Null byte injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 400 &lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&#39;</div>
+              </details>
+            </td>
+            <td class="dur">820ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-010 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-010 (BOM character) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1172ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-011 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-011 (Rug pull attempt) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1168ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-012 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-012 (Exfiltration instruction) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1252ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-013</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-013 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-013 (Large payload DoS probe 10k) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1141ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-014</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-014 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-014 (Large payload DoS probe 100k) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 400 error code: 1036&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1229ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-015</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-015 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-015 (Jinja template injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1129ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-workers_get_worker_code-PI-016</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-016 → workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled PI-016 (Python format injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1301ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-001 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled FUZZ-STR-001 (empty string) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;Error retrieving worker script: Cloudflare API request failed&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1137ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-002 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled FUZZ-STR-002 (single space) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;Error retrieving worker script: Cloudflare API request failed&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1185ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-003 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled FUZZ-STR-003 (whitespace only) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;Error retrieving worker script: Cloudflare API request failed&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1453ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-004 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; returned a structured error for FUZZ-STR-004 (null value) on param &#39;scriptName&#39; — handled grac…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;null&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received null&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">698ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-005 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; returned a structured error for FUZZ-STR-005 (integer as string field) on param &#39;scriptName&#39; —…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;number&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received number&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">920ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-006 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; returned a structured error for FUZZ-STR-006 (boolean as string field) on param &#39;scriptName&#39; —…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;boolean&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received boolean&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">1046ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-007 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; returned a structured error for FUZZ-STR-007 (list as string field) on param &#39;scriptName&#39; — ha…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;array&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received array&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">748ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-008 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; returned a structured error for FUZZ-STR-008 (dict as string field) on param &#39;scriptName&#39; — ha…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;object&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received object&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">922ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-009 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled FUZZ-STR-009 (very long string 10k) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;Error retrieving worker script: Cloudflare API request failed&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">2135ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-010 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled FUZZ-STR-010 (newlines and tabs) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;Error retrieving worker script: Cloudflare API request failed&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">978ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-011 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled FUZZ-STR-011 (null byte in string) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;Error retrieving worker script: Cloudflare API request failed&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">804ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-03-scriptname-FUZZ-STR-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-012 → workers_get_worker.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; handled FUZZ-STR-012 (all unicode planes) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;Error retrieving worker script: Cloudflare API request failed&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1262ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-001 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled FUZZ-STR-001 (empty string) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#39;meta=None content=[TextContent(type=\&#39;text\&#39;, text=\&#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}\&#39;, annotat&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2028ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-002 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled FUZZ-STR-002 (single space) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#39;meta=None content=[TextContent(type=\&#39;text\&#39;, text=\&#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}\&#39;, annotat&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1067ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-003 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled FUZZ-STR-003 (whitespace only) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#39;meta=None content=[TextContent(type=\&#39;text\&#39;, text=\&#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}\&#39;, annotat&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1017ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-004 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; returned a structured error for FUZZ-STR-004 (null value) on param &#39;scriptName&#39; — handled…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;null&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received null&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">801ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-005 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; returned a structured error for FUZZ-STR-005 (integer as string field) on param &#39;scriptNa…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;number&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received number&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">849ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-006 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; returned a structured error for FUZZ-STR-006 (boolean as string field) on param &#39;scriptNa…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;boolean&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received boolean&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">1036ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-007 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; returned a structured error for FUZZ-STR-007 (list as string field) on param &#39;scriptName&#39;…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;array&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received array&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">724ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-008 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; returned a structured error for FUZZ-STR-008 (dict as string field) on param &#39;scriptName&#39;…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;object&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received object&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">866ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-009 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled FUZZ-STR-009 (very long string 10k) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#39;meta=None content=[TextContent(type=\&#39;text\&#39;, text=\&#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}\&#39;, annotat&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1146ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-010 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled FUZZ-STR-010 (newlines and tabs) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#39;meta=None content=[TextContent(type=\&#39;text\&#39;, text=\&#39;Error retrieving worker script: 403 {&#34;success&#34;:false,&#34;errors&#34;:[{&#34;code&#34;:10000,&#34;message&#34;:&#34;Authentication error&#34;}],&#34;messages&#34;:[],&#34;result&#34;:null}\&#39;, annotat&#39;</div>
+              </details>
+            </td>
+            <td class="dur">962ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-011 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled FUZZ-STR-011 (null byte in string) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;Error retrieving worker script: 400 &lt;html&gt;\\r\\n&lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;\\r\\n&lt;body&gt;\\r\\n&lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;\\r\\n&lt;h&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1002ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-04-scriptname-FUZZ-STR-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-012 → workers_get_worker_code.scriptName</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; handled FUZZ-STR-012 (all unicode planes) on param &#39;scriptName&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;Error retrieving worker script: 400 &lt;html&gt;\\r\\n&lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;\\r\\n&lt;body&gt;\\r\\n&lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;\\r\\n&lt;h&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1011ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-05-query-FUZZ-OBJ-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-001 → query_worker_observability.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;query_worker_observability&#39; returned a structured error for FUZZ-OBJ-001 (null as object) on param &#39;query&#39; — handl…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;null&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected object, received null&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">968ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-05-query-FUZZ-OBJ-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-002 → query_worker_observability.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;query_worker_observability&#39; returned a structured error for FUZZ-OBJ-002 (list as object) on param &#39;query&#39; — handl…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;array&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected object, received array&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">733ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-05-query-FUZZ-OBJ-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-003 → query_worker_observability.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;query_worker_observability&#39; returned a structured error for FUZZ-OBJ-003 (string as object) on param &#39;query&#39; — han…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;string&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected object, received string&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">726ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-05-query-FUZZ-OBJ-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-004 → query_worker_observability.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;query_worker_observability&#39; returned a structured error for FUZZ-OBJ-004 (empty object) on param &#39;query&#39; — handled…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;,
+      &#34;queryId&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object</div>
+              </details>
+            </td>
+            <td class="dur">1015ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-05-query-FUZZ-OBJ-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-005 → query_worker_observability.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;query_worker_observability&#39; returned a structured error for FUZZ-OBJ-005 (prototype pollution) on param &#39;query&#39; — …</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;,
+      &#34;queryId&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object</div>
+              </details>
+            </td>
+            <td class="dur">894ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-05-query-FUZZ-OBJ-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-006 → query_worker_observability.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;query_worker_observability&#39; returned a structured error for FUZZ-OBJ-006 (deeply nested object) on param &#39;query&#39; —…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;,
+      &#34;queryId&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object</div>
+              </details>
+            </td>
+            <td class="dur">751ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-06-keysquery-FUZZ-OBJ-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-001 → observability_keys.keysQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_keys&#39; returned a structured error for FUZZ-OBJ-001 (null as object) on param &#39;keysQuery&#39; — handled g…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;null&#34;,
+    &#34;path&#34;: [
+      &#34;keysQuery&#34;
+    ],
+    &#34;message&#34;: &#34;Expected object, received null&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">862ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-06-keysquery-FUZZ-OBJ-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-002 → observability_keys.keysQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_keys&#39; returned a structured error for FUZZ-OBJ-002 (list as object) on param &#39;keysQuery&#39; — handled g…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;array&#34;,
+    &#34;path&#34;: [
+      &#34;keysQuery&#34;
+    ],
+    &#34;message&#34;: &#34;Expected object, received array&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">839ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-06-keysquery-FUZZ-OBJ-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-003 → observability_keys.keysQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_keys&#39; returned a structured error for FUZZ-OBJ-003 (string as object) on param &#39;keysQuery&#39; — handled…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;string&#34;,
+    &#34;path&#34;: [
+      &#34;keysQuery&#34;
+    ],
+    &#34;message&#34;: &#34;Expected object, received string&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">2041ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-06-keysquery-FUZZ-OBJ-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-004 → observability_keys.keysQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_keys&#39; returned a structured error for FUZZ-OBJ-004 (empty object) on param &#39;keysQuery&#39; — handled gra…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+          </div>
+              </details>
+            </td>
+            <td class="dur">915ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-06-keysquery-FUZZ-OBJ-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-005 → observability_keys.keysQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_keys&#39; returned a structured error for FUZZ-OBJ-005 (prototype pollution) on param &#39;keysQuery&#39; — hand…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+          </div>
+              </details>
+            </td>
+            <td class="dur">720ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-06-keysquery-FUZZ-OBJ-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-006 → observability_keys.keysQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_keys&#39; returned a structured error for FUZZ-OBJ-006 (deeply nested object) on param &#39;keysQuery&#39; — han…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+          </div>
+              </details>
+            </td>
+            <td class="dur">885ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-07-valuesquery-FUZZ-OBJ-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-001 → observability_values.valuesQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_values&#39; returned a structured error for FUZZ-OBJ-001 (null as object) on param &#39;valuesQuery&#39; — handl…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_values: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;null&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;
+    ],
+    &#34;message&#34;: &#34;Expected object, received null&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">800ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-07-valuesquery-FUZZ-OBJ-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-002 → observability_values.valuesQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_values&#39; returned a structured error for FUZZ-OBJ-002 (list as object) on param &#39;valuesQuery&#39; — handl…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_values: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;array&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;
+    ],
+    &#34;message&#34;: &#34;Expected object, received array&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">878ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-07-valuesquery-FUZZ-OBJ-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-003 → observability_values.valuesQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_values&#39; returned a structured error for FUZZ-OBJ-003 (string as object) on param &#39;valuesQuery&#39; — han…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_values: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;string&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;
+    ],
+    &#34;message&#34;: &#34;Expected object, received string&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">714ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-07-valuesquery-FUZZ-OBJ-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-004 → observability_values.valuesQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_values&#39; returned a structured error for FUZZ-OBJ-004 (empty object) on param &#39;valuesQuery&#39; — handled…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_values: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;,
+      &#34;key&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;expected&#34;: &#34;&#39;string&#39; | &#39;boolean&#39; | &#39;number&#39;&#34;,
+    </div>
+              </details>
+            </td>
+            <td class="dur">2293ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-07-valuesquery-FUZZ-OBJ-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-005 → observability_values.valuesQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_values&#39; returned a structured error for FUZZ-OBJ-005 (prototype pollution) on param &#39;valuesQuery&#39; — …</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_values: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;,
+      &#34;key&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;expected&#34;: &#34;&#39;string&#39; | &#39;boolean&#39; | &#39;number&#39;&#34;,
+    </div>
+              </details>
+            </td>
+            <td class="dur">1458ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-07-valuesquery-FUZZ-OBJ-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-OBJ-006 → observability_values.valuesQuery</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_values&#39; returned a structured error for FUZZ-OBJ-006 (deeply nested object) on param &#39;valuesQuery&#39; —…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_values: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;,
+      &#34;key&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;expected&#34;: &#34;&#39;string&#39; | &#39;boolean&#39; | &#39;number&#39;&#34;,
+    </div>
+              </details>
+            </td>
+            <td class="dur">1000ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-001 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-001 (empty string) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;All search methods failed: vector&#39;, annotations=None, meta=None)] structuredContent=None isError=True&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1025ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-002 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-002 (single space) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;All search methods failed: vector&#39;, annotations=None, meta=None)] structuredContent=None isError=True&#34;</div>
+              </details>
+            </td>
+            <td class="dur">836ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-003 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-003 (whitespace only) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;All search methods failed: vector&#39;, annotations=None, meta=None)] structuredContent=None isError=True&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1584ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-004 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-004 (null value) on param &#39;query&#39; — hand…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;null&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received null&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">835ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-005 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-005 (integer as string field) on param &#39;…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;number&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received number&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">844ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-006 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-006 (boolean as string field) on param &#39;…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;boolean&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received boolean&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">906ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-007 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-007 (list as string field) on param &#39;que…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;array&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received array&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">813ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-008 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-008 (dict as string field) on param &#39;que…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;object&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received object&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">748ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-009 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-009 (very long string 10k) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">3799ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-010 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-010 (newlines and tabs) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;All search methods failed: vector&#39;, annotations=None, meta=None)] structuredContent=None isError=True&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1062ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-011 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-011 (null byte in string) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">2471ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-08-query-FUZZ-STR-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-012 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-012 (all unicode planes) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">2830ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Hidden Instruction Scan</td>
+            <td>
+              No suspicious patterns found in 9 tool description(s).
+            </td>
+            <td class="dur">1ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Schema Field Injection Check</td>
+            <td>
+              All 9 tool inputSchema(s) contain only sanctioned JSON Schema fields.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Count Stability Check</td>
+            <td>
+              <details>
+                <summary>Tool count stable at 9 across 5 polls (2.5s window).</summary>
+                <div class="detail-box">Counts per poll: [9, 9, 9, 9, 9]</div>
+              </details>
+            </td>
+            <td class="dur">6078ms</td>
+          </tr>
+          <tr class="cat-header">
+            <td colspan="5">DISCOVERY &nbsp;·&nbsp; 8 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Server Identity</td>
+            <td>
+              <details>
+                <summary>Server did not advertise: name, version. Got name=&#39;unknown&#39; version=&#39;unknown&#39; protocol=&#39;unknown&#39;.</summary>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Ensure the MCP server returns a populated &#39;serverInfo&#39; object in its initialize response (name and version fields).
+                </div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Enumeration</td>
+            <td>
+              <details>
+                <summary>Discovered 9 tool(s): accounts_list, workers_list, workers_get_worker, workers_get_worker_code, query_worker_observabili…</summary>
+                <div class="detail-box">accounts_list: &#39;List all accounts in your Cloudflare account&#39;
+workers_list: &#39;List all Workers in your Cloudflare account.\n\nIf you only need details of a sing&#39;
+workers_get_worker: &#39;Get the details of the Cloudflare Worker.&#39;
+workers_get_worker_code: &#39;Get the source code of a Cloudflare Worker. Note: This may be a bundled version &#39;
+query_worker_observability: &#39;Query the Workers Observability API to analyze logs and metrics from your Cloudf&#39;
+observability_keys: &#39;Find keys in the Workers Observability Data\n\n## Best Practices\n- Set a high limi&#39;
+observability_values: &#39;Find values in the Workers Observability Data.\n\n## Troubleshooting\n- For no resu&#39;
+search_cloudflare_documentation: &#39;Search the Cloudflare documentation.\n\n\t\tThis tool should be used to answer any q&#39;
+migrate_pages_to_workers_guide: &#39;ALWAYS read this guide before migrating Pages projects to Workers.&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Resource Enumeration</td>
+            <td>
+              Discovered 0 resource(s).
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Prompt Enumeration</td>
+            <td>
+              <details>
+                <summary>Discovered 1 prompt(s): workers-prompt-full.</summary>
+                <div class="detail-box">workers-prompt-full: &#39;Detailed prompt for generating Cloudflare Workers code (and other developer plat&#39; (0 arg(s))</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Description Completeness</td>
+            <td>
+              All 9 tool(s) have non-empty descriptions.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Schema Validity</td>
+            <td>
+              All 9 tool(s) have valid JSON Schema inputSchema.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Duplicate Tool Names</td>
+            <td>
+              All 9 tool name(s) are unique.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Description Length</td>
+            <td>
+              All 9 tool description(s) are within the 2,000-character limit.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr class="cat-header">
+            <td colspan="5">SCHEMA &nbsp;·&nbsp; 19 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-004</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Return Type Consistency</td>
+            <td>
+              No tools returned comparable JSON responses — consistency check not applicable.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-workers_get_worker</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; description does not mention its parameters (scriptName).</summary>
+                <div class="detail-box">Description: &#39;Get the details of the Cloudflare Worker.&#39;
+Tool has 1 parameter(s) but the description contains no parameter documentation signals.</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Include a brief description of each parameter in the tool&#39;s description so LLMs can construct valid calls. Example: &#39;Accepts: query (string) - the search query.&#39;
+                </div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-workers_get_worker_code</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; description does not mention its parameters (scriptName).</summary>
+                <div class="detail-box">Description: &#39;Get the source code of a Cloudflare Worker. Note: This may be a bundled version of the worker.&#39;
+Tool has 1 parameter(s) but the description contains no parameter documentation signals.</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Include a brief description of each parameter in the tool&#39;s description so LLMs can construct valid calls. Example: &#39;Accepts: query (string) - the search query.&#39;
+                </div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Schema Structural Validity</td>
+            <td>
+              All 9 tool inputSchema(s) are structurally valid.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-002-observability_keys</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Required Enforcement: observability_keys</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_keys&#39; correctly raised an error when called with missing required fields.</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;keysQuery&#34;
+    ],
+    &#34;me</div>
+              </details>
+            </td>
+            <td class="dur">836ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-002-observability_values</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Required Enforcement: observability_values</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_values&#39; correctly raised an error when called with missing required fields.</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_values: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;
+    ],
+   </div>
+              </details>
+            </td>
+            <td class="dur">759ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-002-query_worker_observability</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Required Enforcement: query_worker_observability</td>
+            <td>
+              <details>
+                <summary>Tool &#39;query_worker_observability&#39; correctly raised an error when called with missing required fields.</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+   </div>
+              </details>
+            </td>
+            <td class="dur">738ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-002-search_cloudflare_documentation</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Required Enforcement: search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; correctly raised an error when called with missing required fields.</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ]</div>
+              </details>
+            </td>
+            <td class="dur">1120ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-002-workers_get_worker</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Required Enforcement: workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39; correctly raised an error when called with missing required fields.</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+    &#34;m</div>
+              </details>
+            </td>
+            <td class="dur">812ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-002-workers_get_worker_code</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Required Enforcement: workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39; correctly raised an error when called with missing required fields.</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;scriptName&#34;
+    ],
+ </div>
+              </details>
+            </td>
+            <td class="dur">958ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">additionalProperties Strictness</td>
+            <td>
+              All 9 tool(s) have &#39;additionalProperties&#39;: false.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Overly Permissive Schema Detection</td>
+            <td>
+              All 9 tool schema(s) are acceptably strict.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-accounts_list</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: accounts_list</td>
+            <td>
+              <details>
+                <summary>Tool &#39;accounts_list&#39; has an adequate description (44 chars).</summary>
+                <div class="detail-box">Description: &#39;List all accounts in your Cloudflare account&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-migrate_pages_to_workers_guide</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: migrate_pages_to_workers_guide</td>
+            <td>
+              <details>
+                <summary>Tool &#39;migrate_pages_to_workers_guide&#39; has an adequate description (66 chars).</summary>
+                <div class="detail-box">Description: &#39;ALWAYS read this guide before migrating Pages projects to Workers.&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-observability_keys</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: observability_keys</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_keys&#39; has an adequate description (344 chars).</summary>
+                <div class="detail-box">Description: &#39;Find keys in the Workers Observability Data\n\n## Best Practices\n- Set a high limit (1000+) to ensure you see all available keys\n- Add the $metadata.service filter to narrow results to a specific Worker&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-observability_values</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: observability_values</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_values&#39; has an adequate description (204 chars).</summary>
+                <div class="detail-box">Description: &#39;Find values in the Workers Observability Data.\n\n## Troubleshooting\n- For no results, verify the field exists using observability_keys first\n- If expected values are missing, try broadening your time r&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-query_worker_observability</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: query_worker_observability</td>
+            <td>
+              <details>
+                <summary>Tool &#39;query_worker_observability&#39; has an adequate description (1001 chars).</summary>
+                <div class="detail-box">Description: &#39;Query the Workers Observability API to analyze logs and metrics from your Cloudflare Workers.\n\n\t* A query typical query looks like this:\n\t\t\t\t{&#34;view&#34;:&#34;events&#34;,&#34;queryId&#34;:&#34;workers-logs-events&#34;,&#34;limit&#34;:5,&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-search_cloudflare_documentation</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; has an adequate description (541 chars).</summary>
+                <div class="detail-box">Description: &#39;Search the Cloudflare documentation.\n\n\t\tThis tool should be used to answer any question about Cloudflare products or features, including:\n\t\t- Workers, Pages, R2, Images, Stream, D1, Durable Objects, K&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-workers_list</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: workers_list</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_list&#39; has an adequate description (114 chars).</summary>
+                <div class="detail-box">Description: &#39;List all Workers in your Cloudflare account.\n\nIf you only need details of a single Worker, use workers_get_worker.&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr class="cat-header">
+            <td colspan="5">PERFORMANCE &nbsp;·&nbsp; 17 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-002</td>
+            <td>
+              <span class="sev-pill sev-medium">MEDIUM</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Discovery Latency</td>
+            <td>
+              <details>
+                <summary>list_tools() mean 1041ms — slow discovery [MEDIUM].</summary>
+                <div class="detail-box">{
+  &#34;list_tools&#34;: {
+    &#34;mean_ms&#34;: 1041.32,
+    &#34;min_ms&#34;: 755.49,
+    &#34;max_ms&#34;: 1314.41,
+    &#34;samples&#34;: [
+      755.49,
+      1053.85,
+      1250.45,
+      832.39,
+      1314.41
+    ]
+  }
+}</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Slow tool discovery degrades the LLM&#39;s startup experience. Cache the tool manifest at server startup instead of re-computing it on every list_tools() call.
+                </div>
+              </details>
+            </td>
+            <td class="dur">5207ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T00-003</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Connection Closed Mid-Scan (Rate Limit / Server Reset)</td>
+            <td>
+              <details>
+                <summary>The HTTP server closed the connection mid-scan. This is expected behaviour for production servers that apply rate-limiti…</summary>
+                <div class="detail-box">Unexpected HTTP/SSE transport error: HTTPStatusError: Client error &#39;400 Bad Request&#39; for url &#39;https://observability.mcp.cloudflare.com/mcp&#39;
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400 (caused by ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception))</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Re-run with --no-load to skip T05 load tests and reduce the number of requests sent to the server. The connection drop does not indicate a vulnerability.
+                </div>
+              </details>
+            </td>
+            <td class="dur">325035ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-05</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: query_worker_observability</td>
+            <td>
+              <details>
+                <summary>Tool &#39;query_worker_observability&#39; requires valid credentials or real parameters — latency probe skipped (API rejection, …</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;,
+      &#34;queryId&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;,
+      &#34;parameters&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;query&#34;,
+              &#34;timeframe&#34;
+            ],
+            &#34;message&#34;: &#34;Required&#34;
+          }
+        ],
+        &#34;name&#34;: &#34;ZodError&#34;
+      },
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;query&#34;,
+              &#34;timeframe&#34;
+            ],
+            &#34;message&#34;: &#34;Required&#34;
+          }
+        ],
+        &#34;name&#34;: &#34;ZodError&#34;
+      }
+    ],
+    &#34;path&#34;: [
+      &#34;query&#34;,
+      &#34;timeframe&#34;
+    ],
+    &#34;message&#34;: &#34;Invalid input&#34;
+  }
+]
+McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;,
+      &#34;queryId&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;object&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;,
+      &#34;parameters&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;query&#34;,
+              &#34;timeframe&#34;
+            ],
+            &#34;message&#34;: &#34;Required&#34;
+          }
+        …</div>
+              </details>
+            </td>
+            <td class="dur">4526ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-06</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: observability_keys</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_keys&#39; requires valid credentials or real parameters — latency probe skipped (API rejection, not a se…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;keysQuery&#34;,
+              &#34;timeframe&#34;
+            ],
+            &#34;message&#34;: &#34;Required&#34;
+          }
+        ],
+        &#34;name&#34;: &#34;ZodError&#34;
+      },
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;keysQuery&#34;,
+              &#34;timeframe&#34;
+            ],
+            &#34;message&#34;: &#34;Required&#34;
+          }
+        ],
+        &#34;name&#34;: &#34;ZodError&#34;
+      }
+    ],
+    &#34;path&#34;: [
+      &#34;keysQuery&#34;,
+      &#34;timeframe&#34;
+    ],
+    &#34;message&#34;: &#34;Invalid input&#34;
+  }
+]
+McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;keysQuery&#34;,
+              &#34;timeframe&#34;
+            ],
+            &#34;message&#34;: &#34;Required&#34;
+          }
+        ],
+        &#34;name&#34;: &#34;ZodError&#34;
+      },
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;keysQuery&#34;,
+              &#34;timeframe&#34;
+            ],
+            &#34;message&#34;: &#34;Required&#34;
+          }
+        ],
+        &#34;name&#34;: &#34;ZodError&#34;
+      }
+    ],
+    &#34;path&#34;: [
+      &#34;keysQuery&#34;,
+      &#34;timeframe&#34;
+    ],
+    &#34;message&#34;: &#34;Invalid input&#34;
+  }
+]
+McpError: MCP error -32602: Invalid arguments for tool observability_keys: [
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+         …</div>
+              </details>
+            </td>
+            <td class="dur">4479ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-07</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: observability_values</td>
+            <td>
+              <details>
+                <summary>Tool &#39;observability_values&#39; requires valid credentials or real parameters — latency probe skipped (API rejection, not a …</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool observability_values: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;,
+      &#34;key&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;expected&#34;: &#34;&#39;string&#39; | &#39;boolean&#39; | &#39;number&#39;&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;,
+      &#34;type&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;valuesQuery&#34;,
+              &#34;timeframe&#34;
+            ],
+            &#34;message&#34;: &#34;Required&#34;
+          }
+        ],
+        &#34;name&#34;: &#34;ZodError&#34;
+      },
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;valuesQuery&#34;,
+              &#34;timeframe&#34;
+            ],
+            &#34;message&#34;: &#34;Required&#34;
+          }
+        ],
+        &#34;name&#34;: &#34;ZodError&#34;
+      }
+    ],
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;,
+      &#34;timeframe&#34;
+    ],
+    &#34;message&#34;: &#34;Invalid input&#34;
+  }
+]
+McpError: MCP error -32602: Invalid arguments for tool observability_values: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;,
+      &#34;key&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;expected&#34;: &#34;&#39;string&#39; | &#39;boolean&#39; | &#39;number&#39;&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;path&#34;: [
+      &#34;valuesQuery&#34;,
+      &#34;type&#34;
+    ],
+    &#34;message&#34;: &#34;Required&#34;
+  },
+  {
+    &#34;code&#34;: &#34;invalid_union&#34;,
+    &#34;unionErrors&#34;: [
+      {
+        &#34;issues&#34;: [
+          {
+            &#34;code&#34;: &#34;invalid_type&#34;,
+            &#34;expected&#34;: &#34;object&#34;,
+            &#34;received&#34;: &#34;undefined&#34;,
+            &#34;path&#34;: [
+              &#34;valuesQuery&#34;,
+              &#34;timeframe&#34;
+   …</div>
+              </details>
+            </td>
+            <td class="dur">4367ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-003-00</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Resource Read Latency</td>
+            <td>
+              No resources to benchmark.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T05-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">10 Simultaneous Calls</td>
+            <td>
+              <details>
+                <summary>All 10 concurrent calls to &#39;accounts_list&#39; succeeded with no data leakage.</summary>
+                <div class="detail-box">min=1857ms  mean=2027ms  max=2337ms</div>
+              </details>
+            </td>
+            <td class="dur">2635ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T05-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">50 Sequential Rapid Calls</td>
+            <td>
+              <details>
+                <summary>p50=1375ms  p95=2492ms  p99=3811ms</summary>
+                <div class="detail-box">{
+  &#34;tool&#34;: &#34;accounts_list&#34;,
+  &#34;calls&#34;: 50,
+  &#34;errors&#34;: 0,
+  &#34;min_ms&#34;: 1082.2,
+  &#34;mean_ms&#34;: 1479.17,
+  &#34;max_ms&#34;: 3811.26,
+  &#34;p50_ms&#34;: 1375.39,
+  &#34;p95_ms&#34;: 2492.11,
+  &#34;p99_ms&#34;: 3811.26
+}</div>
+              </details>
+            </td>
+            <td class="dur">73959ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T05-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">100 Concurrent Calls (Stress Test)</td>
+            <td>
+              <details>
+                <summary>All 100 calls succeeded. Throughput: 6.6 calls/sec</summary>
+                <div class="detail-box">Throughput: 6.6 calls/sec</div>
+              </details>
+            </td>
+            <td class="dur">15154ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T05-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Connection Stability Under Rapid Reconnect</td>
+            <td>
+              <details>
+                <summary>Tool list consistent across all 5 reconnects: [&#39;accounts_list&#39;, &#39;migrate_pages_to_workers_guide&#39;, &#39;observability_keys&#39;, …</summary>
+                <div class="detail-box">Reconnects: 5. Tools per connect: 9.</div>
+              </details>
+            </td>
+            <td class="dur">49801ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-01</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: accounts_list</td>
+            <td>
+              <details>
+                <summary>Tool &#39;accounts_list&#39;: mean=1714ms  min=1042ms  max=2294ms (5 samples).</summary>
+                <div class="detail-box">{
+  &#34;accounts_list&#34;: {
+    &#34;mean_ms&#34;: 1714.5,
+    &#34;min_ms&#34;: 1042.12,
+    &#34;max_ms&#34;: 2293.98,
+    &#34;samples&#34;: [
+      1986.45,
+      2150.57,
+      2293.98,
+      1099.38,
+      1042.12
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">8573ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-02</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: workers_list</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_list&#39;: mean=1186ms  min=1037ms  max=1277ms (5 samples).</summary>
+                <div class="detail-box">{
+  &#34;workers_list&#34;: {
+    &#34;mean_ms&#34;: 1186.04,
+    &#34;min_ms&#34;: 1037.4,
+    &#34;max_ms&#34;: 1277.38,
+    &#34;samples&#34;: [
+      1037.4,
+      1204.89,
+      1277.38,
+      1210.02,
+      1200.5
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">5930ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-03</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: workers_get_worker</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker&#39;: mean=1120ms  min=962ms  max=1347ms (5 samples).</summary>
+                <div class="detail-box">{
+  &#34;workers_get_worker&#34;: {
+    &#34;mean_ms&#34;: 1119.76,
+    &#34;min_ms&#34;: 961.67,
+    &#34;max_ms&#34;: 1347.11,
+    &#34;samples&#34;: [
+      1347.11,
+      1107.59,
+      1132.2,
+      1050.23,
+      961.67
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">5599ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-04</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: workers_get_worker_code</td>
+            <td>
+              <details>
+                <summary>Tool &#39;workers_get_worker_code&#39;: mean=1365ms  min=942ms  max=1890ms (5 samples).</summary>
+                <div class="detail-box">{
+  &#34;workers_get_worker_code&#34;: {
+    &#34;mean_ms&#34;: 1364.85,
+    &#34;min_ms&#34;: 941.97,
+    &#34;max_ms&#34;: 1890.08,
+    &#34;samples&#34;: [
+      1603.62,
+      1239.28,
+      1890.08,
+      941.97,
+      1149.28
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">6824ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-08</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39;: mean=2598ms  min=2183ms  max=3333ms (5 samples).</summary>
+                <div class="detail-box">{
+  &#34;search_cloudflare_documentation&#34;: {
+    &#34;mean_ms&#34;: 2598.37,
+    &#34;min_ms&#34;: 2183.18,
+    &#34;max_ms&#34;: 3333.1,
+    &#34;samples&#34;: [
+      3333.1,
+      2183.18,
+      2462.51,
+      2485.64,
+      2527.42
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">12992ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-09</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: migrate_pages_to_workers_guide</td>
+            <td>
+              <details>
+                <summary>Tool &#39;migrate_pages_to_workers_guide&#39;: mean=1056ms  min=911ms  max=1197ms (5 samples).</summary>
+                <div class="detail-box">{
+  &#34;migrate_pages_to_workers_guide&#34;: {
+    &#34;mean_ms&#34;: 1056.14,
+    &#34;min_ms&#34;: 911.47,
+    &#34;max_ms&#34;: 1196.85,
+    &#34;samples&#34;: [
+      1196.85,
+      911.47,
+      999.53,
+      1089.1,
+      1083.74
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">5281ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Cold Start Detection</td>
+            <td>
+              <details>
+                <summary>No significant cold-start penalty detected (ratio 0.7×, threshold 10×).</summary>
+                <div class="detail-box">Call 1 (cold): 963ms
+Calls 2-5 (warm): 1276ms, 1497ms, 1345ms, 1194ms
+Warm mean: 1328ms  Ratio: 0.7×</div>
+              </details>
+            </td>
+            <td class="dur">6275ms</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="page-footer">
+  Generated by <a href="https://github.com/Ravikiranbantwal/mcpsafe">MCPSafe v0.1.0</a>
+  &nbsp;·&nbsp; Scan 470643ac
+  &nbsp;·&nbsp; 2026-04-13 18:32:41 UTC
+  <div style="margin-top:10px;font-size:0.78rem;color:var(--slate);max-width:780px;margin-left:auto;margin-right:auto;line-height:1.5;">
+    ⚠️ <strong>Responsible Use:</strong> MCPSafe is intended for use against MCP servers you own or have explicit written
+    permission to test. Unauthorised scanning of third-party servers may violate computer fraud laws in your jurisdiction.
+    Treat findings as confidential until disclosed to the server operator.
+  </div>
+</footer>
+
+</body>
+</html>

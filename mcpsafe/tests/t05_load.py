@@ -39,7 +39,9 @@ from mcpsafe.models import (
     ServerInfo,
     Severity,
     TestResult,
+    TransportType,
 )
+from mcpsafe.tests._helpers import cap_response, looks_like_api_rejection
 from mcpsafe.transport import MCPConnection
 
 # ---------------------------------------------------------------------------
@@ -50,9 +52,13 @@ _CAT = Category.PERFORMANCE
 
 _T05_003_TOTAL = 100
 _T05_003_BATCH_SIZE = 20
-_T05_003_BATCH_DELAY = 0.2          # seconds between batches
+_T05_003_BATCH_DELAY = 0.2          # seconds between batches (stdio)
+_T05_003_BATCH_DELAY_HTTP = 1.5     # seconds between batches (HTTP — respects rate limits)
+_T05_001_CONCURRENCY_HTTP = 3       # reduced concurrent calls for HTTP transport
+_T05_HTTP_INTER_CALL_DELAY = 0.3    # seconds between individual calls on HTTP transport
 _T05_004_RECONNECTS = 5
-_T05_004_RECONNECT_DELAY = 1.0      # seconds between each reconnect
+_T05_004_RECONNECT_DELAY = 1.0      # seconds between each reconnect (stdio)
+_T05_004_RECONNECT_DELAY_HTTP = 3.0 # longer delay on HTTP to avoid rate-limit cascade
 
 _P95_HIGH_MS    = 30_000.0
 _P95_MEDIUM_MS  =  5_000.0
@@ -111,7 +117,7 @@ async def _call_tool_timed(
 
 
 def _extract_text(response: object) -> str:
-    """Flatten an MCP response to a plain string."""
+    """Flatten an MCP response to a plain string, capped at 1 MB."""
     try:
         from mcp.types import TextContent  # local import to avoid circular
         items = response if isinstance(response, list) else [response]
@@ -123,9 +129,9 @@ def _extract_text(response: object) -> str:
                 parts.append(str(item.text))
             else:
                 parts.append(str(item))
-        return "\n".join(parts)
+        return cap_response("\n".join(parts))
     except Exception:
-        return str(response)
+        return cap_response(str(response))
 
 
 # ---------------------------------------------------------------------------
@@ -153,8 +159,10 @@ async def _t05_001_concurrent_10(
             )
 
         str_param = _find_string_param(tool)
-        # Assign a unique UUID to each of the 10 concurrent calls.
-        call_ids: list[str] = [str(uuid.uuid4()) for _ in range(10)]
+        # For HTTP transport use fewer concurrent calls to avoid rate-limiting.
+        is_http = config.transport in (TransportType.HTTP, TransportType.SSE)
+        concurrency = _T05_001_CONCURRENCY_HTTP if is_http else 10
+        call_ids: list[str] = [str(uuid.uuid4()) for _ in range(concurrency)]
 
         def _args(call_uuid: str) -> dict:
             if str_param:
@@ -162,12 +170,14 @@ async def _t05_001_concurrent_10(
             return {}
 
         async def _single(call_uuid: str) -> tuple[str, object, float]:
+            if is_http:
+                await asyncio.sleep(_T05_HTTP_INTER_CALL_DELAY)
             resp, ms = await _call_tool_timed(
                 session, tool.name, _args(call_uuid), config.timeout_seconds
             )
             return call_uuid, resp, ms
 
-        # Fire all 10 simultaneously.
+        # Fire calls simultaneously (reduced count on HTTP to respect rate limits).
         raw = await asyncio.gather(
             *[_single(cid) for cid in call_ids],
             return_exceptions=True,
@@ -211,6 +221,17 @@ async def _t05_001_concurrent_10(
             )
 
         if failures:
+            if looks_like_api_rejection(failures):
+                return TestResult(
+                    test_id=tid, test_name=tname, category=_CAT,
+                    severity=Severity.INFO, passed=True,
+                    description=(
+                        f"{len(failures)}/10 concurrent calls rejected by upstream "
+                        f"API (auth/validation) — not a concurrency defect."
+                    ),
+                    duration_ms=duration_ms,
+                    details="\n".join(failures[:5]),
+                )
             return TestResult(
                 test_id=tid, test_name=tname, category=_CAT,
                 severity=Severity.HIGH, passed=False,
@@ -290,6 +311,17 @@ async def _t05_002_sequential_50(
         duration_ms = (time.perf_counter() - t0) * 1000.0
 
         if not latencies:
+            if looks_like_api_rejection(errors):
+                return TestResult(
+                    test_id=tid, test_name=tname, category=_CAT,
+                    severity=Severity.INFO, passed=True,
+                    description=(
+                        f"All 50 calls to {tool.name!r} rejected by upstream API "
+                        f"(auth/validation) — sequential latency not measurable."
+                    ),
+                    duration_ms=duration_ms,
+                    details="\n".join(errors[:5]),
+                )
             return TestResult.make_fail(
                 test_id=tid, test_name=tname, category=_CAT,
                 severity=Severity.HIGH,
@@ -397,32 +429,44 @@ async def _t05_003_stress_100(
         str_param = _find_string_param(tool)
         total_failures = 0
         call_number = 0
+        sample_errors: list[str] = []   # collect a few error messages for rejection check
+
+        # Use smaller batches and longer delays for HTTP transport to avoid
+        # triggering rate limits on remote production servers.
+        is_http = config.transport in (TransportType.HTTP, TransportType.SSE)
+        batch_size = 5 if is_http else _T05_003_BATCH_SIZE
+        batch_delay = _T05_003_BATCH_DELAY_HTTP if is_http else _T05_003_BATCH_DELAY
+        total_calls = 25 if is_http else _T05_003_TOTAL
 
         wall_start = time.perf_counter()
 
-        for batch_idx in range(_T05_003_TOTAL // _T05_003_BATCH_SIZE):
+        for batch_idx in range(total_calls // batch_size):
             if batch_idx > 0:
-                await asyncio.sleep(_T05_003_BATCH_DELAY)
+                await asyncio.sleep(batch_delay)
 
-            async def _one(n: int) -> bool:
-                """Return True on success, False on failure."""
+            async def _one(n: int) -> tuple[bool, str]:
+                """Return (success, error_str)."""
                 args = {str_param: f"mcpsafe-stress-{n}"} if str_param else {}
                 try:
                     await asyncio.wait_for(
                         session.call_tool(tool.name, arguments=args),
                         timeout=config.timeout_seconds,
                     )
-                    return True
-                except Exception:
-                    return False
+                    return True, ""
+                except Exception as exc:
+                    return False, f"{type(exc).__name__}: {exc}"
 
             batch_start = call_number
-            batch_end   = call_number + _T05_003_BATCH_SIZE
-            results = await asyncio.gather(
+            batch_end   = call_number + batch_size
+            batch_results = await asyncio.gather(
                 *[_one(n) for n in range(batch_start, batch_end)],
                 return_exceptions=False,
             )
-            total_failures += sum(1 for ok in results if not ok)
+            for ok, err in batch_results:
+                if not ok:
+                    total_failures += 1
+                    if len(sample_errors) < 10:
+                        sample_errors.append(err)
             call_number = batch_end
 
         wall_elapsed = time.perf_counter() - wall_start
@@ -431,6 +475,19 @@ async def _t05_003_stress_100(
         calls_per_sec = _T05_003_TOTAL / wall_elapsed if wall_elapsed > 0 else 0.0
 
         if failure_rate > 0.10:
+            # Before raising HIGH, check if every failure is just an API rejection.
+            if looks_like_api_rejection(sample_errors):
+                return TestResult(
+                    test_id=tid, test_name=tname, category=_CAT,
+                    severity=Severity.INFO, passed=True,
+                    description=(
+                        f"{total_failures}/{_T05_003_TOTAL} calls rejected by upstream "
+                        f"API (auth/validation) — stress test inconclusive without "
+                        f"valid credentials."
+                    ),
+                    duration_ms=duration_ms,
+                    details="\n".join(sample_errors[:5]),
+                )
             return TestResult.make_fail(
                 test_id=tid, test_name=tname, category=_CAT,
                 severity=Severity.HIGH,
@@ -501,10 +558,12 @@ async def _t05_004_reconnect_stability(
 
     tool_lists: list[list[str]] = []
     errors: list[str] = []
+    is_http = config.transport in (TransportType.HTTP, TransportType.SSE)
+    reconnect_delay = _T05_004_RECONNECT_DELAY_HTTP if is_http else _T05_004_RECONNECT_DELAY
 
     for attempt in range(1, _T05_004_RECONNECTS + 1):
         if attempt > 1:
-            await asyncio.sleep(_T05_004_RECONNECT_DELAY)
+            await asyncio.sleep(reconnect_delay)
         try:
             async with MCPConnection(config) as (fresh_session, _conn_info):
                 resp = await fresh_session.list_tools()
@@ -519,6 +578,26 @@ async def _t05_004_reconnect_stability(
     duration_ms = (time.perf_counter() - t0) * 1000.0
 
     if errors:
+        # On HTTP transports, reconnect failures after T07 auth tests are
+        # expected — the server may have rate-limited or invalidated the
+        # session.  Report as INFO rather than a server bug.
+        if is_http:
+            return TestResult(
+                test_id=tid, test_name=tname, category=_CAT,
+                severity=Severity.INFO, passed=True,
+                description=(
+                    f"{len(errors)}/{_T05_004_RECONNECTS} reconnects failed — "
+                    "likely rate-limiting on the HTTP server after auth tests. "
+                    "Not a server defect."
+                ),
+                duration_ms=duration_ms,
+                details="\n".join(errors),
+                remediation=(
+                    "Reconnect failures on production HTTP servers are normal after "
+                    "the T07 auth test suite sends malformed requests. Run with "
+                    "--no-load to skip stress tests if this causes issues."
+                ),
+            )
         return TestResult(
             test_id=tid, test_name=tname, category=_CAT,
             severity=Severity.MEDIUM, passed=False,

@@ -1,0 +1,2997 @@
+{
+  "scan_id": "470643ac-2be7-4178-bf34-e4a599c170f4",
+  "mcpsafe_version": "0.1.0",
+  "started_at": "2026-04-13T18:32:41.746283+00:00",
+  "finished_at": "2026-04-13T18:38:06.785286+00:00",
+  "server_info": {
+    "name": "unknown",
+    "version": "unknown",
+    "protocol_version": "unknown",
+    "transport": "http",
+    "target": "https://observability.mcp.cloudflare.com/mcp",
+    "tools": [
+      {
+        "name": "accounts_list",
+        "description": "List all accounts in your Cloudflare account",
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      {
+        "name": "workers_list",
+        "description": "List all Workers in your Cloudflare account.\n\nIf you only need details of a single Worker, use workers_get_worker.",
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      {
+        "name": "workers_get_worker",
+        "description": "Get the details of the Cloudflare Worker.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "scriptName": {
+              "type": "string",
+              "description": "The name of the worker script to retrieve"
+            }
+          },
+          "required": [
+            "scriptName"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      {
+        "name": "workers_get_worker_code",
+        "description": "Get the source code of a Cloudflare Worker. Note: This may be a bundled version of the worker.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "scriptName": {
+              "type": "string",
+              "description": "The name of the worker script to retrieve"
+            }
+          },
+          "required": [
+            "scriptName"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      {
+        "name": "query_worker_observability",
+        "description": "Query the Workers Observability API to analyze logs and metrics from your Cloudflare Workers.\n\n\t* A query typical query looks like this:\n\t\t\t\t{\"view\":\"events\",\"queryId\":\"workers-logs-events\",\"limit\":5,\"dry\":true,\"parameters\":{\"datasets\":[\"cloudflare-workers\"],\"filters\":[{\"id\":\"520\",\"key\":\"message\",\"operation\":\"eq\",\"type\":\"string\",\"value\":\"Clickhouse Statistics\"},{\"id\":\"2088\",\"key\":\"statistics.elapsed\",\"operation\":\"gt\",\"type\":\"number\",\"value\":\"0.269481519\"}],\"calculations\":[],\"groupBys\":[],\"havings\":[]},\"timeframe\":{\"to\":\"2025-04-30T20:53:15Z\",\"from\":\" \"\"2025-04-30T19:53:15Z\"}}\n## Core Capabilities\nThis tool provides three primary views of your Worker data:\n1. **List Events** - Browse individual request logs and errors\n2. **Calculate Metrics** - Compute statistics across requests (avg, p99, etc.)\n3. **Find Specific Invocations** - Locate individual requests matching criteria\n\n## Filtering Best Practices\n- Before applying filters, use the observability_keys and observability_values tools …",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "object",
+              "properties": {
+                "queryId": {
+                  "type": "string"
+                },
+                "view": {
+                  "type": "string",
+                  "enum": [
+                    "events",
+                    "calculations",
+                    "invocations"
+                  ],
+                  "default": "calculations",
+                  "description": "## Examples by View Type\n\t\t### Events View\n\t\t- \"Show me all errors for the worker api-proxy in the last 30 minutes\"\n\t\t- \"Show events from worker auth-service where the path contains /login\"\n\n\t\t### Calculation View\n\t\t- \"What is the p99 of wall time for worker api-proxy?\"\n\t\t- \"What's the count of requests by status code for worker cdn-router?\"\n\n\t\t### Invocation View\n\t\t- \"Find a request to worker api-proxy that resulted in a 500 error\"\n\t\t- \"List successful requests for the image-resizer worker with status code 200\"\n\t\t\t\t"
+                },
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "datasets": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Leave this empty to use the default datasets"
+                    },
+                    "filters": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "description": "Filter field name. IMPORTANT:\n\n    • DO NOT guess keys - always use verified keys from either:\n      - Previous query results\n      - The observability_keys response\n\n    • PREFERRED KEYS (faster & always available):\n      - $metadata.service: Worker service name\n\t\t\t- $metadata.origin: Trigger type (e.g., fetch, scheduled, etc.)\n\t\t\t- $metadata.trigger: Trigger type (e.g., GET /users, POST /orders, etc.)\n      - $metadata.message: Log message text (present in nearly all logs)\n      - $metadata.error: Error message (when applicable)\n"
+                          },
+                          "operation": {
+                            "type": "string",
+                            "enum": [
+                              "includes",
+                              "not_includes",
+                              "starts_with",
+                              "regex",
+                              "exists",
+                              "is_null",
+                              "in",
+                              "not_in",
+                              "eq",
+                              "neq",
+                              "gt",
+                              "gte",
+                              "lt",
+                              "lte"
+                            ]
+                          },
+                          "value": {
+                            "type": [
+                              "string",
+                              "number",
+                              "boolean"
+                            ],
+                            "description": "Filter comparison value. IMPORTANT:\n\n    • MUST match actual values in your logs\n    • VERIFY using either:\n      - Actual values from previous query results\n      - The '/values' endpoint with your selected key\n\n    • TYPE MATCHING:\n      - Ensure value type (string/number/boolean) matches the field type\n      - String comparisons are case-sensitive unless using specific operations\n\n    • PATTERN USAGE:\n      - For 'contains', use simple wildcard patterns\n      - For 'regex', MUST use ClickHouse regex syntax:\n        - Uses RE2 syntax (not PCRE/JavaScript)\n        - No lookaheads/lookbehinds\n        - Examples: '^5\\d{2}$' for HTTP 5xx codes, '\\bERROR\\b' for word boundary\n        - Escape backslashes with double backslash"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "string",
+                              "number",
+                              "boolean"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "operation",
+                          "type"
+                        ],
+                        "additionalProperties": false,
+                        "description": "\n\t## Filtering Best Practices\n- Before applying filters, use the observability_keys and observability_values queries to confirm available filter fields and values.\n- If the query is asking to find something you should check that it exists. I.e. to requests with errors filter for $metadata.error exists.\n\t"
+                      }
+                    },
+                    "filterCombination": {
+                      "type": "string",
+                      "enum": [
+                        "and",
+                        "or",
+                        "AND",
+                        "OR"
+                      ]
+                    },
+                    "calculations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "description": "The key to use for the calculation. This key must exist in the logs.\nUse the Keys endpoint to confirm that this key exists\n\n• DO NOT guess keys - always use verified keys from either:\n- Previous query results\n- The observability_keys response"
+                          },
+                          "keyType": {
+                            "type": "string",
+                            "enum": [
+                              "string",
+                              "number",
+                              "boolean"
+                            ]
+                          },
+                          "operator": {
+                            "type": "string",
+                            "enum": [
+                              "uniq",
+                              "count",
+                              "max",
+                              "min",
+                              "sum",
+                              "avg",
+                              "median",
+                              "p001",
+                              "p01",
+                              "p05",
+                              "p10",
+                              "p25",
+                              "p75",
+                              "p90",
+                              "p95",
+                              "p99",
+                              "p999",
+                              "stddev",
+                              "variance"
+                            ]
+                          },
+                          "alias": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "operator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "groupBys": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "string",
+                              "number",
+                              "boolean"
+                            ]
+                          },
+                          "value": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Only valid when doing a Calculation"
+                    },
+                    "orderBy": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "string",
+                          "description": "This must be the alias of a calculation"
+                        },
+                        "order": {
+                          "type": "string",
+                          "enum": [
+                            "asc",
+                            "desc"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Order By only workers when a group by is present"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 2000,
+                      "description": "Use this limit when view is calculation and a group by is present. 10 is a sensible default"
+                    },
+                    "needle": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "$ref": "#/properties/query/properties/parameters/properties/filters/items/properties/value"
+                        },
+                        "isRegex": {
+                          "type": "boolean"
+                        },
+                        "matchCase": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "timeframe": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "to": {
+                          "type": "string"
+                        },
+                        "from": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "to",
+                        "from"
+                      ],
+                      "additionalProperties": false,
+                      "description": "An absolute timeframe for your query (ISO-8601 format).\n\n  • Current server time: 1970-01-01T00:00:00Z\n  • Default: Last hour from current time\n  • Maximum range: Last 7 days\n  • Format: \"YYYY-MM-DDTHH:MM:SSZ\" (e.g., \"2025-04-29T14:30:00Z\")\n\n  Examples:\n  - Between April 1st and 5th: from=\"2025-04-01T00:00:00Z\", to=\"2025-04-05T23:59:59Z\"\n\n  Note: Narrower timeframes provide faster responses and more specific results.\n  Omit this parameter entirely to use the default (last hour)."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "reference": {
+                          "type": "string"
+                        },
+                        "offset": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "reference",
+                        "offset"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Relative timeframe for your query, composed of a reference time and an offset.\n\n  • Current server time: 1970-01-01T00:00:00Z\n  • Default: Last hour from current time\n  • Maximum range: Last 7 days\n  • Reference time format: \"YYYY-MM-DDTHH:MM:SSZ\" (ISO-8601) (e.g., \"2025-04-29T14:30:00Z\")\n  • Offset format: Must start with a '+' or '-' sign, which indicates whether the offset is in the past or future, followed by one or more time units (e.g., '+5d', '-2h', '+6h20m').\n\t\tUnits: s (seconds), m (minutes), h (hours), d (days), w (weeks).\n\t• You should not use a future looking offset in combination with the current server time as the reference time, as this will yield no results. (e.g. \"the next 20 minutes\")\n\n  Examples:\n  - Last 30 minutes: reference=\"1970-01-01T00:00:00Z\", offset=\"-30m\"\n  - Yesterday: reference=\"1970-01-01T00:00:00Z\", offset=\"-1d\"\n\n  Note: Narrower timeframes provide faster responses and more specific results.\n  Omit this parameter entirely to use the default (last hour)."
+                    }
+                  ],
+                  "description": "Timeframe for your query, which can be either absolute or relative.\n\n  • Absolute timeframe: Specify exact start and end times in ISO-8601 format (e.g., \"2025-04-29T14:30:00Z\").\n  • Relative timeframe: Specify a reference time and an offset (e.g., reference=\"2025-04-29T14:30:00Z\", offset=\"-30m\").\n\n  Examples:\n  - Absolute: from=\"2025-04-01T00:00:00Z\", to=\"2025-04-05T23:59:59Z\"\n  - Relative: reference=\"2025-04-29T14:30:00Z\", offset=\"-30m\"\n\n  Note: Narrower timeframes provide faster responses and more specific results."
+                },
+                "granularity": {
+                  "type": "number",
+                  "description": "This is only used when the view is calculations - by leaving it empty workers observability will detect the correct granularity"
+                },
+                "limit": {
+                  "type": "number",
+                  "maximum": 2000,
+                  "default": 5,
+                  "description": "Use this limit to limit the number of events returned when the view is events. 5 is a sensible default"
+                },
+                "dry": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "offset": {
+                  "type": "string",
+                  "description": "The offset to use for pagination. Use the $metadata.id field to get the next offset."
+                },
+                "offsetBy": {
+                  "type": "number"
+                },
+                "offsetDirection": {
+                  "type": "string",
+                  "description": "The direction to use for pagination. Use \"next\" or \"prev\"."
+                }
+              },
+              "required": [
+                "queryId",
+                "parameters",
+                "timeframe"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      {
+        "name": "observability_keys",
+        "description": "Find keys in the Workers Observability Data\n\n## Best Practices\n- Set a high limit (1000+) to ensure you see all available keys\n- Add the $metadata.service filter to narrow results to a specific Worker\n\n## Troubleshooting\n- If expected fields are missing, verify the Worker is actively logging\n- For empty results, try broadening your time range\n",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "keysQuery": {
+              "type": "object",
+              "properties": {
+                "timeframe": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "to": {
+                          "type": "string"
+                        },
+                        "from": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "to",
+                        "from"
+                      ],
+                      "additionalProperties": false,
+                      "description": "An absolute timeframe for your query (ISO-8601 format).\n\n  • Current server time: 1970-01-01T00:00:00Z\n  • Default: Last hour from current time\n  • Maximum range: Last 7 days\n  • Format: \"YYYY-MM-DDTHH:MM:SSZ\" (e.g., \"2025-04-29T14:30:00Z\")\n\n  Examples:\n  - Between April 1st and 5th: from=\"2025-04-01T00:00:00Z\", to=\"2025-04-05T23:59:59Z\"\n\n  Note: Narrower timeframes provide faster responses and more specific results.\n  Omit this parameter entirely to use the default (last hour)."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "reference": {
+                          "type": "string"
+                        },
+                        "offset": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "reference",
+                        "offset"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Relative timeframe for your query, composed of a reference time and an offset.\n\n  • Current server time: 1970-01-01T00:00:00Z\n  • Default: Last hour from current time\n  • Maximum range: Last 7 days\n  • Reference time format: \"YYYY-MM-DDTHH:MM:SSZ\" (ISO-8601) (e.g., \"2025-04-29T14:30:00Z\")\n  • Offset format: Must start with a '+' or '-' sign, which indicates whether the offset is in the past or future, followed by one or more time units (e.g., '+5d', '-2h', '+6h20m').\n\t\tUnits: s (seconds), m (minutes), h (hours), d (days), w (weeks).\n\t• You should not use a future looking offset in combination with the current server time as the reference time, as this will yield no results. (e.g. \"the next 20 minutes\")\n\n  Examples:\n  - Last 30 minutes: reference=\"1970-01-01T00:00:00Z\", offset=\"-30m\"\n  - Yesterday: reference=\"1970-01-01T00:00:00Z\", offset=\"-1d\"\n\n  Note: Narrower timeframes provide faster responses and more specific results.\n  Omit this parameter entirely to use the default (last hour)."
+                    }
+                  ],
+                  "description": "Timeframe for your query, which can be either absolute or relative.\n\n  • Absolute timeframe: Specify exact start and end times in ISO-8601 format (e.g., \"2025-04-29T14:30:00Z\").\n  • Relative timeframe: Specify a reference time and an offset (e.g., reference=\"2025-04-29T14:30:00Z\", offset=\"-30m\").\n\n  Examples:\n  - Absolute: from=\"2025-04-01T00:00:00Z\", to=\"2025-04-05T23:59:59Z\"\n  - Relative: reference=\"2025-04-29T14:30:00Z\", offset=\"-30m\"\n\n  Note: Narrower timeframes provide faster responses and more specific results."
+                },
+                "datasets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": [],
+                  "description": "Leave this empty to use the default datasets"
+                },
+                "filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                        "description": "Filter field name. IMPORTANT:\n\n    • DO NOT guess keys - always use verified keys from either:\n      - Previous query results\n      - The observability_keys response\n\n    • PREFERRED KEYS (faster & always available):\n      - $metadata.service: Worker service name\n\t\t\t- $metadata.origin: Trigger type (e.g., fetch, scheduled, etc.)\n\t\t\t- $metadata.trigger: Trigger type (e.g., GET /users, POST /orders, etc.)\n      - $metadata.message: Log message text (present in nearly all logs)\n      - $metadata.error: Error message (when applicable)\n"
+                      },
+                      "operation": {
+                        "type": "string",
+                        "enum": [
+                          "includes",
+                          "not_includes",
+                          "starts_with",
+                          "regex",
+                          "exists",
+                          "is_null",
+                          "in",
+                          "not_in",
+                          "eq",
+                          "neq",
+                          "gt",
+                          "gte",
+                          "lt",
+                          "lte"
+                        ]
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean"
+                        ],
+                        "description": "Filter comparison value. IMPORTANT:\n\n    • MUST match actual values in your logs\n    • VERIFY using either:\n      - Actual values from previous query results\n      - The '/values' endpoint with your selected key\n\n    • TYPE MATCHING:\n      - Ensure value type (string/number/boolean) matches the field type\n      - String comparisons are case-sensitive unless using specific operations\n\n    • PATTERN USAGE:\n      - For 'contains', use simple wildcard patterns\n      - For 'regex', MUST use ClickHouse regex syntax:\n        - Uses RE2 syntax (not PCRE/JavaScript)\n        - No lookaheads/lookbehinds\n        - Examples: '^5\\d{2}$' for HTTP 5xx codes, '\\bERROR\\b' for word boundary\n        - Escape backslashes with double backslash"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "string",
+                          "number",
+                          "boolean"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "operation",
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "\n\t## Filtering Best Practices\n- Before applying filters, use the observability_keys and observability_values queries to confirm available filter fields and values.\n- If the query is asking to find something you should check that it exists. I.e. to requests with errors filter for $metadata.error exists.\n\t"
+                  },
+                  "default": []
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "\n    • ADVANCED USAGE:\n      set limit=1000+ to retrieve comprehensive key options without needing additional filtering"
+                },
+                "needle": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "$ref": "#/properties/keysQuery/properties/filters/items/properties/value"
+                    },
+                    "isRegex": {
+                      "type": "boolean"
+                    },
+                    "matchCase": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                "keyNeedle": {
+                  "$ref": "#/properties/keysQuery/properties/needle",
+                  "description": "If the user makes a suggestion for a key, use this to narrow down the list of keys returned.\n\t\tMake sure match case is fals to avoid case sensitivity issues."
+                }
+              },
+              "required": [
+                "timeframe"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "keysQuery"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      {
+        "name": "observability_values",
+        "description": "Find values in the Workers Observability Data.\n\n## Troubleshooting\n- For no results, verify the field exists using observability_keys first\n- If expected values are missing, try broadening your time range",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "valuesQuery": {
+              "type": "object",
+              "properties": {
+                "timeframe": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "to": {
+                          "type": "string"
+                        },
+                        "from": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "to",
+                        "from"
+                      ],
+                      "additionalProperties": false,
+                      "description": "An absolute timeframe for your query (ISO-8601 format).\n\n  • Current server time: 1970-01-01T00:00:00Z\n  • Default: Last hour from current time\n  • Maximum range: Last 7 days\n  • Format: \"YYYY-MM-DDTHH:MM:SSZ\" (e.g., \"2025-04-29T14:30:00Z\")\n\n  Examples:\n  - Between April 1st and 5th: from=\"2025-04-01T00:00:00Z\", to=\"2025-04-05T23:59:59Z\"\n\n  Note: Narrower timeframes provide faster responses and more specific results.\n  Omit this parameter entirely to use the default (last hour)."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "reference": {
+                          "type": "string"
+                        },
+                        "offset": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "reference",
+                        "offset"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Relative timeframe for your query, composed of a reference time and an offset.\n\n  • Current server time: 1970-01-01T00:00:00Z\n  • Default: Last hour from current time\n  • Maximum range: Last 7 days\n  • Reference time format: \"YYYY-MM-DDTHH:MM:SSZ\" (ISO-8601) (e.g., \"2025-04-29T14:30:00Z\")\n  • Offset format: Must start with a '+' or '-' sign, which indicates whether the offset is in the past or future, followed by one or more time units (e.g., '+5d', '-2h', '+6h20m').\n\t\tUnits: s (seconds), m (minutes), h (hours), d (days), w (weeks).\n\t• You should not use a future looking offset in combination with the current server time as the reference time, as this will yield no results. (e.g. \"the next 20 minutes\")\n\n  Examples:\n  - Last 30 minutes: reference=\"1970-01-01T00:00:00Z\", offset=\"-30m\"\n  - Yesterday: reference=\"1970-01-01T00:00:00Z\", offset=\"-1d\"\n\n  Note: Narrower timeframes provide faster responses and more specific results.\n  Omit this parameter entirely to use the default (last hour)."
+                    }
+                  ],
+                  "description": "Timeframe for your query, which can be either absolute or relative.\n\n  • Absolute timeframe: Specify exact start and end times in ISO-8601 format (e.g., \"2025-04-29T14:30:00Z\").\n  • Relative timeframe: Specify a reference time and an offset (e.g., reference=\"2025-04-29T14:30:00Z\", offset=\"-30m\").\n\n  Examples:\n  - Absolute: from=\"2025-04-01T00:00:00Z\", to=\"2025-04-05T23:59:59Z\"\n  - Relative: reference=\"2025-04-29T14:30:00Z\", offset=\"-30m\"\n\n  Note: Narrower timeframes provide faster responses and more specific results."
+                },
+                "key": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "string",
+                    "boolean",
+                    "number"
+                  ]
+                },
+                "datasets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": [],
+                  "description": "Leave this empty to use the default datasets"
+                },
+                "filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                        "description": "Filter field name. IMPORTANT:\n\n    • DO NOT guess keys - always use verified keys from either:\n      - Previous query results\n      - The observability_keys response\n\n    • PREFERRED KEYS (faster & always available):\n      - $metadata.service: Worker service name\n\t\t\t- $metadata.origin: Trigger type (e.g., fetch, scheduled, etc.)\n\t\t\t- $metadata.trigger: Trigger type (e.g., GET /users, POST /orders, etc.)\n      - $metadata.message: Log message text (present in nearly all logs)\n      - $metadata.error: Error message (when applicable)\n"
+                      },
+                      "operation": {
+                        "type": "string",
+                        "enum": [
+                          "includes",
+                          "not_includes",
+                          "starts_with",
+                          "regex",
+                          "exists",
+                          "is_null",
+                          "in",
+                          "not_in",
+                          "eq",
+                          "neq",
+                          "gt",
+                          "gte",
+                          "lt",
+                          "lte"
+                        ]
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean"
+                        ],
+                        "description": "Filter comparison value. IMPORTANT:\n\n    • MUST match actual values in your logs\n    • VERIFY using either:\n      - Actual values from previous query results\n      - The '/values' endpoint with your selected key\n\n    • TYPE MATCHING:\n      - Ensure value type (string/number/boolean) matches the field type\n      - String comparisons are case-sensitive unless using specific operations\n\n    • PATTERN USAGE:\n      - For 'contains', use simple wildcard patterns\n      - For 'regex', MUST use ClickHouse regex syntax:\n        - Uses RE2 syntax (not PCRE/JavaScript)\n        - No lookaheads/lookbehinds\n        - Examples: '^5\\d{2}$' for HTTP 5xx codes, '\\bERROR\\b' for word boundary\n        - Escape backslashes with double backslash"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "string",
+                          "number",
+                          "boolean"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "operation",
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "\n\t## Filtering Best Practices\n- Before applying filters, use the observability_keys and observability_values queries to confirm available filter fields and values.\n- If the query is asking to find something you should check that it exists. I.e. to requests with errors filter for $metadata.error exists.\n\t"
+                  },
+                  "default": []
+                },
+                "limit": {
+                  "type": "number",
+                  "default": 50
+                },
+                "needle": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "$ref": "#/properties/valuesQuery/properties/filters/items/properties/value"
+                    },
+                    "isRegex": {
+                      "type": "boolean"
+                    },
+                    "matchCase": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "timeframe",
+                "key",
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "valuesQuery"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      {
+        "name": "search_cloudflare_documentation",
+        "description": "Search the Cloudflare documentation.\n\n\t\tThis tool should be used to answer any question about Cloudflare products or features, including:\n\t\t- Workers, Pages, R2, Images, Stream, D1, Durable Objects, KV, Workflows, Hyperdrive, Queues\n\t\t- AI Search, Workers AI, Vectorize, AI Gateway, Browser Rendering\n\t\t- Zero Trust, Access, Tunnel, Gateway, Browser Isolation, WARP, DDOS, Magic Transit, Magic WAN\n\t\t- CDN, Cache, DNS, Zaraz, Argo, Rulesets, Terraform, Account and Billing\n\n\t\tResults are returned as semantically similar chunks to the query.\n\t\t",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      {
+        "name": "migrate_pages_to_workers_guide",
+        "description": "ALWAYS read this guide before migrating Pages projects to Workers.",
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      }
+    ],
+    "resources": [],
+    "prompts": [
+      {
+        "name": "workers-prompt-full",
+        "description": "Detailed prompt for generating Cloudflare Workers code (and other developer platform products) from https://developers.cloudflare.com/workers/prompt.txt",
+        "arguments": []
+      }
+    ],
+    "capabilities": {},
+    "discovered_at": "2026-04-13T18:32:52.008442+00:00"
+  },
+  "summary": {
+    "total_tests": 151,
+    "passed": 147,
+    "failed": 4,
+    "critical": 0,
+    "high": 0,
+    "medium": 2,
+    "low": 1,
+    "overall_severity": "MEDIUM",
+    "duration_ms": 703420.39
+  },
+  "results": [
+    {
+      "test_id": "T01-001",
+      "test_name": "Server Identity",
+      "category": "DISCOVERY",
+      "severity": "INFO",
+      "passed": false,
+      "description": "Server did not advertise: name, version. Got name='unknown' version='unknown' protocol='unknown'.",
+      "details": null,
+      "duration_ms": 0.0035999983083456755,
+      "remediation": "Ensure the MCP server returns a populated 'serverInfo' object in its initialize response (name and version fields).",
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.017641+00:00",
+      "result_id": "3b4fcbad-1e27-46a0-9a81-4e4a8f00b1d5"
+    },
+    {
+      "test_id": "T01-002",
+      "test_name": "Tool Enumeration",
+      "category": "DISCOVERY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Discovered 9 tool(s): accounts_list, workers_list, workers_get_worker, workers_get_worker_code, query_worker_observability, observability_keys, observability_values, search_cloudflare_documentation, migrate_pages_to_workers_guide.",
+      "details": "accounts_list: 'List all accounts in your Cloudflare account'\nworkers_list: 'List all Workers in your Cloudflare account.\\n\\nIf you only need details of a sing'\nworkers_get_worker: 'Get the details of the Cloudflare Worker.'\nworkers_get_worker_code: 'Get the source code of a Cloudflare Worker. Note: This may be a bundled version '\nquery_worker_observability: 'Query the Workers Observability API to analyze logs and metrics from your Cloudf'\nobservability_keys: 'Find keys in the Workers Observability Data\\n\\n## Best Practices\\n- Set a high limi'\nobservability_values: 'Find values in the Workers Observability Data.\\n\\n## Troubleshooting\\n- For no resu'\nsearch_cloudflare_documentation: 'Search the Cloudflare documentation.\\n\\n\\t\\tThis tool should be used to answer any q'\nmigrate_pages_to_workers_guide: 'ALWAYS read this guide before migrating Pages projects to Workers.'",
+      "duration_ms": 0.0012999989849049598,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.017641+00:00",
+      "result_id": "4cf56309-7aa4-4da8-86b8-a007062201b2"
+    },
+    {
+      "test_id": "T01-003",
+      "test_name": "Resource Enumeration",
+      "category": "DISCOVERY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Discovered 0 resource(s).",
+      "details": null,
+      "duration_ms": 0.0010000003385357559,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.017641+00:00",
+      "result_id": "0d792a52-60ab-418b-a0e2-0c3ea9ea51cb"
+    },
+    {
+      "test_id": "T01-004",
+      "test_name": "Prompt Enumeration",
+      "category": "DISCOVERY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Discovered 1 prompt(s): workers-prompt-full.",
+      "details": "workers-prompt-full: 'Detailed prompt for generating Cloudflare Workers code (and other developer plat' (0 arg(s))",
+      "duration_ms": 0.0005000001692678779,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.017641+00:00",
+      "result_id": "a6a54f9f-1a02-4584-97c2-e356009f7880"
+    },
+    {
+      "test_id": "T01-005",
+      "test_name": "Tool Description Completeness",
+      "category": "DISCOVERY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 9 tool(s) have non-empty descriptions.",
+      "details": null,
+      "duration_ms": 0.005199999577598646,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.017641+00:00",
+      "result_id": "12a672c8-ba25-45b6-bfa4-7b5016ed2649"
+    },
+    {
+      "test_id": "T01-006",
+      "test_name": "Tool Schema Validity",
+      "category": "DISCOVERY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 9 tool(s) have valid JSON Schema inputSchema.",
+      "details": null,
+      "duration_ms": 0.016600002709310502,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.017641+00:00",
+      "result_id": "799b62c3-6b94-4845-9fa9-a07ee3b0cfc0"
+    },
+    {
+      "test_id": "T01-007",
+      "test_name": "Duplicate Tool Names",
+      "category": "DISCOVERY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 9 tool name(s) are unique.",
+      "details": null,
+      "duration_ms": 0.00960000033956021,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.017641+00:00",
+      "result_id": "cb1b38f2-75cf-4039-b030-eb459a73b596"
+    },
+    {
+      "test_id": "T01-008",
+      "test_name": "Tool Description Length",
+      "category": "DISCOVERY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 9 tool description(s) are within the 2,000-character limit.",
+      "details": null,
+      "duration_ms": 0.00419999923906289,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.018638+00:00",
+      "result_id": "fd292706-c822-464c-8e34-e2d0f55f5f2e"
+    },
+    {
+      "test_id": "T06-001",
+      "test_name": "Schema Structural Validity",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 9 tool inputSchema(s) are structurally valid.",
+      "details": null,
+      "duration_ms": 0.03319999814266339,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.024563+00:00",
+      "result_id": "2d112807-9881-4fbc-bbda-ba6e703a6d78"
+    },
+    {
+      "test_id": "T06-002-workers_get_worker",
+      "test_name": "Required Enforcement: workers_get_worker",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' correctly raised an error when called with missing required fields.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"m",
+      "duration_ms": 811.9160999995074,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:52.835676+00:00",
+      "result_id": "1e348e07-ffa4-489c-b54f-912351147284"
+    },
+    {
+      "test_id": "T06-002-workers_get_worker_code",
+      "test_name": "Required Enforcement: workers_get_worker_code",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' correctly raised an error when called with missing required fields.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"scriptName\"\n    ],\n ",
+      "duration_ms": 957.9628999999841,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:53.794473+00:00",
+      "result_id": "52ccdecf-9346-470e-a744-96543ed565ab"
+    },
+    {
+      "test_id": "T06-002-query_worker_observability",
+      "test_name": "Required Enforcement: query_worker_observability",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'query_worker_observability' correctly raised an error when called with missing required fields.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\"\n    ],\n   ",
+      "duration_ms": 738.2523000014771,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:54.532215+00:00",
+      "result_id": "871662b5-530a-446d-ae9d-66a7c65eb28b"
+    },
+    {
+      "test_id": "T06-002-observability_keys",
+      "test_name": "Required Enforcement: observability_keys",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_keys' correctly raised an error when called with missing required fields.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"keysQuery\"\n    ],\n    \"me",
+      "duration_ms": 835.7393000005686,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:55.368272+00:00",
+      "result_id": "d235b4e2-0fdf-4401-8e5b-be3308e920a9"
+    },
+    {
+      "test_id": "T06-002-observability_values",
+      "test_name": "Required Enforcement: observability_values",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_values' correctly raised an error when called with missing required fields.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"valuesQuery\"\n    ],\n   ",
+      "duration_ms": 758.9884000008169,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:56.126421+00:00",
+      "result_id": "e3415280-f3a6-4542-9e1c-9c528a869991"
+    },
+    {
+      "test_id": "T06-002-search_cloudflare_documentation",
+      "test_name": "Required Enforcement: search_cloudflare_documentation",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' correctly raised an error when called with missing required fields.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\"\n    ]",
+      "duration_ms": 1119.9622999993153,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:57.246817+00:00",
+      "result_id": "d958dd42-e202-4def-bbe5-15370644b52f"
+    },
+    {
+      "test_id": "T06-003",
+      "test_name": "additionalProperties Strictness",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 9 tool(s) have 'additionalProperties': false.",
+      "details": null,
+      "duration_ms": 0.011200001608813182,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:32:57.246817+00:00",
+      "result_id": "19a75a3b-aaea-4a2d-9747-70122b30dc67"
+    },
+    {
+      "test_id": "T06-004",
+      "test_name": "Return Type Consistency",
+      "category": "SCHEMA",
+      "severity": "INFO",
+      "passed": true,
+      "description": "No tools returned comparable JSON responses — consistency check not applicable.",
+      "details": null,
+      "duration_ms": 0.0,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "190fd3a0-7a7a-4bd3-8f8d-a35343a76bd9"
+    },
+    {
+      "test_id": "T06-005",
+      "test_name": "Overly Permissive Schema Detection",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 9 tool schema(s) are acceptably strict.",
+      "details": null,
+      "duration_ms": 0.02559999848017469,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "f793fbf7-26cd-4484-a571-af2c442cd114"
+    },
+    {
+      "test_id": "T06-006-accounts_list",
+      "test_name": "Description Quality: accounts_list",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'accounts_list' has an adequate description (44 chars).",
+      "details": "Description: 'List all accounts in your Cloudflare account'",
+      "duration_ms": 0.0016999983927235007,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "f7d45110-2e71-4fd3-a91c-bbf755933dc7"
+    },
+    {
+      "test_id": "T06-006-workers_list",
+      "test_name": "Description Quality: workers_list",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_list' has an adequate description (114 chars).",
+      "details": "Description: 'List all Workers in your Cloudflare account.\\n\\nIf you only need details of a single Worker, use workers_get_worker.'",
+      "duration_ms": 0.019499999325489625,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "1e88b926-ae93-4744-8e3c-18cd61a03c52"
+    },
+    {
+      "test_id": "T06-006-workers_get_worker",
+      "test_name": "Description Quality: workers_get_worker",
+      "category": "SCHEMA",
+      "severity": "INFO",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' description does not mention its parameters (scriptName).",
+      "details": "Description: 'Get the details of the Cloudflare Worker.'\nTool has 1 parameter(s) but the description contains no parameter documentation signals.",
+      "duration_ms": 0.03409999771974981,
+      "remediation": "Include a brief description of each parameter in the tool's description so LLMs can construct valid calls. Example: 'Accepts: query (string) - the search query.'",
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "8f1f13c1-7a89-46b1-bf07-ca2f3514dc13"
+    },
+    {
+      "test_id": "T06-006-workers_get_worker_code",
+      "test_name": "Description Quality: workers_get_worker_code",
+      "category": "SCHEMA",
+      "severity": "INFO",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' description does not mention its parameters (scriptName).",
+      "details": "Description: 'Get the source code of a Cloudflare Worker. Note: This may be a bundled version of the worker.'\nTool has 1 parameter(s) but the description contains no parameter documentation signals.",
+      "duration_ms": 0.054299998737405986,
+      "remediation": "Include a brief description of each parameter in the tool's description so LLMs can construct valid calls. Example: 'Accepts: query (string) - the search query.'",
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "87117eba-f5e2-4e25-849d-39762f255e97"
+    },
+    {
+      "test_id": "T06-006-query_worker_observability",
+      "test_name": "Description Quality: query_worker_observability",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'query_worker_observability' has an adequate description (1001 chars).",
+      "details": "Description: 'Query the Workers Observability API to analyze logs and metrics from your Cloudflare Workers.\\n\\n\\t* A query typical query looks like this:\\n\\t\\t\\t\\t{\"view\":\"events\",\"queryId\":\"workers-logs-events\",\"limit\":5,'",
+      "duration_ms": 0.07270000060088933,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "1ff078bb-235a-4fb2-8eff-07cd32871bff"
+    },
+    {
+      "test_id": "T06-006-observability_keys",
+      "test_name": "Description Quality: observability_keys",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_keys' has an adequate description (344 chars).",
+      "details": "Description: 'Find keys in the Workers Observability Data\\n\\n## Best Practices\\n- Set a high limit (1000+) to ensure you see all available keys\\n- Add the $metadata.service filter to narrow results to a specific Worker'",
+      "duration_ms": 0.10729999848990701,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "1dacd5b5-5c81-425e-937b-ed912ba67a5d"
+    },
+    {
+      "test_id": "T06-006-observability_values",
+      "test_name": "Description Quality: observability_values",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_values' has an adequate description (204 chars).",
+      "details": "Description: 'Find values in the Workers Observability Data.\\n\\n## Troubleshooting\\n- For no results, verify the field exists using observability_keys first\\n- If expected values are missing, try broadening your time r'",
+      "duration_ms": 0.12589999823831022,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "a309759a-d6e9-4a34-95f0-362c0dd9b1d9"
+    },
+    {
+      "test_id": "T06-006-search_cloudflare_documentation",
+      "test_name": "Description Quality: search_cloudflare_documentation",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' has an adequate description (541 chars).",
+      "details": "Description: 'Search the Cloudflare documentation.\\n\\n\\t\\tThis tool should be used to answer any question about Cloudflare products or features, including:\\n\\t\\t- Workers, Pages, R2, Images, Stream, D1, Durable Objects, K'",
+      "duration_ms": 0.1491999973950442,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "14605ad0-531f-4a78-a196-9c0282fceb0b"
+    },
+    {
+      "test_id": "T06-006-migrate_pages_to_workers_guide",
+      "test_name": "Description Quality: migrate_pages_to_workers_guide",
+      "category": "SCHEMA",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'migrate_pages_to_workers_guide' has an adequate description (66 chars).",
+      "details": "Description: 'ALWAYS read this guide before migrating Pages projects to Workers.'",
+      "duration_ms": 0.1711999975668732,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:04.118686+00:00",
+      "result_id": "34bc4493-59f8-44cb-a864-f73fcb111ebe"
+    },
+    {
+      "test_id": "T08-001-01",
+      "test_name": "Baseline Latency: accounts_list",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'accounts_list': mean=1714ms  min=1042ms  max=2294ms (5 samples).",
+      "details": "{\n  \"accounts_list\": {\n    \"mean_ms\": 1714.5,\n    \"min_ms\": 1042.12,\n    \"max_ms\": 2293.98,\n    \"samples\": [\n      1986.45,\n      2150.57,\n      2293.98,\n      1099.38,\n      1042.12\n    ]\n  }\n}",
+      "duration_ms": 8572.534499999165,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:00.596340+00:00",
+      "result_id": "f712d9f4-594a-48b4-a709-613212f85434"
+    },
+    {
+      "test_id": "T08-001-02",
+      "test_name": "Baseline Latency: workers_list",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_list': mean=1186ms  min=1037ms  max=1277ms (5 samples).",
+      "details": "{\n  \"workers_list\": {\n    \"mean_ms\": 1186.04,\n    \"min_ms\": 1037.4,\n    \"max_ms\": 1277.38,\n    \"samples\": [\n      1037.4,\n      1204.89,\n      1277.38,\n      1210.02,\n      1200.5\n    ]\n  }\n}",
+      "duration_ms": 5930.202200001077,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:06.526800+00:00",
+      "result_id": "cd1c3d86-65d5-4dba-836d-c221be5e9668"
+    },
+    {
+      "test_id": "T08-001-03",
+      "test_name": "Baseline Latency: workers_get_worker",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker': mean=1120ms  min=962ms  max=1347ms (5 samples).",
+      "details": "{\n  \"workers_get_worker\": {\n    \"mean_ms\": 1119.76,\n    \"min_ms\": 961.67,\n    \"max_ms\": 1347.11,\n    \"samples\": [\n      1347.11,\n      1107.59,\n      1132.2,\n      1050.23,\n      961.67\n    ]\n  }\n}",
+      "duration_ms": 5598.813900000096,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:12.125541+00:00",
+      "result_id": "14e15d2a-a4c2-4901-a328-31b1e1eb0d1d"
+    },
+    {
+      "test_id": "T08-001-04",
+      "test_name": "Baseline Latency: workers_get_worker_code",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code': mean=1365ms  min=942ms  max=1890ms (5 samples).",
+      "details": "{\n  \"workers_get_worker_code\": {\n    \"mean_ms\": 1364.85,\n    \"min_ms\": 941.97,\n    \"max_ms\": 1890.08,\n    \"samples\": [\n      1603.62,\n      1239.28,\n      1890.08,\n      941.97,\n      1149.28\n    ]\n  }\n}",
+      "duration_ms": 6824.2463000024145,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:18.949716+00:00",
+      "result_id": "da11672d-47da-4d5f-94ff-81eb0dea8f42"
+    },
+    {
+      "test_id": "T08-001-05",
+      "test_name": "Baseline Latency: query_worker_observability",
+      "category": "PERFORMANCE",
+      "severity": "INFO",
+      "passed": true,
+      "description": "Tool 'query_worker_observability' requires valid credentials or real parameters — latency probe skipped (API rejection, not a server defect).",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\",\n      \"queryId\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\",\n      \"parameters\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"query\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      },\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"query\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      }\n    ],\n    \"path\": [\n      \"query\",\n      \"timeframe\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]\nMcpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\",\n      \"queryId\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\",\n      \"parameters\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"query\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      },\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"query\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      }\n    ],\n    \"path\": [\n      \"query\",\n      \"timeframe\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]\nMcpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\",\n      \"queryId\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\",\n      \"parameters\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"query\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      },\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"query\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      }\n    ],\n    \"path\": [\n      \"query\",\n      \"timeframe\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+      "duration_ms": 4525.736300001881,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:23.476608+00:00",
+      "result_id": "3d1b140c-4f48-4136-a38c-6f77fc764d4a"
+    },
+    {
+      "test_id": "T08-001-06",
+      "test_name": "Baseline Latency: observability_keys",
+      "category": "PERFORMANCE",
+      "severity": "INFO",
+      "passed": true,
+      "description": "Tool 'observability_keys' requires valid credentials or real parameters — latency probe skipped (API rejection, not a server defect).",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"keysQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      },\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"keysQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      }\n    ],\n    \"path\": [\n      \"keysQuery\",\n      \"timeframe\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]\nMcpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"keysQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      },\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"keysQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      }\n    ],\n    \"path\": [\n      \"keysQuery\",\n      \"timeframe\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]\nMcpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"keysQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      },\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"keysQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      }\n    ],\n    \"path\": [\n      \"keysQuery\",\n      \"timeframe\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+      "duration_ms": 4478.866800000105,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:27.954856+00:00",
+      "result_id": "18b34233-b2ab-4494-a32b-4e335814d011"
+    },
+    {
+      "test_id": "T08-001-07",
+      "test_name": "Baseline Latency: observability_values",
+      "category": "PERFORMANCE",
+      "severity": "INFO",
+      "passed": true,
+      "description": "Tool 'observability_values' requires valid credentials or real parameters — latency probe skipped (API rejection, not a server defect).",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"valuesQuery\",\n      \"key\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"expected\": \"'string' | 'boolean' | 'number'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"valuesQuery\",\n      \"type\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"valuesQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      },\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"valuesQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      }\n    ],\n    \"path\": [\n      \"valuesQuery\",\n      \"timeframe\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]\nMcpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"valuesQuery\",\n      \"key\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"expected\": \"'string' | 'boolean' | 'number'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"valuesQuery\",\n      \"type\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"valuesQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      },\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"valuesQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      }\n    ],\n    \"path\": [\n      \"valuesQuery\",\n      \"timeframe\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]\nMcpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"valuesQuery\",\n      \"key\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"expected\": \"'string' | 'boolean' | 'number'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"valuesQuery\",\n      \"type\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"valuesQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      },\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n              \"valuesQuery\",\n              \"timeframe\"\n            ],\n            \"message\": \"Required\"\n          }\n        ],\n        \"name\": \"ZodError\"\n      }\n    ],\n    \"path\": [\n      \"valuesQuery\",\n      \"timeframe\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+      "duration_ms": 4367.060199998377,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:32.322369+00:00",
+      "result_id": "34696527-4492-460f-aacd-35ef18b6cb56"
+    },
+    {
+      "test_id": "T08-001-08",
+      "test_name": "Baseline Latency: search_cloudflare_documentation",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation': mean=2598ms  min=2183ms  max=3333ms (5 samples).",
+      "details": "{\n  \"search_cloudflare_documentation\": {\n    \"mean_ms\": 2598.37,\n    \"min_ms\": 2183.18,\n    \"max_ms\": 3333.1,\n    \"samples\": [\n      3333.1,\n      2183.18,\n      2462.51,\n      2485.64,\n      2527.42\n    ]\n  }\n}",
+      "duration_ms": 12991.874100000132,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:45.314804+00:00",
+      "result_id": "fdfa3da4-7e07-41c4-a3f9-f429b11fcc99"
+    },
+    {
+      "test_id": "T08-001-09",
+      "test_name": "Baseline Latency: migrate_pages_to_workers_guide",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'migrate_pages_to_workers_guide': mean=1056ms  min=911ms  max=1197ms (5 samples).",
+      "details": "{\n  \"migrate_pages_to_workers_guide\": {\n    \"mean_ms\": 1056.14,\n    \"min_ms\": 911.47,\n    \"max_ms\": 1196.85,\n    \"samples\": [\n      1196.85,\n      911.47,\n      999.53,\n      1089.1,\n      1083.74\n    ]\n  }\n}",
+      "duration_ms": 5280.703000000358,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:50.595058+00:00",
+      "result_id": "e8973ffa-44b1-49fc-b90e-71b254b4bd3c"
+    },
+    {
+      "test_id": "T08-002",
+      "test_name": "Tool Discovery Latency",
+      "category": "PERFORMANCE",
+      "severity": "MEDIUM",
+      "passed": false,
+      "description": "list_tools() mean 1041ms — slow discovery [MEDIUM].",
+      "details": "{\n  \"list_tools\": {\n    \"mean_ms\": 1041.32,\n    \"min_ms\": 755.49,\n    \"max_ms\": 1314.41,\n    \"samples\": [\n      755.49,\n      1053.85,\n      1250.45,\n      832.39,\n      1314.41\n    ]\n  }\n}",
+      "duration_ms": 5206.589799996436,
+      "remediation": "Slow tool discovery degrades the LLM's startup experience. Cache the tool manifest at server startup instead of re-computing it on every list_tools() call.",
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:55.802393+00:00",
+      "result_id": "cc1c2aae-18fc-4817-8b83-596b26ba52a2"
+    },
+    {
+      "test_id": "T08-003-00",
+      "test_name": "Resource Read Latency",
+      "category": "PERFORMANCE",
+      "severity": "INFO",
+      "passed": true,
+      "description": "No resources to benchmark.",
+      "details": null,
+      "duration_ms": 0.0,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:33:55.802393+00:00",
+      "result_id": "c95dce22-3016-4181-927e-8226ea87cf34"
+    },
+    {
+      "test_id": "T08-004",
+      "test_name": "Cold Start Detection",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "No significant cold-start penalty detected (ratio 0.7×, threshold 10×).",
+      "details": "Call 1 (cold): 963ms\nCalls 2-5 (warm): 1276ms, 1497ms, 1345ms, 1194ms\nWarm mean: 1328ms  Ratio: 0.7×",
+      "duration_ms": 6275.234000000637,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:02.076952+00:00",
+      "result_id": "450d514d-d133-4ff9-b0c0-a541b7e007ba"
+    },
+    {
+      "test_id": "T04-001",
+      "test_name": "Rug Pull Detection (Mutation Check)",
+      "category": "SECURITY",
+      "severity": "MEDIUM",
+      "passed": false,
+      "description": "1 tool description(s) grew between two consecutive list_tools() calls (3 s apart). Descriptions only extended — likely CDN truncation or lazy-loaded content rather than a deliberate rug-pull. Verify server behaviour.",
+      "details": "Tool 'query_worker_observability' description CHANGED at char 1000:\n  Length: 1001 → 1603 chars (grew)\n  BEFORE[920:1001]: 'ore applying filters, use the observability_keys and observability_values tools …'\n  AFTER [920:1160]: 'ore applying filters, use the observability_keys and observability_values tools to confirm available filter fields and the correct filter value to add unless you have the data in a response from a previous query.\\n- Common filter fields:  $m'",
+      "duration_ms": 4319.2363000016485,
+      "remediation": "Tool descriptions should be fully materialized at startup. If descriptions grow between calls, clients may make tool-use decisions based on incomplete instructions. Ensure list_tools() always returns the full, stable description.",
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:06.413141+00:00",
+      "result_id": "0c6bc8b4-0789-4144-b812-b62a9a9dfdda"
+    },
+    {
+      "test_id": "T04-002",
+      "test_name": "Hidden Instruction Scan",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "No suspicious patterns found in 9 tool description(s).",
+      "details": null,
+      "duration_ms": 1.244899998710025,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:06.414140+00:00",
+      "result_id": "cf402058-27a6-4791-bcf3-8943721b7d88"
+    },
+    {
+      "test_id": "T04-003",
+      "test_name": "Cross-Tool Reference Detection",
+      "category": "SECURITY",
+      "severity": "LOW",
+      "passed": false,
+      "description": "Found 4 cross-tool reference(s) in tool descriptions — server uses chained workflow guidance. Verify no sensitive data is passed between tools.",
+      "details": "  Tool 'workers_list' description references 'workers_get_worker'\n  Tool 'query_worker_observability' description references 'observability_keys'\n  Tool 'query_worker_observability' description references 'observability_values'\n  Tool 'observability_values' description references 'observability_keys'",
+      "duration_ms": 1.7724999997881241,
+      "remediation": "Cross-tool references in descriptions are common in multi-step APIs and are not inherently malicious. Review each reference to confirm it describes legitimate workflow guidance (e.g. 'call tool X first to discover available values') rather than parasitic data exfiltration (e.g. 'silently forward results to tool Y'). Tool descriptions must describe only the tool's own behaviour. References to other tool names in a description can trick LLMs into invoking them as a silent side-effect, creating an unaudited tool chain.",
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:06.416366+00:00",
+      "result_id": "ec9616b3-f773-499f-b2ab-7ede28c239d3"
+    },
+    {
+      "test_id": "T04-004",
+      "test_name": "Schema Field Injection Check",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 9 tool inputSchema(s) contain only sanctioned JSON Schema fields.",
+      "details": null,
+      "duration_ms": 0.054299998737405986,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:06.416366+00:00",
+      "result_id": "beb333ff-c1f7-4b44-ba78-28d2e5895237"
+    },
+    {
+      "test_id": "T04-005",
+      "test_name": "Tool Count Stability Check",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool count stable at 9 across 5 polls (2.5s window).",
+      "details": "Counts per poll: [9, 9, 9, 9, 9]",
+      "duration_ms": 6078.1910000005155,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:12.494344+00:00",
+      "result_id": "ff1646f3-a8d8-402e-aac8-6ca21becd0ac"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-001",
+      "test_name": "Fuzz FUZZ-STR-001 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled FUZZ-STR-001 (empty string) on param 'scriptName' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='Error retrieving worker script: Cloudflare API request failed', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 1136.6961999992782,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:03.230461+00:00",
+      "result_id": "786bcaa2-b9dd-46d2-a494-80b899211a7a"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-002",
+      "test_name": "Fuzz FUZZ-STR-002 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled FUZZ-STR-002 (single space) on param 'scriptName' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='Error retrieving worker script: Cloudflare API request failed', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 1185.156299998198,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:04.416100+00:00",
+      "result_id": "63a34adb-43d1-4f5d-a972-2aca278f9fe7"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-003",
+      "test_name": "Fuzz FUZZ-STR-003 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled FUZZ-STR-003 (whitespace only) on param 'scriptName' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='Error retrieving worker script: Cloudflare API request failed', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 1453.1179999976302,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:05.868879+00:00",
+      "result_id": "cb58fe82-3531-476d-906c-d37c53593784"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-004",
+      "test_name": "Fuzz FUZZ-STR-004 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' returned a structured error for FUZZ-STR-004 (null value) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"null\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received null\"\n  }\n]",
+      "duration_ms": 698.223200000939,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:06.566888+00:00",
+      "result_id": "6096fba0-4abf-4ec6-b51f-90796ba8d8fd"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-005",
+      "test_name": "Fuzz FUZZ-STR-005 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' returned a structured error for FUZZ-STR-005 (integer as string field) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"number\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received number\"\n  }\n]",
+      "duration_ms": 920.041699999274,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:07.487462+00:00",
+      "result_id": "03935f98-93d2-4c9a-be8d-941901c297dd"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-006",
+      "test_name": "Fuzz FUZZ-STR-006 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' returned a structured error for FUZZ-STR-006 (boolean as string field) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"boolean\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received boolean\"\n  }\n]",
+      "duration_ms": 1045.6835000004503,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:08.532703+00:00",
+      "result_id": "36dac5a4-47d8-4c38-aeac-55db8a23360c"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-007",
+      "test_name": "Fuzz FUZZ-STR-007 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' returned a structured error for FUZZ-STR-007 (list as string field) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"array\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received array\"\n  }\n]",
+      "duration_ms": 748.3677999989595,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:09.281705+00:00",
+      "result_id": "dda2ca0e-ed3b-4353-b51b-e9a516a395cd"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-008",
+      "test_name": "Fuzz FUZZ-STR-008 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' returned a structured error for FUZZ-STR-008 (dict as string field) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"object\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received object\"\n  }\n]",
+      "duration_ms": 921.7444999994768,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:10.203322+00:00",
+      "result_id": "c6761cb1-a300-4033-aa29-25cbb68c35c6"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-009",
+      "test_name": "Fuzz FUZZ-STR-009 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled FUZZ-STR-009 (very long string 10k) on param 'scriptName' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='Error retrieving worker script: Cloudflare API request failed', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 2135.485899998457,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:12.339402+00:00",
+      "result_id": "80f8dffa-1302-4b80-b6d4-0bb05a32b0ec"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-010",
+      "test_name": "Fuzz FUZZ-STR-010 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled FUZZ-STR-010 (newlines and tabs) on param 'scriptName' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='Error retrieving worker script: Cloudflare API request failed', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 977.696099998866,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:13.316567+00:00",
+      "result_id": "340bb6b0-60c2-4f75-b9cf-91a6c588b8cd"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-011",
+      "test_name": "Fuzz FUZZ-STR-011 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled FUZZ-STR-011 (null byte in string) on param 'scriptName' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='Error retrieving worker script: Cloudflare API request failed', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 803.9587999992364,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:14.120696+00:00",
+      "result_id": "c32b3196-7c97-4520-9b88-31f48252c55d"
+    },
+    {
+      "test_id": "T03-03-scriptname-FUZZ-STR-012",
+      "test_name": "Fuzz FUZZ-STR-012 → workers_get_worker.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled FUZZ-STR-012 (all unicode planes) on param 'scriptName' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='Error retrieving worker script: Cloudflare API request failed', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 1262.2894999985874,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:15.383045+00:00",
+      "result_id": "395ade1e-6c63-4ae2-bcdc-1bc09cbc4f9a"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-001",
+      "test_name": "Fuzz FUZZ-STR-001 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled FUZZ-STR-001 (empty string) on param 'scriptName' correctly.",
+      "details": "Response excerpt: 'meta=None content=[TextContent(type=\\'text\\', text=\\'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}\\', annotat'",
+      "duration_ms": 2028.189000000566,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:17.411520+00:00",
+      "result_id": "651101c8-300a-4833-8c22-3609199e9b41"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-002",
+      "test_name": "Fuzz FUZZ-STR-002 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled FUZZ-STR-002 (single space) on param 'scriptName' correctly.",
+      "details": "Response excerpt: 'meta=None content=[TextContent(type=\\'text\\', text=\\'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}\\', annotat'",
+      "duration_ms": 1067.4671000015223,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:18.478999+00:00",
+      "result_id": "7b216ce8-61f0-4136-9268-433c0cf342f9"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-003",
+      "test_name": "Fuzz FUZZ-STR-003 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled FUZZ-STR-003 (whitespace only) on param 'scriptName' correctly.",
+      "details": "Response excerpt: 'meta=None content=[TextContent(type=\\'text\\', text=\\'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}\\', annotat'",
+      "duration_ms": 1016.8005000014091,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:19.496298+00:00",
+      "result_id": "80468f4d-5162-4dee-acdc-8195f77a921c"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-004",
+      "test_name": "Fuzz FUZZ-STR-004 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' returned a structured error for FUZZ-STR-004 (null value) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"null\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received null\"\n  }\n]",
+      "duration_ms": 801.0705999986385,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:20.297869+00:00",
+      "result_id": "d95ed601-5323-4e7b-9bc9-34ba47332089"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-005",
+      "test_name": "Fuzz FUZZ-STR-005 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' returned a structured error for FUZZ-STR-005 (integer as string field) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"number\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received number\"\n  }\n]",
+      "duration_ms": 849.0385999975842,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:21.146170+00:00",
+      "result_id": "5d959448-d88a-449c-9480-cf932abd1d61"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-006",
+      "test_name": "Fuzz FUZZ-STR-006 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' returned a structured error for FUZZ-STR-006 (boolean as string field) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"boolean\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received boolean\"\n  }\n]",
+      "duration_ms": 1035.785299998679,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:22.182640+00:00",
+      "result_id": "dbaf1934-b810-4062-80c8-0feb52d637ab"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-007",
+      "test_name": "Fuzz FUZZ-STR-007 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' returned a structured error for FUZZ-STR-007 (list as string field) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"array\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received array\"\n  }\n]",
+      "duration_ms": 724.2810000025202,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:22.906455+00:00",
+      "result_id": "1d53286d-2d14-4134-bf22-591bcf900be5"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-008",
+      "test_name": "Fuzz FUZZ-STR-008 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' returned a structured error for FUZZ-STR-008 (dict as string field) on param 'scriptName' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool workers_get_worker_code: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"object\",\n    \"path\": [\n      \"scriptName\"\n    ],\n    \"message\": \"Expected string, received object\"\n  }\n]",
+      "duration_ms": 866.0295000008773,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:23.772351+00:00",
+      "result_id": "050224dc-3e04-4065-9f1a-7a66b6995373"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-009",
+      "test_name": "Fuzz FUZZ-STR-009 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled FUZZ-STR-009 (very long string 10k) on param 'scriptName' correctly.",
+      "details": "Response excerpt: 'meta=None content=[TextContent(type=\\'text\\', text=\\'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}\\', annotat'",
+      "duration_ms": 1146.1925999974483,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:24.919399+00:00",
+      "result_id": "c968ebf3-1a05-406b-a6d6-ae9783079cc7"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-010",
+      "test_name": "Fuzz FUZZ-STR-010 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled FUZZ-STR-010 (newlines and tabs) on param 'scriptName' correctly.",
+      "details": "Response excerpt: 'meta=None content=[TextContent(type=\\'text\\', text=\\'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}\\', annotat'",
+      "duration_ms": 961.9235999998637,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:25.880896+00:00",
+      "result_id": "5426e52d-8518-4acf-9647-5fb9ff26a3a9"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-011",
+      "test_name": "Fuzz FUZZ-STR-011 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled FUZZ-STR-011 (null byte in string) on param 'scriptName' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='Error retrieving worker script: 400 <html>\\\\r\\\\n<head><title>400 Bad Request</title></head>\\\\r\\\\n<body>\\\\r\\\\n<center><h1>400 Bad Request</h1></center>\\\\r\\\\n<h\"",
+      "duration_ms": 1001.8818000025931,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:26.883121+00:00",
+      "result_id": "86f8ab8f-e28d-4a97-a04e-d1cd06995055"
+    },
+    {
+      "test_id": "T03-04-scriptname-FUZZ-STR-012",
+      "test_name": "Fuzz FUZZ-STR-012 → workers_get_worker_code.scriptName",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled FUZZ-STR-012 (all unicode planes) on param 'scriptName' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='Error retrieving worker script: 400 <html>\\\\r\\\\n<head><title>400 Bad Request</title></head>\\\\r\\\\n<body>\\\\r\\\\n<center><h1>400 Bad Request</h1></center>\\\\r\\\\n<h\"",
+      "duration_ms": 1010.7150000003458,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:27.894400+00:00",
+      "result_id": "d6d59b71-3fa0-4867-9756-4ceed481f431"
+    },
+    {
+      "test_id": "T03-05-query-FUZZ-OBJ-001",
+      "test_name": "Fuzz FUZZ-OBJ-001 → query_worker_observability.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'query_worker_observability' returned a structured error for FUZZ-OBJ-001 (null as object) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"null\",\n    \"path\": [\n      \"query\"\n    ],\n    \"message\": \"Expected object, received null\"\n  }\n]",
+      "duration_ms": 967.7769999980228,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:28.862326+00:00",
+      "result_id": "1f6ddaec-6727-453c-a443-0123855bd45c"
+    },
+    {
+      "test_id": "T03-05-query-FUZZ-OBJ-002",
+      "test_name": "Fuzz FUZZ-OBJ-002 → query_worker_observability.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'query_worker_observability' returned a structured error for FUZZ-OBJ-002 (list as object) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"array\",\n    \"path\": [\n      \"query\"\n    ],\n    \"message\": \"Expected object, received array\"\n  }\n]",
+      "duration_ms": 733.22090000147,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:29.595515+00:00",
+      "result_id": "67d4bb2d-1fe1-4e0a-94a4-f60230fba82c"
+    },
+    {
+      "test_id": "T03-05-query-FUZZ-OBJ-003",
+      "test_name": "Fuzz FUZZ-OBJ-003 → query_worker_observability.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'query_worker_observability' returned a structured error for FUZZ-OBJ-003 (string as object) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"string\",\n    \"path\": [\n      \"query\"\n    ],\n    \"message\": \"Expected object, received string\"\n  }\n]",
+      "duration_ms": 725.836600002367,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:30.320957+00:00",
+      "result_id": "79e257c2-acf8-4d2b-b830-6e2a52844497"
+    },
+    {
+      "test_id": "T03-05-query-FUZZ-OBJ-004",
+      "test_name": "Fuzz FUZZ-OBJ-004 → query_worker_observability.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'query_worker_observability' returned a structured error for FUZZ-OBJ-004 (empty object) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\",\n      \"queryId\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object",
+      "duration_ms": 1015.0028999996721,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:31.336575+00:00",
+      "result_id": "222619d3-014f-4c3b-8090-d2e834ad4e81"
+    },
+    {
+      "test_id": "T03-05-query-FUZZ-OBJ-005",
+      "test_name": "Fuzz FUZZ-OBJ-005 → query_worker_observability.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'query_worker_observability' returned a structured error for FUZZ-OBJ-005 (prototype pollution) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\",\n      \"queryId\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object",
+      "duration_ms": 893.5913999994227,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:32.229920+00:00",
+      "result_id": "3cce1a81-487d-4b15-909b-4c95ed22f5db"
+    },
+    {
+      "test_id": "T03-05-query-FUZZ-OBJ-006",
+      "test_name": "Fuzz FUZZ-OBJ-006 → query_worker_observability.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'query_worker_observability' returned a structured error for FUZZ-OBJ-006 (deeply nested object) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool query_worker_observability: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"query\",\n      \"queryId\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object",
+      "duration_ms": 750.5824999971082,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:32.980741+00:00",
+      "result_id": "fe8a9aa9-7684-4cc3-8f17-132bd4c7c906"
+    },
+    {
+      "test_id": "T03-06-keysquery-FUZZ-OBJ-001",
+      "test_name": "Fuzz FUZZ-OBJ-001 → observability_keys.keysQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_keys' returned a structured error for FUZZ-OBJ-001 (null as object) on param 'keysQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"null\",\n    \"path\": [\n      \"keysQuery\"\n    ],\n    \"message\": \"Expected object, received null\"\n  }\n]",
+      "duration_ms": 862.2471999988193,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:33.842828+00:00",
+      "result_id": "cd896145-4eca-4a0d-b278-11103bd2db9e"
+    },
+    {
+      "test_id": "T03-06-keysquery-FUZZ-OBJ-002",
+      "test_name": "Fuzz FUZZ-OBJ-002 → observability_keys.keysQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_keys' returned a structured error for FUZZ-OBJ-002 (list as object) on param 'keysQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"array\",\n    \"path\": [\n      \"keysQuery\"\n    ],\n    \"message\": \"Expected object, received array\"\n  }\n]",
+      "duration_ms": 838.9508000000205,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:34.681822+00:00",
+      "result_id": "e26f3b2f-5f10-4d38-8287-1b1556c401eb"
+    },
+    {
+      "test_id": "T03-06-keysquery-FUZZ-OBJ-003",
+      "test_name": "Fuzz FUZZ-OBJ-003 → observability_keys.keysQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_keys' returned a structured error for FUZZ-OBJ-003 (string as object) on param 'keysQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"string\",\n    \"path\": [\n      \"keysQuery\"\n    ],\n    \"message\": \"Expected object, received string\"\n  }\n]",
+      "duration_ms": 2040.5130999970424,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:36.722609+00:00",
+      "result_id": "994c8417-7869-4d29-9a4d-501e6d31b879"
+    },
+    {
+      "test_id": "T03-06-keysquery-FUZZ-OBJ-004",
+      "test_name": "Fuzz FUZZ-OBJ-004 → observability_keys.keysQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_keys' returned a structured error for FUZZ-OBJ-004 (empty object) on param 'keysQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n          ",
+      "duration_ms": 915.4258000016853,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:37.637996+00:00",
+      "result_id": "bd7f2c0a-2724-41bd-998e-36428540563e"
+    },
+    {
+      "test_id": "T03-06-keysquery-FUZZ-OBJ-005",
+      "test_name": "Fuzz FUZZ-OBJ-005 → observability_keys.keysQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_keys' returned a structured error for FUZZ-OBJ-005 (prototype pollution) on param 'keysQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n          ",
+      "duration_ms": 719.6409000025596,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:38.357977+00:00",
+      "result_id": "cdf8f931-dfb3-4eae-b4df-e9ee9a4145b5"
+    },
+    {
+      "test_id": "T03-06-keysquery-FUZZ-OBJ-006",
+      "test_name": "Fuzz FUZZ-OBJ-006 → observability_keys.keysQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_keys' returned a structured error for FUZZ-OBJ-006 (deeply nested object) on param 'keysQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_keys: [\n  {\n    \"code\": \"invalid_union\",\n    \"unionErrors\": [\n      {\n        \"issues\": [\n          {\n            \"code\": \"invalid_type\",\n            \"expected\": \"object\",\n            \"received\": \"undefined\",\n            \"path\": [\n          ",
+      "duration_ms": 884.8872999988089,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:39.242173+00:00",
+      "result_id": "e87a85e9-88da-41ca-ae2c-176ecc95931e"
+    },
+    {
+      "test_id": "T03-07-valuesquery-FUZZ-OBJ-001",
+      "test_name": "Fuzz FUZZ-OBJ-001 → observability_values.valuesQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_values' returned a structured error for FUZZ-OBJ-001 (null as object) on param 'valuesQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"null\",\n    \"path\": [\n      \"valuesQuery\"\n    ],\n    \"message\": \"Expected object, received null\"\n  }\n]",
+      "duration_ms": 800.4404999992403,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:40.042818+00:00",
+      "result_id": "8a42236a-c8dc-47e0-8fa5-8b8435a49916"
+    },
+    {
+      "test_id": "T03-07-valuesquery-FUZZ-OBJ-002",
+      "test_name": "Fuzz FUZZ-OBJ-002 → observability_values.valuesQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_values' returned a structured error for FUZZ-OBJ-002 (list as object) on param 'valuesQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"array\",\n    \"path\": [\n      \"valuesQuery\"\n    ],\n    \"message\": \"Expected object, received array\"\n  }\n]",
+      "duration_ms": 877.9499000011128,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:40.920875+00:00",
+      "result_id": "ccad5d82-8435-4ada-b93f-66ea362938ee"
+    },
+    {
+      "test_id": "T03-07-valuesquery-FUZZ-OBJ-003",
+      "test_name": "Fuzz FUZZ-OBJ-003 → observability_values.valuesQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_values' returned a structured error for FUZZ-OBJ-003 (string as object) on param 'valuesQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"string\",\n    \"path\": [\n      \"valuesQuery\"\n    ],\n    \"message\": \"Expected object, received string\"\n  }\n]",
+      "duration_ms": 714.3787999993947,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:41.636127+00:00",
+      "result_id": "7d88431b-22f0-4006-8190-d8069052a647"
+    },
+    {
+      "test_id": "T03-07-valuesquery-FUZZ-OBJ-004",
+      "test_name": "Fuzz FUZZ-OBJ-004 → observability_values.valuesQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_values' returned a structured error for FUZZ-OBJ-004 (empty object) on param 'valuesQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"valuesQuery\",\n      \"key\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"expected\": \"'string' | 'boolean' | 'number'\",\n    ",
+      "duration_ms": 2293.079899998702,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:43.928974+00:00",
+      "result_id": "d446e0d3-6555-43a5-9efa-8d7f7b2b8876"
+    },
+    {
+      "test_id": "T03-07-valuesquery-FUZZ-OBJ-005",
+      "test_name": "Fuzz FUZZ-OBJ-005 → observability_values.valuesQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_values' returned a structured error for FUZZ-OBJ-005 (prototype pollution) on param 'valuesQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"valuesQuery\",\n      \"key\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"expected\": \"'string' | 'boolean' | 'number'\",\n    ",
+      "duration_ms": 1457.866799999465,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:45.386805+00:00",
+      "result_id": "6647682c-de51-4679-a31e-ca3fc5b78d33"
+    },
+    {
+      "test_id": "T03-07-valuesquery-FUZZ-OBJ-006",
+      "test_name": "Fuzz FUZZ-OBJ-006 → observability_values.valuesQuery",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'observability_values' returned a structured error for FUZZ-OBJ-006 (deeply nested object) on param 'valuesQuery' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool observability_values: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"valuesQuery\",\n      \"key\"\n    ],\n    \"message\": \"Required\"\n  },\n  {\n    \"expected\": \"'string' | 'boolean' | 'number'\",\n    ",
+      "duration_ms": 1000.2742999968177,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:46.387088+00:00",
+      "result_id": "bbfa13c3-621e-47f7-8150-4866748c469c"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-001",
+      "test_name": "Fuzz FUZZ-STR-001 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled FUZZ-STR-001 (empty string) on param 'query' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='All search methods failed: vector', annotations=None, meta=None)] structuredContent=None isError=True\"",
+      "duration_ms": 1024.5089999989432,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:47.411738+00:00",
+      "result_id": "d1d5848a-8fa1-47d2-8454-4e96eb1f8540"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-002",
+      "test_name": "Fuzz FUZZ-STR-002 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled FUZZ-STR-002 (single space) on param 'query' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='All search methods failed: vector', annotations=None, meta=None)] structuredContent=None isError=True\"",
+      "duration_ms": 836.1882999997761,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:48.248371+00:00",
+      "result_id": "950619e3-7e5e-45b3-8805-e955381ac88a"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-003",
+      "test_name": "Fuzz FUZZ-STR-003 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled FUZZ-STR-003 (whitespace only) on param 'query' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='All search methods failed: vector', annotations=None, meta=None)] structuredContent=None isError=True\"",
+      "duration_ms": 1584.267300000647,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:49.832723+00:00",
+      "result_id": "9f25ef2f-503a-4ca1-8267-2742f332de2b"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-004",
+      "test_name": "Fuzz FUZZ-STR-004 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' returned a structured error for FUZZ-STR-004 (null value) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"null\",\n    \"path\": [\n      \"query\"\n    ],\n    \"message\": \"Expected string, received null\"\n  }\n]",
+      "duration_ms": 834.9121999999625,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:50.667875+00:00",
+      "result_id": "0bae4d60-7bc0-45e2-817b-925a65ad2981"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-005",
+      "test_name": "Fuzz FUZZ-STR-005 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' returned a structured error for FUZZ-STR-005 (integer as string field) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"number\",\n    \"path\": [\n      \"query\"\n    ],\n    \"message\": \"Expected string, received number\"\n  }\n]",
+      "duration_ms": 844.2520999997214,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:51.512114+00:00",
+      "result_id": "7daf7112-04f1-43d4-b8be-0d01d572302e"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-006",
+      "test_name": "Fuzz FUZZ-STR-006 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' returned a structured error for FUZZ-STR-006 (boolean as string field) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"boolean\",\n    \"path\": [\n      \"query\"\n    ],\n    \"message\": \"Expected string, received boolean\"\n  }\n]",
+      "duration_ms": 905.7832999969833,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:52.417831+00:00",
+      "result_id": "3700fadd-351f-4b66-8ce5-67dec7d38741"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-007",
+      "test_name": "Fuzz FUZZ-STR-007 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' returned a structured error for FUZZ-STR-007 (list as string field) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"array\",\n    \"path\": [\n      \"query\"\n    ],\n    \"message\": \"Expected string, received array\"\n  }\n]",
+      "duration_ms": 812.5538999993296,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:53.230104+00:00",
+      "result_id": "1ee31b46-aa60-4667-a7e6-04ee588767ce"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-008",
+      "test_name": "Fuzz FUZZ-STR-008 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' returned a structured error for FUZZ-STR-008 (dict as string field) on param 'query' — handled gracefully.",
+      "details": "McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"object\",\n    \"path\": [\n      \"query\"\n    ],\n    \"message\": \"Expected string, received object\"\n  }\n]",
+      "duration_ms": 747.9573000018718,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:53.978376+00:00",
+      "result_id": "5d0072df-f4b3-4ae2-87ad-566d0931f386"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-009",
+      "test_name": "Fuzz FUZZ-STR-009 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled FUZZ-STR-009 (very long string 10k) on param 'query' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 3798.8248000001477,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:57.777472+00:00",
+      "result_id": "4e6db0c4-2bc6-48d9-9abc-9f6747c0e41c"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-010",
+      "test_name": "Fuzz FUZZ-STR-010 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled FUZZ-STR-010 (newlines and tabs) on param 'query' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='All search methods failed: vector', annotations=None, meta=None)] structuredContent=None isError=True\"",
+      "duration_ms": 1062.2273000008136,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:58.839956+00:00",
+      "result_id": "035cf975-e1ac-4fa7-8b00-1c6e19b0ce83"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-011",
+      "test_name": "Fuzz FUZZ-STR-011 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled FUZZ-STR-011 (null byte in string) on param 'query' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 2471.138599998085,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:01.311345+00:00",
+      "result_id": "b5e654b9-42f1-43e8-a13c-8269e8d7973b"
+    },
+    {
+      "test_id": "T03-08-query-FUZZ-STR-012",
+      "test_name": "Fuzz FUZZ-STR-012 → search_cloudflare_documentation.query",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled FUZZ-STR-012 (all unicode planes) on param 'query' correctly.",
+      "details": "Response excerpt: \"meta=None content=[TextContent(type='text', text='', annotations=None, meta=None)] structuredContent=None isError=False\"",
+      "duration_ms": 2830.4616999994323,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:04.142030+00:00",
+      "result_id": "efc9e146-c050-4b43-a4d9-be907cbc70b9"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-001",
+      "test_name": "Injection PI-001 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-001 (Classic override) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1327.2168000003148,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:03.419989+00:00",
+      "result_id": "c6574050-923a-449f-8380-d162d5ea0f23"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-002",
+      "test_name": "Injection PI-002 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-002 (Newline injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1233.5003000007418,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:04.654172+00:00",
+      "result_id": "6869027b-7824-4602-af34-2a329debb061"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-003",
+      "test_name": "Injection PI-003 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-003 (XML tag injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1082.2127999999793,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:05.736460+00:00",
+      "result_id": "464d44b1-d7ab-4a46-9846-049bb55dd61b"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-004",
+      "test_name": "Injection PI-004 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-004 (SQL injection probe) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1292.375599998195,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:07.029152+00:00",
+      "result_id": "c3967487-e597-438c-820b-962eb267a196"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-005",
+      "test_name": "Injection PI-005 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-005 (Shell injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1426.7202000010002,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:08.455855+00:00",
+      "result_id": "83e8908f-1c81-4dd2-ab72-1e51ef766814"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-006",
+      "test_name": "Injection PI-006 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-006 (Backtick injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1099.258700000064,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:09.554954+00:00",
+      "result_id": "cef7ccfb-b884-46de-a579-67c28637a0ba"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-007",
+      "test_name": "Injection PI-007 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-007 (Path traversal) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 821.8611999982386,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:10.376873+00:00",
+      "result_id": "de44e2e8-77a2-4992-bf2a-23d8d4ef3be2"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-008",
+      "test_name": "Injection PI-008 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-008 (Right-to-left override unicode) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1029.3340999996872,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:11.406841+00:00",
+      "result_id": "77b8e694-06bb-434b-b72f-a4faefcd5816"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-009",
+      "test_name": "Injection PI-009 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-009 (Null byte injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1088.2519000006141,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:12.495330+00:00",
+      "result_id": "d7ea3d4a-6a26-410f-b4e4-de5d419f19fe"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-010",
+      "test_name": "Injection PI-010 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-010 (BOM character) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1101.2712999981886,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:13.596488+00:00",
+      "result_id": "ab9f970b-0146-4bf6-9956-4f7b2769e18c"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-011",
+      "test_name": "Injection PI-011 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-011 (Rug pull attempt) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1194.779400000698,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:14.791051+00:00",
+      "result_id": "ef3d41cb-4af5-452b-a4eb-c09c49d19726"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-012",
+      "test_name": "Injection PI-012 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-012 (Exfiltration instruction) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1024.9015999979747,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:15.816321+00:00",
+      "result_id": "0464737b-0bf1-4b92-bb61-70cc00127192"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-013",
+      "test_name": "Injection PI-013 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-013 (Large payload DoS probe 10k) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1602.8414000029443,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:17.419719+00:00",
+      "result_id": "e8e51dbe-d1b4-4582-935f-a7d68ca24de7"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-014",
+      "test_name": "Injection PI-014 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-014 (Large payload DoS probe 100k) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1162.8788999987592,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:18.582064+00:00",
+      "result_id": "cd481509-ee03-4dec-81e2-78d2a5cc82dc"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-015",
+      "test_name": "Injection PI-015 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-015 (Jinja template injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1189.2091000008804,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:19.771312+00:00",
+      "result_id": "99ffc282-f676-4da6-8a9e-b518eb046066"
+    },
+    {
+      "test_id": "T02-workers_get_worker-PI-016",
+      "test_name": "Injection PI-016 → workers_get_worker",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker' handled PI-016 (Python format injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: Cloudflare API request failed'",
+      "duration_ms": 1324.4006999993871,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:21.096070+00:00",
+      "result_id": "2c52f960-3118-49ec-9ec1-91582464aedd"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-001",
+      "test_name": "Injection PI-001 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-001 (Classic override) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 1139.8791999999958,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:22.235825+00:00",
+      "result_id": "2fb61d64-a424-4e9f-9e92-057062cba317"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-002",
+      "test_name": "Injection PI-002 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-002 (Newline injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 1378.811599999608,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:23.614951+00:00",
+      "result_id": "0cf86a8e-02b2-488c-8e88-fa7beb89d4f0"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-003",
+      "test_name": "Injection PI-003 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-003 (XML tag injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 956.4233000019158,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:24.571696+00:00",
+      "result_id": "7ae8d72e-583a-4c36-a37b-651a4c14494c"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-004",
+      "test_name": "Injection PI-004 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-004 (SQL injection probe) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 2523.7114999981713,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:27.095873+00:00",
+      "result_id": "af32fbd7-5d7b-407c-ae8b-e31d93caa0ad"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-005",
+      "test_name": "Injection PI-005 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-005 (Shell injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 <!DOCTYPE html>\\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--'",
+      "duration_ms": 799.2448000004515,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:27.895625+00:00",
+      "result_id": "7847d9b1-05e6-410f-8072-b9adf819d967"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-006",
+      "test_name": "Injection PI-006 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-006 (Backtick injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 963.8291999981448,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:28.860326+00:00",
+      "result_id": "75c60b67-b8bd-4b4f-81e6-6de15792c43c"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-007",
+      "test_name": "Injection PI-007 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-007 (Path traversal) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 404 {\"result\":null,\"success\":false,\"errors\":[{\"code\":7003,\"message\":\"Could not route to /client/v4/accounts/etc/passwd, perhaps your object identifier is invalid?\"}],\"m'",
+      "duration_ms": 853.5308000027726,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:29.713643+00:00",
+      "result_id": "33aa015d-7faf-4077-8dd7-a3eb79a065d8"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-008",
+      "test_name": "Injection PI-008 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-008 (Right-to-left override unicode) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 1027.777799998148,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:30.741061+00:00",
+      "result_id": "fad6aed7-5b67-4a71-8d02-0b6b3e484af2"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-009",
+      "test_name": "Injection PI-009 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-009 (Null byte injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 400 <html>\\r\\n<head><title>400 Bad Request</title></head>\\r\\n<body>\\r\\n<center><h1>400 Bad Request</h1></center>\\r\\n<hr><center>cloudflare</center>\\r\\n</body>\\r\\n</html>\\r\\n'",
+      "duration_ms": 820.3237000016088,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:31.561614+00:00",
+      "result_id": "77756ec4-de3d-48f3-87c8-86b713f8782d"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-010",
+      "test_name": "Injection PI-010 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-010 (BOM character) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 1172.3259999998845,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:32.734533+00:00",
+      "result_id": "6fb11f4e-4b68-4317-b9e0-fa6bdd62fce6"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-011",
+      "test_name": "Injection PI-011 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-011 (Rug pull attempt) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 1168.2294999991427,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:33.903204+00:00",
+      "result_id": "4b360b8e-c670-4e16-9691-9b0b7b937d1a"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-012",
+      "test_name": "Injection PI-012 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-012 (Exfiltration instruction) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 1251.7907999972522,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:35.154028+00:00",
+      "result_id": "7b4a7477-cd8f-4f01-a2e3-351442e51b36"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-013",
+      "test_name": "Injection PI-013 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-013 (Large payload DoS probe 10k) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 1140.800199998921,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:36.295380+00:00",
+      "result_id": "58782fc1-2dda-437b-9117-abe6eb2110a6"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-014",
+      "test_name": "Injection PI-014 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-014 (Large payload DoS probe 100k) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 400 error code: 1036'",
+      "duration_ms": 1229.4282000002568,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:37.524808+00:00",
+      "result_id": "e3f48a7c-178f-4bf4-8a1a-349495262c4d"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-015",
+      "test_name": "Injection PI-015 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-015 (Jinja template injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 1128.7355999993451,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:38.654209+00:00",
+      "result_id": "ee04b980-d8a6-4df2-ad63-7b4def991ed3"
+    },
+    {
+      "test_id": "T02-workers_get_worker_code-PI-016",
+      "test_name": "Injection PI-016 → workers_get_worker_code",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'workers_get_worker_code' handled PI-016 (Python format injection) gracefully.",
+      "details": "Response excerpt: 'Error retrieving worker script: 403 {\"success\":false,\"errors\":[{\"code\":10000,\"message\":\"Authentication error\"}],\"messages\":[],\"result\":null}'",
+      "duration_ms": 1301.228300002549,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:39.954548+00:00",
+      "result_id": "c2d0c6bd-c9cb-49d1-b724-c39dfd910e18"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-001",
+      "test_name": "Injection PI-001 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-001 (Classic override) gracefully.",
+      "details": "Response excerpt: '<result>\\n<url>https://developers.cloudflare.com/https://developers.cloudflare.com/waf/detections/ai-security-for-apps/prompt-injection/</url>\\n<title></title>\\n<text>\\n### Why a score instead of a boolea'",
+      "duration_ms": 3219.1118000009737,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:43.174821+00:00",
+      "result_id": "6c946e5b-f7b9-40f0-a166-cea8d7edf812"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-002",
+      "test_name": "Injection PI-002 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-002 (Newline injection) gracefully.",
+      "details": "Response excerpt: '<result>\\n<url>https://developers.cloudflare.com/https://developers.cloudflare.com/ai-search/configuration/system-prompt/</url>\\n<title></title>\\n<text>\\n# System prompt\\n\\nSystem prompts allow you to guide'",
+      "duration_ms": 3203.76650000253,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:46.379526+00:00",
+      "result_id": "11dfb789-1852-42cf-b292-ce688f35221c"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-003",
+      "test_name": "Injection PI-003 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-003 (XML tag injection) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 4449.123200000031,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:50.828594+00:00",
+      "result_id": "0e6fb544-af82-49e5-bb62-62b602f87153"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-004",
+      "test_name": "Injection PI-004 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-004 (SQL injection probe) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 2388.4904000005918,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:53.216870+00:00",
+      "result_id": "b01034e0-b567-4e30-b168-3a70790bd839"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-005",
+      "test_name": "Injection PI-005 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-005 (Shell injection) gracefully.",
+      "details": "Response excerpt: '<result>\\n<url>https://developers.cloudflare.com/https://developers.cloudflare.com/workers/wrangler/commands/general/</url>\\n<title></title>\\n<text>\\n## `auth`\\n\\n### `auth token`\\n\\nRetrieve your current aut'",
+      "duration_ms": 1985.2508000003581,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:55.204057+00:00",
+      "result_id": "6fb15784-efed-4632-b0eb-45ff22216742"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-006",
+      "test_name": "Injection PI-006 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-006 (Backtick injection) gracefully.",
+      "details": "Response excerpt: '<result>\\n<url>https://developers.cloudflare.com/https://developers.cloudflare.com/workers-ai/models/kimi-k2.5/</url>\\n<title></title>\\n<text>\\n* `id` ` string ` required  \\n                               '",
+      "duration_ms": 2741.1800000008952,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:34:57.946580+00:00",
+      "result_id": "63c166c8-65ea-49af-bdfd-36a3247122aa"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-007",
+      "test_name": "Injection PI-007 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-007 (Path traversal) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 3614.1248000021733,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:01.560393+00:00",
+      "result_id": "522cdac0-a99b-43fb-9d5b-0f9dfbff38b6"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-008",
+      "test_name": "Injection PI-008 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-008 (Right-to-left override unicode) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 2577.078900001652,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:04.138056+00:00",
+      "result_id": "b8b4ae64-52c1-46a4-9c9a-8545633190f1"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-009",
+      "test_name": "Injection PI-009 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-009 (Null byte injection) gracefully.",
+      "details": "Response excerpt: '<result>\\n<url>https://developers.cloudflare.com/https://developers.cloudflare.com/workers/best-practices/workers-best-practices/</url>\\n<title></title>\\n<text>\\n// ✅ Good: test the null case explicitly\\n\\n'",
+      "duration_ms": 2579.53980000093,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:06.717777+00:00",
+      "result_id": "76b3895d-10e1-45c7-97b0-d2885a6f5a77"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-010",
+      "test_name": "Injection PI-010 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-010 (BOM character) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 2824.250199999369,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:09.542004+00:00",
+      "result_id": "92ae6a39-1a03-4b4e-b18e-bf9de5847d1b"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-011",
+      "test_name": "Injection PI-011 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-011 (Rug pull attempt) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 2172.0634999983304,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:11.714342+00:00",
+      "result_id": "776c4e6b-fb61-4f54-ba52-569aa4283d2d"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-012",
+      "test_name": "Injection PI-012 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-012 (Exfiltration instruction) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 2839.715800000704,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:14.554034+00:00",
+      "result_id": "57e304e5-b474-41b4-9b71-e52ba5e2da2d"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-013",
+      "test_name": "Injection PI-013 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-013 (Large payload DoS probe 10k) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 4120.720300001267,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:18.674728+00:00",
+      "result_id": "115cca91-8fe6-4da6-9740-4f847332b291"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-014",
+      "test_name": "Injection PI-014 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-014 (Large payload DoS probe 100k) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 7266.385599999921,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:25.941584+00:00",
+      "result_id": "ff1d0454-243d-40d8-b96f-b565ab35f9e3"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-015",
+      "test_name": "Injection PI-015 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-015 (Jinja template injection) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 2800.306399996771,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:28.741558+00:00",
+      "result_id": "78d1938e-b71f-4491-a8bb-00aa39e5dc52"
+    },
+    {
+      "test_id": "T02-search_cloudflare_documentation-PI-016",
+      "test_name": "Injection PI-016 → search_cloudflare_documentation",
+      "category": "SECURITY",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool 'search_cloudflare_documentation' handled PI-016 (Python format injection) gracefully.",
+      "details": "Response excerpt: ''",
+      "duration_ms": 2479.682799999864,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:31.221519+00:00",
+      "result_id": "818f2bb1-141d-4fb7-9b6a-f6a343fbe2a3"
+    },
+    {
+      "test_id": "T05-001",
+      "test_name": "10 Simultaneous Calls",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 10 concurrent calls to 'accounts_list' succeeded with no data leakage.",
+      "details": "min=1857ms  mean=2027ms  max=2337ms",
+      "duration_ms": 2634.717000000819,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:35:33.862704+00:00",
+      "result_id": "5e1b2bad-a788-4650-8d41-b89837342699"
+    },
+    {
+      "test_id": "T05-002",
+      "test_name": "50 Sequential Rapid Calls",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "p50=1375ms  p95=2492ms  p99=3811ms",
+      "details": "{\n  \"tool\": \"accounts_list\",\n  \"calls\": 50,\n  \"errors\": 0,\n  \"min_ms\": 1082.2,\n  \"mean_ms\": 1479.17,\n  \"max_ms\": 3811.26,\n  \"p50_ms\": 1375.39,\n  \"p95_ms\": 2492.11,\n  \"p99_ms\": 3811.26\n}",
+      "duration_ms": 73959.03149999867,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:36:47.821628+00:00",
+      "result_id": "9cddb7f2-523e-4b26-b7e5-718bc140b081"
+    },
+    {
+      "test_id": "T05-003",
+      "test_name": "100 Concurrent Calls (Stress Test)",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "All 100 calls succeeded. Throughput: 6.6 calls/sec",
+      "details": "Throughput: 6.6 calls/sec",
+      "duration_ms": 15154.450800000632,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:37:02.976393+00:00",
+      "result_id": "2c593d2f-8c23-41ce-b3d9-98ba9e0fe7ce"
+    },
+    {
+      "test_id": "T05-004",
+      "test_name": "Connection Stability Under Rapid Reconnect",
+      "category": "PERFORMANCE",
+      "severity": "PASS",
+      "passed": true,
+      "description": "Tool list consistent across all 5 reconnects: ['accounts_list', 'migrate_pages_to_workers_guide', 'observability_keys', 'observability_values', 'query_worker_observability', 'search_cloudflare_documentation', 'workers_get_worker', 'workers_get_worker_code', 'workers_list'].",
+      "details": "Reconnects: 5. Tools per connect: 9.",
+      "duration_ms": 49800.91579999862,
+      "remediation": null,
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:37:52.777174+00:00",
+      "result_id": "760f374c-d6ed-4f20-91e4-0de5dfff2afb"
+    },
+    {
+      "test_id": "T00-003",
+      "test_name": "Connection Closed Mid-Scan (Rate Limit / Server Reset)",
+      "category": "PERFORMANCE",
+      "severity": "INFO",
+      "passed": true,
+      "description": "The HTTP server closed the connection mid-scan. This is expected behaviour for production servers that apply rate-limiting after receiving the T07 auth probe suite. All security tests completed before the connection was lost.",
+      "details": "Unexpected HTTP/SSE transport error: HTTPStatusError: Client error '400 Bad Request' for url 'https://observability.mcp.cloudflare.com/mcp'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400 (caused by ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception))",
+      "duration_ms": 325034.78779999935,
+      "remediation": "Re-run with --no-load to skip T05 load tests and reduce the number of requests sent to the server. The connection drop does not indicate a vulnerability.",
+      "request_payload": null,
+      "response_payload": null,
+      "timestamp": "2026-04-13T18:38:06.781289+00:00",
+      "result_id": "54a15d27-f5ff-4033-9b76-1b54dc20b7b9"
+    }
+  ],
+  "legal": "MCPSafe is intended for use against MCP servers you own or have explicit written permission to test. Unauthorised scanning of third-party servers may violate computer fraud laws in your jurisdiction. Treat findings as confidential until disclosed to the server operator."
+}

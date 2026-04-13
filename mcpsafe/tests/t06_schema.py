@@ -600,6 +600,179 @@ async def _t06_005_permissive_schemas(
 
 
 # ---------------------------------------------------------------------------
+# T06-006 — Tool description quality scoring
+# ---------------------------------------------------------------------------
+
+# Minimum description length (characters) to be considered adequate.
+_MIN_DESC_LEN = 30
+
+# Terms that signal the description documents at least one parameter.
+_PARAM_DOC_SIGNALS: tuple[str, ...] = (
+    "param", "argument", "arg", "input", "field", "value",
+    "required", "optional", "specify", "provide", "pass",
+)
+
+# Vague single-word descriptions that add no information.
+_USELESS_DESCRIPTIONS: frozenset[str] = frozenset({
+    "tool", "function", "method", "action", "command", "call",
+    "execute", "run", "do", "perform", "handle", "process",
+})
+
+
+async def _t06_006_description_quality(
+    session: ClientSession,
+    server_info: ServerInfo,
+) -> list[TestResult]:
+    """
+    T06-006 — Score each tool's description for quality.
+
+    Scoring criteria
+    ----------------
+    - No description (None / empty)             → MEDIUM  (LLMs cannot use the tool)
+    - Description < 30 chars                    → LOW     (too terse to be useful)
+    - Description is a generic one-word label   → LOW     (e.g. "tool", "execute")
+    - Description doesn't hint at parameters    → INFO    (hard for LLMs to call)
+    - Acceptable description (≥ 30 chars, not
+      generic, at least one parameter signal)   → PASS
+
+    One result per tool; no results if there are no tools.
+    """
+    results: list[TestResult] = []
+    t0 = time.perf_counter()
+
+    if not server_info.tools:
+        return results
+
+    for tool in server_info.tools:
+        tid = f"T06-006-{tool.name[:32]}"
+        tname = f"Description Quality: {tool.name}"
+        duration = (time.perf_counter() - t0) * 1000.0
+
+        desc: str = (getattr(tool, "description", None) or "").strip()
+        has_params = bool(
+            isinstance(tool.input_schema, dict)
+            and isinstance(tool.input_schema.get("properties"), dict)
+            and tool.input_schema["properties"]
+        )
+
+        # ── Check 1: missing description ──────────────────────────────
+        if not desc:
+            results.append(
+                TestResult(
+                    test_id=tid, test_name=tname, category=_CAT,
+                    severity=Severity.MEDIUM, passed=False,
+                    description=(
+                        f"Tool {tool.name!r} has no description. "
+                        f"LLMs cannot understand when or how to call this tool."
+                    ),
+                    duration_ms=duration,
+                    details=(
+                        f"Tool '{tool.name}' returned an empty description string."
+                    ),
+                    remediation=(
+                        "Add a clear, concise description explaining what the tool "
+                        "does and when to use it. Include a brief summary of each "
+                        "parameter so LLMs can construct valid calls."
+                    ),
+                )
+            )
+            continue
+
+        # ── Check 2: description is useless single word ────────────────
+        if desc.lower().strip(".,!?:;") in _USELESS_DESCRIPTIONS:
+            results.append(
+                TestResult(
+                    test_id=tid, test_name=tname, category=_CAT,
+                    severity=Severity.LOW, passed=False,
+                    description=(
+                        f"Tool {tool.name!r} description is a single generic word "
+                        f"({desc!r}) — provides no useful context for LLMs."
+                    ),
+                    duration_ms=duration,
+                    details=(
+                        f"Description: {desc!r}\n"
+                        f"Generic words don't help an LLM decide when to use the tool."
+                    ),
+                    remediation=(
+                        "Replace the one-word description with a full sentence "
+                        "explaining what the tool does, its purpose, and any "
+                        "important constraints or side effects."
+                    ),
+                )
+            )
+            continue
+
+        # ── Check 3: description is too short ─────────────────────────
+        if len(desc) < _MIN_DESC_LEN:
+            results.append(
+                TestResult(
+                    test_id=tid, test_name=tname, category=_CAT,
+                    severity=Severity.LOW, passed=False,
+                    description=(
+                        f"Tool {tool.name!r} description is too short "
+                        f"({len(desc)} chars < {_MIN_DESC_LEN} minimum): {desc!r}."
+                    ),
+                    duration_ms=duration,
+                    details=(
+                        f"Description length: {len(desc)} chars (minimum: {_MIN_DESC_LEN})\n"
+                        f"Text: {desc!r}"
+                    ),
+                    remediation=(
+                        "Expand the description to at least 30 characters. "
+                        "A good description explains what the tool does and how to "
+                        "call it correctly — enough for an LLM to use it reliably."
+                    ),
+                )
+            )
+            continue
+
+        # ── Check 4: no parameter documentation signals ────────────────
+        if has_params:
+            desc_lower = desc.lower()
+            mentions_params = any(sig in desc_lower for sig in _PARAM_DOC_SIGNALS)
+            if not mentions_params:
+                # Has parameters but doesn't document them — INFO only
+                param_names = list(tool.input_schema["properties"].keys())[:5]
+                results.append(
+                    TestResult(
+                        test_id=tid, test_name=tname, category=_CAT,
+                        severity=Severity.INFO, passed=True,
+                        description=(
+                            f"Tool {tool.name!r} description does not mention its "
+                            f"parameters ({', '.join(param_names)})."
+                        ),
+                        duration_ms=duration,
+                        details=(
+                            f"Description: {desc!r}\n"
+                            f"Tool has {len(tool.input_schema['properties'])} parameter(s) "
+                            f"but the description contains no parameter documentation signals."
+                        ),
+                        remediation=(
+                            "Include a brief description of each parameter in the "
+                            "tool's description so LLMs can construct valid calls. "
+                            "Example: 'Accepts: query (string) - the search query.'"
+                        ),
+                    )
+                )
+                continue
+
+        # ── All quality checks passed ──────────────────────────────────
+        results.append(
+            TestResult.make_pass(
+                test_id=tid, test_name=tname, category=_CAT,
+                description=(
+                    f"Tool {tool.name!r} has an adequate description "
+                    f"({len(desc)} chars)."
+                ),
+                duration_ms=duration,
+                details=f"Description: {desc[:200]!r}",
+            )
+        )
+
+    return results
+
+
+# ---------------------------------------------------------------------------
 # Public entry point
 # ---------------------------------------------------------------------------
 
@@ -631,5 +804,6 @@ async def run(
     results.append(await _t06_003_additional_properties(session, server_info))
     results.extend(await _t06_004_return_consistency(session, server_info))
     results.extend(await _t06_005_permissive_schemas(session, server_info))
+    results.extend(await _t06_006_description_quality(session, server_info))
 
     return results
