@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/mcpsafe.svg)](https://pypi.org/project/mcpsafe/)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: Noncommercial](https://img.shields.io/badge/License-Polyform%20NC-blue.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-6425%20run-green.svg)]()
 [![SARIF](https://img.shields.io/badge/output-SARIF%202.1.0-blueviolet)](https://sarifweb.azurewebsites.net/)
 
@@ -469,7 +469,7 @@ Use MCPSafe responsibly:
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+**Polyform Noncommercial License 1.0.0** — free for personal use, academic research, open-source projects, and non-profit security work. Commercial use (paid audits, SaaS products, consulting) requires a separate license — contact [bantwalravikiran@gmail.com](mailto:bantwalravikiran@gmail.com). See [LICENSE](LICENSE) for full terms.
 
 ---
 
