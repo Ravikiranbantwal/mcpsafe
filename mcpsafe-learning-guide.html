@@ -226,7 +226,7 @@ a:hover { text-decoration: underline; }
 ═══════════════════════════════════════════ -->
 <div class="section active" id="tab-what">
   <div class="section-title">🤔 What is MCPSafe?</div>
-  <p class="section-sub">MCPSafe is the <strong>world's first dedicated security testing framework</strong> for MCP servers. Let's break it all down.</p>
+  <p class="section-sub">Most MCP security tools scan static config files or tool descriptions. <strong>MCPSafe is the first to connect to a live running server</strong> and test actual runtime behavior — including load testing, latency benchmarking, and cross-request data leakage under concurrency. Let's break it all down.</p>
 
   <div class="card">
     <div class="card-title"><span class="emoji-big">🔌</span> First, what is MCP?</div>
@@ -253,7 +253,45 @@ a:hover { text-decoration: underline; }
           <li>Crash under malformed input (DoS)</li>
         </ul>
         <br>
-        Before MCPSafe — <strong>no tool existed</strong> to test for these.
+        Other tools only analyze static descriptions. MCPSafe <strong>connects to the live server</strong> and tests actual runtime behavior.
+        <br><br>
+        <table style="width:100%; border-collapse:collapse; font-size:14px; margin-top:10px">
+          <tr style="background:rgba(255,255,255,0.05)">
+            <th style="padding:8px; text-align:left; border:1px solid rgba(255,255,255,0.1)">Capability</th>
+            <th style="padding:8px; text-align:left; border:1px solid rgba(255,255,255,0.1)">Who has it</th>
+            <th style="padding:8px; text-align:center; border:1px solid rgba(255,255,255,0.1)">MCPSafe</th>
+          </tr>
+          <tr>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Static description analysis</td>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Snyk, Proximity</td>
+            <td style="padding:8px; text-align:center; border:1px solid rgba(255,255,255,0.1)">✅</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Live adversarial payloads</td>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">mcpwn</td>
+            <td style="padding:8px; text-align:center; border:1px solid rgba(255,255,255,0.1)">✅</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Load & concurrency testing</td>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Nobody</td>
+            <td style="padding:8px; text-align:center; border:1px solid rgba(255,255,255,0.1)">✅</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Latency benchmarking</td>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Nobody</td>
+            <td style="padding:8px; text-align:center; border:1px solid rgba(255,255,255,0.1)">✅</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Cross-request data leakage</td>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Nobody</td>
+            <td style="padding:8px; text-align:center; border:1px solid rgba(255,255,255,0.1)">✅</td>
+          </tr>
+          <tr>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">SARIF for GitHub Security tab</td>
+            <td style="padding:8px; border:1px solid rgba(255,255,255,0.1)">Nobody (yet)</td>
+            <td style="padding:8px; text-align:center; border:1px solid rgba(255,255,255,0.1)">✅</td>
+          </tr>
+        </table>
       </div>
     </div>
     <div class="card">
@@ -1204,40 +1242,4 @@ console.<span class="fn">print</span>(<span class="cls">Panel</span>(<span class
 
 // ── TABS ──
 function showTab(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  event.target.classList.add('active');
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-// ── MODULE CARDS ──
-function toggleModule(id) {
-  const panel = document.getElementById(id);
-  panel.classList.toggle('open');
-}
-
-// ── ACCORDION ──
-function toggleAcc(header) {
-  const item = header.parentElement;
-  item.classList.toggle('open');
-}
-
-// ── QUIZ ──
-function answer(opt, result) {
-  const card = opt.closest('.quiz-card');
-  if(card.dataset.answered) return;
-  card.dataset.answered = '1';
-  const opts = card.querySelectorAll('.quiz-opt');
-  opts.forEach(o => o.style.pointerEvents='none');
-  opt.classList.add(result);
-  const results = card.querySelectorAll('.quiz-result');
-  if(result === 'correct') {
-    results[0].classList.add('show');
-  } else {
-    results[1].classList.add('show');
-  }
-}
-</script>
-</body>
-</html>
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('
