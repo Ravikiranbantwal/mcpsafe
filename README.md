@@ -20,6 +20,26 @@ New to MCPSafe or want to understand how the code works? The learning guide cove
 
 ---
 
+## Why MCPSafe?
+
+Most MCP security tools analyze tool descriptions statically.
+MCPSafe connects to your live running server and tests actual
+runtime behavior.
+
+| Approach | Tools | MCPSafe |
+|---|---|---|
+| Static description analysis | Snyk Agent Scan, Proximity | ✅ via T04 |
+| Live adversarial payload testing | mcpwn | ✅ via T02/T03 |
+| Load & concurrency testing | Nobody | ✅ via T05 |
+| Latency benchmarking | Nobody | ✅ via T08 |
+| Cross-request data leakage | Nobody | ✅ via T05-001 |
+| JSON Schema validation | Nobody | ✅ via T06 |
+| SARIF for GitHub Security tab | Nobody (yet) | ✅ |
+| Regression tracking (compare) | Nobody | ✅ |
+| No account or API key needed | mcpwn only | ✅ |
+
+---
+
 ## Real-World Results
 
 MCPSafe has audited **14 MCP servers** — including Stripe's, Cloudflare's, and Anthropic's own reference server. All findings below are from the current v0.1.0 build with false-positive fixes applied.
