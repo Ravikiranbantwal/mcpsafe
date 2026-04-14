@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "mcpsafe"
 version = "0.1.0"
-description = "Security and stress-testing framework for MCP (Model Context Protocol) servers"
+description = "Live-runtime security and stress testing for MCP servers — adversarial payloads, load & concurrency, latency, auth bypass. SARIF output."
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.11"
