@@ -31,7 +31,7 @@ from rich.table import Table
 # Project version — single source of truth
 # ---------------------------------------------------------------------------
 
-_VERSION = "0.1.0"
+_VERSION = "0.2.0"
 
 # ---------------------------------------------------------------------------
 # Module registry

@@ -3,7 +3,8 @@
 [![PyPI version](https://img.shields.io/pypi/v/mcpsafe.svg)](https://pypi.org/project/mcpsafe/)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
 [![License: Noncommercial](https://img.shields.io/badge/License-Polyform%20NC-blue.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-6425%20run-green.svg)]()
+[![Modules](https://img.shields.io/badge/modules-20-green.svg)]()
+[![Tests](https://img.shields.io/badge/tests-200%2B-green.svg)]()
 [![SARIF](https://img.shields.io/badge/output-SARIF%202.1.0-blueviolet)](https://sarifweb.azurewebsites.net/)
 
 > MCP has 97 million installs. Most MCP security tools scan static config files or tool descriptions. MCPSafe is the first to connect to a live running server and test actual runtime behavior — including load testing, latency benchmarking, and cross-request data leakage under concurrency.
@@ -34,9 +35,22 @@ runtime behavior.
 | Latency benchmarking | Nobody | ✅ via T08 |
 | Cross-request data leakage | Nobody | ✅ via T05-001 |
 | JSON Schema validation | Nobody | ✅ via T06 |
+| **Reverse prompt-injection (tool output poisoning)** | **Nobody** | **✅ via T09** |
+| **Cross-session data leakage (multi-tenant bleed)** | **Nobody** | **✅ via T10** |
+| **Timing side-channel enumeration** | **Nobody** | **✅ via T11** |
+| **Error-message secret leakage (15 patterns)** | **Nobody** | **✅ via T12** |
+| **Server-initiated sampling abuse** | **Nobody** | **✅ via T13** |
+| **Notification-flood DoS** | **Nobody** | **✅ via T14** |
+| **Concurrent-call reentrancy (state bleed)** | **Nobody** | **✅ via T15** |
+| **Silent capability creep** | **Nobody** | **✅ via T16** |
+| **Cross-session SHA-256 description drift** | **Nobody** | **✅ via T17** |
+| **SSRF via resource URIs (10 payloads)** | **Nobody** | **✅ via T18** |
+| **Unicode homoglyph tool impersonation** | **Nobody** | **✅ via T19** |
+| **Server-side memory-leak detection** | **Nobody** | **✅ via T20** |
 | SARIF for GitHub Security tab | Nobody (yet) | ✅ |
 | Regression tracking (compare) | Nobody | ✅ |
 | No account or API key needed | mcpwn only | ✅ |
+| Rate-limit-aware pacing for auth-gated APIs | Nobody | ✅ |
 
 ---
 
@@ -489,12 +503,4 @@ Use MCPSafe responsibly:
 
 ## License
 
-**Polyform Noncommercial License 1.0.0** — free for personal use, academic research, open-source projects, and non-profit security work. Commercial use (paid audits, SaaS products, consulting) requires a separate license — contact [bantwalravikiran@gmail.com](mailto:bantwalravikiran@gmail.com). See [LICENSE](LICENSE) for full terms.
-
----
-
-## Acknowledgements
-
-Built on the official [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) by Anthropic. MCPSafe is an independent open-source project and is not affiliated with or endorsed by Anthropic.
-
-SARIF output format maintained by [OASIS](https://www.oasis-open.org/committees/sarif/).
+**Polyform Noncommercial License 1.0.0** — free for personal use, academic research, open-source projects, and non-profit security work. Commercial use (paid audits, S

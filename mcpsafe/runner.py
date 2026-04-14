@@ -7,20 +7,26 @@ and returns a complete ``ScanReport``.
 
 Execution order — stdio
 -----------------------
-  Step 1  ── T01  Discovery          sequential  (required for all others)
-  Step 2  ── T08 + T06              concurrent  (Latency baseline + Schema)
-  Step 3  ── T02 + T03 + T04 + T07  concurrent  (Injection, Fuzzer, Poison, Auth)
-  Step 4  ── T05  Load               sequential  (most disruptive; last before report)
-  Step 5  ── T08-005 Comparison      sequential  (needs T05 p95 data)
+  Step 1   ── T01  Discovery                                                sequential
+  Step 2   ── T08 + T06                                                      concurrent
+  Step 3   ── T02 + T03 + T04 + T07 + T09 + T12 + T13 + T16 + T18 + T19    concurrent
+  Step 3b  ── T11  Timing Side-Channel                                       sequential (solo)
+  Step 3c  ── T15  Reentrancy                                                sequential (solo)
+  Step 4   ── T05  Load                                                      sequential
+  Step 4b  ── T10 + T17 + T14 + T20                                          sequential (quiet)
+  Step 5   ── T08-005 Comparison                                             sequential
 
-Execution order — HTTP/SSE  (T05 runs BEFORE T07)
---------------------------------------------------
-  Step 1  ── T01  Discovery          sequential
-  Step 2  ── T08 + T06              concurrent
-  Step 3  ── T02 + T03 + T04        concurrent  (no T07 yet — preserve session)
-  Step 4  ── T05  Load               sequential  (runs on fresh session, before T07)
-  Step 5  ── T07  Auth               sequential  (last — may invalidate the session)
-  Step 6  ── T08-005 Comparison      sequential
+Execution order — HTTP/SSE
+--------------------------
+  Step 1   ── T01  Discovery                                                sequential
+  Step 2   ── T08 + T06                                                      concurrent
+  Step 3   ── T02 + T03 + T04 + T09 + T12 + T13 + T16 + T18 + T19          concurrent
+  Step 3b  ── T11  Timing Side-Channel                                       sequential (solo)
+  Step 3c  ── T15  Reentrancy                                                sequential (solo)
+  Step 4   ── T05  Load                                                      sequential
+  Step 4b  ── T10 + T17 + T14 + T20                                          sequential (quiet)
+  Step 5   ── T07  Auth                                                      sequential (last)
+  Step 6   ── T08-005 Comparison                                             sequential
 
 Rationale: T07 sends intentionally malformed HTTP requests (missing/invalid auth
 headers, malformed protocol versions) that cause production HTTP servers to close
@@ -77,6 +83,18 @@ from mcpsafe.tests import (
     t06_schema,
     t07_auth,
     t08_latency,
+    t09_output_sanitization,
+    t10_cross_session,
+    t11_timing_side_channel,
+    t12_secret_leakage,
+    t13_sampling_abuse,
+    t14_notification_flood,
+    t15_reentrancy,
+    t16_capability_creep,
+    t17_hash_drift,
+    t18_ssrf,
+    t19_homoglyph,
+    t20_memory_leak,
 )
 
 # ---------------------------------------------------------------------------
@@ -211,7 +229,7 @@ class ScanRunner:
                         ),
                     )
 
-                    # 3.3 ── T02 + T03 + T04 (concurrent) ─────────────────
+                    # 3.3 ── T02 + T03 + T04 + T09 + T12 (concurrent) ─────
                     # Note: T07 is intentionally excluded here for HTTP scans
                     # (see step 3.5) because T07 sends malformed auth requests
                     # that cause production servers to close the session.
@@ -224,61 +242,117 @@ class ScanRunner:
                     t04_task = progress.add_task(
                         "[magenta]T04 Tool Poison[/magenta]", total=1
                     )
+                    t09_task = progress.add_task(
+                        "[magenta]T09 Output Sanitization[/magenta]", total=1
+                    )
+                    t12_task = progress.add_task(
+                        "[magenta]T12 Error Secret Leakage[/magenta]", total=1
+                    )
+                    t13_task = progress.add_task(
+                        "[magenta]T13 Sampling Abuse[/magenta]", total=1
+                    )
+                    t16_task = progress.add_task(
+                        "[magenta]T16 Capability Creep[/magenta]", total=1
+                    )
+                    t18_task = progress.add_task(
+                        "[magenta]T18 SSRF[/magenta]", total=1
+                    )
+                    t19_task = progress.add_task(
+                        "[magenta]T19 Homoglyph[/magenta]", total=1
+                    )
+                    concurrent_modules = [
+                        self._run_module(
+                            "T02 Injection",
+                            t02_injection.run(
+                                session, server_info,
+                                skip_large_payloads=self.config.no_load,
+                                timeout=self.config.timeout_seconds,
+                            ),
+                            progress, t02_task,
+                        ),
+                        self._run_module(
+                            "T03 Fuzzer",
+                            t03_fuzzer.run(session, server_info, self.config),
+                            progress, t03_task,
+                        ),
+                        self._run_module(
+                            "T04 Tool Poison",
+                            t04_tool_poison.run(session, server_info),
+                            progress, t04_task,
+                        ),
+                        self._run_module(
+                            "T09 Output Sanitization",
+                            t09_output_sanitization.run(
+                                session, server_info, self.config
+                            ),
+                            progress, t09_task,
+                        ),
+                        self._run_module(
+                            "T12 Error Secret Leakage",
+                            t12_secret_leakage.run(
+                                session, server_info, self.config
+                            ),
+                            progress, t12_task,
+                        ),
+                        self._run_module(
+                            "T13 Sampling Abuse",
+                            t13_sampling_abuse.run(
+                                session, server_info, self.config
+                            ),
+                            progress, t13_task,
+                        ),
+                        self._run_module(
+                            "T16 Capability Creep",
+                            t16_capability_creep.run(
+                                session, server_info, self.config
+                            ),
+                            progress, t16_task,
+                        ),
+                        self._run_module(
+                            "T18 SSRF",
+                            t18_ssrf.run(session, server_info, self.config),
+                            progress, t18_task,
+                        ),
+                        self._run_module(
+                            "T19 Homoglyph",
+                            t19_homoglyph.run(session, server_info, self.config),
+                            progress, t19_task,
+                        ),
+                    ]
                     if not is_http:
-                        # For stdio: include T07 here (concurrent with T02-T04)
+                        # For stdio: include T07 here (concurrent with the above)
                         t07_task = progress.add_task(
                             "[magenta]T07 Auth[/magenta]", total=1
                         )
-                        await asyncio.gather(
-                            self._run_module(
-                                "T02 Injection",
-                                t02_injection.run(
-                                    session, server_info,
-                                    skip_large_payloads=self.config.no_load,
-                                    timeout=self.config.timeout_seconds,
-                                ),
-                                progress, t02_task,
-                            ),
-                            self._run_module(
-                                "T03 Fuzzer",
-                                t03_fuzzer.run(session, server_info, self.config),
-                                progress, t03_task,
-                            ),
-                            self._run_module(
-                                "T04 Tool Poison",
-                                t04_tool_poison.run(session, server_info),
-                                progress, t04_task,
-                            ),
+                        concurrent_modules.append(
                             self._run_module(
                                 "T07 Auth",
                                 t07_auth.run(session, server_info, self.config),
                                 progress, t07_task,
-                            ),
+                            )
                         )
-                    else:
-                        # For HTTP: run T02/T03/T04 without T07 to preserve the
-                        # session for T05 load tests (T07 comes last).
-                        await asyncio.gather(
-                            self._run_module(
-                                "T02 Injection",
-                                t02_injection.run(
-                                    session, server_info,
-                                    skip_large_payloads=self.config.no_load,
-                                    timeout=self.config.timeout_seconds,
-                                ),
-                                progress, t02_task,
-                            ),
-                            self._run_module(
-                                "T03 Fuzzer",
-                                t03_fuzzer.run(session, server_info, self.config),
-                                progress, t03_task,
-                            ),
-                            self._run_module(
-                                "T04 Tool Poison",
-                                t04_tool_poison.run(session, server_info),
-                                progress, t04_task,
-                            ),
-                        )
+                    await asyncio.gather(*concurrent_modules)
+
+                    # 3.3b ── T11 Timing Side-Channel + T15 Reentrancy ──────
+                    # Timing analysis runs solo; reentrancy needs concurrent
+                    # overlap within itself — both require no other session
+                    # activity to get clean measurements.
+                    t11_task = progress.add_task(
+                        "[magenta]T11 Timing Side-Channel[/magenta]", total=1
+                    )
+                    await self._run_module(
+                        "T11 Timing Side-Channel",
+                        t11_timing_side_channel.run(session, server_info, self.config),
+                        progress, t11_task,
+                    )
+                    t15_task = progress.add_task(
+                        "[magenta]T15 Reentrancy[/magenta]", total=1
+                    )
+                    await self._run_module(
+                        "T15 Reentrancy",
+                        t15_reentrancy.run(session, server_info, self.config),
+                        progress, t15_task,
+                    )
 
                     # 3.4 ── T05 Load ──────────────────────────────────────
                     t05_task = progress.add_task(
@@ -288,6 +362,46 @@ class ScanRunner:
                         "T05 Load",
                         t05_load.run(session, server_info, self.config),
                         progress, t05_task,
+                    )
+
+                    # 3.4b ── T10 Cross-Session + T14 Notification Flood +
+                    #          T17 Hash Drift + T20 Memory Leak (sequential) ──
+                    # These all either open a second connection (T10, T17) or
+                    # need a long quiet window (T14, T20) — they cannot run
+                    # concurrently with other tests.
+                    t10_task = progress.add_task(
+                        "[magenta]T10 Cross-Session Leakage[/magenta]", total=1
+                    )
+                    await self._run_module(
+                        "T10 Cross-Session Leakage",
+                        t10_cross_session.run(session, server_info, self.config),
+                        progress, t10_task,
+                    )
+                    t17_task = progress.add_task(
+                        "[magenta]T17 Hash Drift[/magenta]", total=1
+                    )
+                    await self._run_module(
+                        "T17 Hash Drift",
+                        t17_hash_drift.run(session, server_info, self.config),
+                        progress, t17_task,
+                    )
+                    t14_task = progress.add_task(
+                        "[magenta]T14 Notification Flood[/magenta]", total=1
+                    )
+                    await self._run_module(
+                        "T14 Notification Flood",
+                        t14_notification_flood.run(
+                            session, server_info, self.config
+                        ),
+                        progress, t14_task,
+                    )
+                    t20_task = progress.add_task(
+                        "[magenta]T20 Memory Leak[/magenta]", total=1
+                    )
+                    await self._run_module(
+                        "T20 Memory Leak",
+                        t20_memory_leak.run(session, server_info, self.config),
+                        progress, t20_task,
                     )
 
                     # 3.5 ── T07 Auth (HTTP only — runs LAST to avoid session
@@ -488,7 +602,7 @@ class ScanRunner:
         self.console.print(
             Panel(
                 "\n".join(lines),
-                title="[bold blue]MCPSafe v0.1.0 — Security & Performance Scanner[/bold blue]",
+                title="[bold blue]MCPSafe v0.2.0 — Security & Performance Scanner[/bold blue]",
                 border_style="blue",
                 padding=(1, 2),
             )
