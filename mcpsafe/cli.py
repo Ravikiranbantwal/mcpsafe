@@ -19,8 +19,30 @@ Exit codes
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
 from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# Windows console Unicode fix
+# ---------------------------------------------------------------------------
+# rich uses box-drawing characters (█, ─, ╭, ╯, …) in its progress bars and
+# severity charts.  On Windows the default stdout codec is cp1252 which
+# cannot encode these — resulting in ``'charmap' codec can't encode character``
+# crashes that abort the scan AFTER tests finish but BEFORE reports are saved.
+#
+# Reconfigure stdout/stderr to UTF-8 with error-replacement as the very first
+# thing we do.  Setting PYTHONIOENCODING too ensures any child processes
+# inherit the same setting.
+if sys.platform == "win32":
+    os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+    except (AttributeError, Exception):
+        # Older Python or non-standard stream — fall through silently;
+        # the scanner will still work, just the box-drawing may render poorly.
+        pass
 
 import click
 from rich.console import Console

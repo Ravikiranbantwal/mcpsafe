@@ -511,7 +511,18 @@ class ScanRunner:
         # ── STEP 4: Build and return the complete report ──────────────────
         report.add_results(self._results)
         report.finish()
-        self._print_summary(report)
+        # Guard the summary print: if the terminal cannot render the box-
+        # drawing characters rich uses (e.g. Windows cp1252 console that was
+        # not reconfigured), the print call can raise UnicodeEncodeError.
+        # That must not prevent the CLI from persisting reports to disk.
+        try:
+            self._print_summary(report)
+        except Exception as exc:
+            self.console.print(
+                f"[yellow]Warning: summary could not be rendered "
+                f"({type(exc).__name__}: {str(exc)[:150]}). "
+                f"Reports will still be saved.[/yellow]"
+            )
         return report
 
     # ------------------------------------------------------------------
