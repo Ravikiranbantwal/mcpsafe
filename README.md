@@ -561,4 +561,19 @@ Use MCPSafe responsibly:
 
 ## License
 
-**Polyform Noncommercial License 1.0.0** — free for personal use, academic research, open-source projects, and non-profit security work. Commercial use (paid audits, S
+**Polyform Noncommercial License 1.0.0** — free for personal use, academic research, open-source projects, and non-profit security work. Commercial use (paid audits, SaaS products, managed-service integration, or any use directed at commercial advantage) requires a separate commercial licence — contact [bantwalravikiran@gmail.com](mailto:bantwalravikiran@gmail.com).
+
+See [LICENSE](LICENSE) for full terms.
+
+---
+
+## Acknowledgements
+
+Built on top of the official **[Model Context Protocol](https://modelcontextprotocol.io)** SDK from Anthropic, plus [httpx](https://www.python-httpx.org/), [click](https://click.palletsprojects.com/), [rich](https://rich.readthedocs.io/), [jinja2](https://jinja.palletsprojects.com/), and [anyio](https://anyio.readthedocs.io/).
+
+Prior art and inspiration:
+- Invariant Labs — original rug-pull / tool description mutation research
+- The OWASP AI Security & Privacy Guide
+- The broader MCP security research community
+
+If you use MCPSafe in research, please cite this repository.
