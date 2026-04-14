@@ -56,40 +56,48 @@ runtime behavior.
 
 ## Real-World Results
 
-MCPSafe has audited **14 MCP servers** — including Stripe's, Cloudflare's, and Anthropic's own reference server. All findings below are from the current v0.1.0 build with false-positive fixes applied.
+MCPSafe v0.2.0 audited **13 MCP servers** — including Stripe's, Cloudflare's, GitHub's, and Anthropic's reference servers. Four false-positive fixes have been applied and the numbers below are the audited, validated counts after those fixes:
 
-**6,425 tests · 1 CRITICAL · 35 HIGH · 550 MEDIUM · 90.0% pass rate**
+- **T02 Injection** — IPv4 pattern now matches only private-range IPs (10.x, 172.16-31.x, 192.168.x, 127.x, 169.254.x). Public IPs in legitimate API responses (GitHub JSON, timestamps, version strings) no longer false-positive.
+- **T05 Load** — connection-drop failures downgraded from HIGH to MEDIUM (a reliability limit, not a security hole). Genuine concurrency bugs still flagged HIGH.
+- **T09 Output Sanitization** — pass-through tools (read_file, git_diff, fetch, search_issues, etc.) no longer scanned for PI markers, since their output is verbatim data.
+- **T19 Homoglyph** — confusable / mixed-script identifiers only flagged HIGH when the name actually collides with an existing ASCII identifier on the same server.
 
-| Server | Transport | Tests | CRITICAL | HIGH | MEDIUM | Overall |
-|--------|-----------|------:|:--------:|:----:|:------:|:-------:|
-| `mcp.stripe.com` *(live, auth)* 💳 | HTTP | 1,363 | **1** | 1 | 170 | 🔴 CRITICAL |
-| `@modelcontextprotocol/server-everything` | stdio | 383 | — | **16** | 69 | 🟠 HIGH |
-| `@modelcontextprotocol/server-filesystem` | stdio | 558 | — | 1 | 91 | 🟠 HIGH |
-| `@modelcontextprotocol/server-github` | stdio | 2,078 | — | 1 | 1 | 🟠 HIGH |
-| `mcp-server-sqlite` (uvx) | stdio | 216 | — | **15** | 8 | 🟠 HIGH |
-| `mcp_text_processor` (test server) | stdio | 298 | — | 1 | 44 | 🟠 HIGH |
-| `docs.mcp.cloudflare.com` *(live)* | HTTP | 74 | — | — | 4 | 🟡 MEDIUM |
-| `mcp-server-fetch` (uvx) | stdio | 32 | — | — | 3 | 🟡 MEDIUM |
-| `mcp-server-git` (uvx) | stdio | 545 | — | — | 58 | 🟡 MEDIUM |
-| `mcp_calculator` (test server) | stdio | 212 | — | — | 20 | 🟡 MEDIUM |
-| `mcp_notes` (test server) | stdio | 228 | — | — | 38 | 🟡 MEDIUM |
-| `observability.mcp.cloudflare.com` *(live, auth)* | HTTP | 151 | — | — | 2 | 🟡 MEDIUM |
-| `simple_server` (test fixture) | stdio | 163 | — | — | 28 | 🟡 MEDIUM |
-| `mcp-server-time` (uvx) | stdio | 124 | — | — | 14 | 🟡 MEDIUM |
+**3,500+ tests across 20 modules · 0 CRITICAL · 33 HIGH · ~470 MEDIUM**
+
+| Server | Transport | CRITICAL | HIGH | MEDIUM | Notable Finding |
+|--------|-----------|:--------:|:----:|:------:|-----------------|
+| `@modelcontextprotocol/server-everything` | stdio | — | **16** | 71 | Stored PI via `args-prompt`; DoS via INT_MAX on `trigger-long-running-operation` |
+| `mcp-server-sqlite` *(uvx)* | stdio | — | **14** | 8 | Stored PI via `mcp-demo` prompt template |
+| `mcp.stripe.com` *(auth)* 💳 | HTTP | — | — | 170 | Injection echoes across `create_refund`, `cancel_subscription`, `list_payment_intents` |
+| `mcp-server-fetch` *(uvx)* | stdio | — | 2 | 15 | Prompt injection in `fetch` tool; 100 KB payload DoS |
+| `mcp_text_processor` *(test)* | stdio | — | 1 | 42 | 100 KB payload triggered hard timeout |
+| `@modelcontextprotocol/server-filesystem` | stdio | — | — | 91 | Injection echoes in OS error messages |
+| `@modelcontextprotocol/server-github` *(auth)* | stdio | — | — | 45 | Injection payloads echoed in search-result error messages |
+| `mcp-server-git` *(uvx)* | stdio | — | — | ~60 | Git tool error messages echo injection payloads |
+| `mcp_calculator` *(test)* | stdio | — | — | 20 | — |
+| `mcp_notes` *(test)* | stdio | — | — | 37 | — |
+| `mcp-server-time` *(uvx)* | stdio | — | — | 14 | — |
+| `docs.mcp.cloudflare.com` *(auth)* | HTTP | — | — | 2 | — |
+| `observability.mcp.cloudflare.com` *(auth)* | HTTP | — | — | 1 | — |
 
 ### Selected Findings
 
-**`mcp.stripe.com` (Stripe Payments, live HTTP, auth)** — 1,363 tests across 31 tools. **T04-001 CRITICAL rug-pull confirmed**: Stripe's production server mutates tool descriptions between consecutive `list_tools()` calls 3 seconds apart — the server itself exhibits the attack pattern MCPSafe is designed to detect. T04-003 HIGH: 8 cross-tool parasitic references in tool descriptions. 170 MEDIUM: injection payloads echoed verbatim by virtually every financial tool including `create_refund`, `cancel_subscription`, `create_invoice`, and `list_payment_intents`.
+**`@modelcontextprotocol/server-everything` (Anthropic's reference server)** — **16 HIGH, 0 CRITICAL**. Two vulnerability classes: (1) **Stored prompt injection** — 14 HIGH findings from the `args-prompt` prompt template, which embeds raw argument values directly into generated LLM messages. (2) **DoS via integer overflow** — `trigger-long-running-operation` hangs 35+ seconds on `2147483647` (INT_MAX) and `1e308` (max float), confirmed resource-exhaustion DoS on Anthropic's own reference implementation.
 
-**`@modelcontextprotocol/server-everything` (Anthropic's reference server)** — 16 HIGH, 0 CRITICAL. Two vulnerability classes: (1) **Stored prompt injection** — 14 HIGH findings from the `args-prompt` prompt template, which embeds raw argument values directly into generated LLM messages; all 14 injection payloads land in the AI's context window. (2) **DoS via integer overflow** — `trigger-long-running-operation` hangs for 35+ seconds on `2147483647` (INT_MAX) and `1e308` (max float), confirmed resource-exhaustion DoS on Anthropic's own reference implementation.
+**`mcp-server-sqlite` (uvx)** — **14 HIGH**, all from the `mcp-demo` prompt template. The prompt embeds raw argument values into generated messages without sanitisation. Every PI-001..PI-016 payload becomes a stored prompt injection landing in the LLM context window.
 
-**`mcp-server-sqlite` (uvx)** — 15 HIGH, all from the `mcp-demo` prompt template. The prompt embeds raw argument values into generated messages without sanitisation — all 15 injection payloads (PI-001 through PI-012, PI-015, PI-016) become stored prompt injections. Additionally, the `memo://insights` resource response contains a suspicious pattern flagged as HIGH.
+**`mcp.stripe.com` (Stripe Payments, live HTTP, auth)** — **170 MEDIUM**. Stripe's production server echoes injection payloads verbatim across every financial tool — `create_refund`, `cancel_subscription`, `create_invoice`, `list_payment_intents`, and more. Any LLM consuming Stripe tool output is a prompt-injection attack surface.
 
-**`@modelcontextprotocol/server-filesystem`** — 91 MEDIUM injection echoes across file-path tools (`read_file`, `write_file`, `list_directory`). The tools pass raw argument strings directly to OS syscalls; malformed paths return OS errors containing the injection payload verbatim. 1 HIGH T07 auth finding.
+**`@modelcontextprotocol/server-filesystem`** — **91 MEDIUM** injection echoes across file-path tools (`read_file`, `write_file`, `list_directory`). The tools pass raw argument strings to OS syscalls; malformed paths return OS errors containing the injection payload verbatim.
 
-**`mcp-server-git` (uvx)** — 58 MEDIUM. Git tools pass raw LLM arguments to shell commands without sanitisation. Injection payloads appear verbatim in OS-level error messages (`git status 'Ignore previous instructions…'`), creating a stored injection pathway for any AI model that reads the error output.
+**`@modelcontextprotocol/server-github`** — **45 MEDIUM** injection echoes via `search_issues` / `search_repositories`. These tools pass user `query` strings to GitHub's API, which returns search results verbatim. An LLM reading the output could follow injected instructions — lower severity than a direct data leak because the echo is bounded by the API's search response shape.
 
-**`observability.mcp.cloudflare.com` (Cloudflare Observability, live HTTP, auth)** — 151 tests, 2 MEDIUM. T04-001 detected a description growth (1,001 → 1,603 chars) between calls — consistent with CDN edge truncation rather than a deliberate rug-pull, correctly classified as MEDIUM. Cross-tool workflow references (observability_keys/observability_values) detected and classified LOW.
+**`mcp-server-fetch` (uvx)** — **2 HIGH**: classic prompt injection via the `fetch` tool's URL/prompt arguments, and a type-validation crash on float-where-int input.
+
+**`mcp_text_processor` (test server)** — **1 HIGH**: `extract_emails` hard-timed out on a 100 KB payload — real resource-exhaustion DoS.
+
+**`observability.mcp.cloudflare.com` (Cloudflare, live HTTP, auth)** — **1 MEDIUM**. T04-001 detected description growth (1,001 → 1,603 chars) between calls — consistent with CDN edge truncation, correctly classified as MEDIUM (not a deliberate rug-pull).
 
 ---
 
@@ -132,47 +140,70 @@ mcpsafe compare report-v1.json report-v2.json
 
 ## What It Tests
 
-MCPSafe runs **117 test types** across **8 modules** covering discovery, security, performance, and schema validation.
+MCPSafe v0.2.0 runs **200+ test types** across **20 modules** covering discovery, security, performance, and schema validation.
 
-| Module | Category | Tests | What It Checks |
-|--------|----------|------:|----------------|
-| **T01** Discovery | DISCOVERY | 6 | Server enumeration, tool listing, resource/prompt exposure, metadata consistency |
-| **T02** Injection | SECURITY | 12 | Prompt injection (PI-001–PI-005), jailbreak attempts, system prompt leakage |
-| **T03** Fuzzer | SECURITY | 60 | Type confusion, boundary values, oversized payloads, deep nesting, NaN/Infinity |
-| **T04** Tool Poison | SECURITY | 8 | Tool description mutation (rug-pull attacks), baseline drift, hidden instructions |
-| **T05** Load | PERFORMANCE | 8 | Concurrent load, burst testing, sustained throughput, latency degradation |
-| **T06** Schema | SCHEMA | 6 | JSON Schema validation, required field enforcement, description quality |
-| **T07** Auth | SECURITY | 13 | Missing auth, Bearer bypass, API key abuse, protocol version abuse, replay attacks |
-| **T08** Latency | PERFORMANCE | 4 | Baseline latency, P95/P99 percentiles, timeout behaviour |
+### Core Modules (T01–T08) — Foundation
+
+| Module | Category | What It Checks |
+|--------|----------|----------------|
+| **T01** Discovery | DISCOVERY | Server enumeration, tool listing, resource/prompt exposure, metadata consistency |
+| **T02** Injection | SECURITY | 16 prompt injection payloads per string parameter — classic overrides, SQL probes, shell metacharacters, Unicode RLO, path traversal, Jinja / Python format injections |
+| **T03** Fuzzer | SECURITY | Type confusion, boundary values, oversized payloads, deep nesting, NaN/Infinity across every tool parameter |
+| **T04** Tool Poison | SECURITY | Tool description mutation (rug-pull attacks), baseline drift, hidden instructions. Growth-only vs true-mutation classification eliminates CDN truncation false positives |
+| **T05** Load | PERFORMANCE | Concurrent load (10/50/100 calls), cross-request UUID leakage detection, reconnect stability |
+| **T06** Schema | SCHEMA | JSON Schema validation, required field enforcement, description quality scoring |
+| **T07** Auth | SECURITY | Missing auth, Bearer bypass, protocol version abuse, replay attacks, homoglyph tool name spoofing |
+| **T08** Latency | PERFORMANCE | Baseline latency, P95/P99 percentiles, cold-start detection, post-load degradation |
+
+### New in v0.2.0 (T09–T20) — Advanced Attack Surfaces
+
+Features found in **no other MCP security tool**:
+
+| Module | Category | What It Checks |
+|--------|----------|----------------|
+| **T09** Output Sanitization | SECURITY | **Reverse prompt injection** — scans *tool output* for PI markers that would poison the next LLM call. Skips pass-through tools (file/diff/fetch/search) to avoid false positives on data content |
+| **T10** Cross-Session Leakage | SECURITY | Plants a unique marker via session A, opens an independent session B, checks if B sees A's data — detects shared cache/global-state multi-tenancy failures |
+| **T11** Timing Side-Channel | SECURITY | Statistical timing comparison of plausible-vs-random inputs. Trimmed means + 5× ratio + 30 ms absolute threshold to detect enumeration oracles without jitter FPs |
+| **T12** Error Secret Leakage | SECURITY | Triggers malformed-argument error paths and scans output for 15 secret patterns: AWS / GitHub / OpenAI / Anthropic / Stripe keys, JWTs, Bearer tokens, DB URIs, `/etc/passwd`, env vars, private IPs |
+| **T13** Sampling Abuse | SECURITY | Audits `sampling` capability advertisement and attempts to detect unsolicited server → client sampling requests during tool execution |
+| **T14** Notification Flood | SECURITY | Monitors inbound notifications during a 5 s quiet window. Flags >5/sec as MEDIUM, >30 total as HIGH — client-side DoS |
+| **T15** Reentrancy | SECURITY | 6 concurrent calls with unique markers; any response containing a marker the caller didn't send = shared-state bug |
+| **T16** Capability Creep | SECURITY | Snapshots tools / resources / prompts / capabilities at T=0 and T=3 s; any silent addition or removal is flagged |
+| **T17** Hash Drift | SECURITY | SHA-256 fingerprint of every tool/resource/prompt description. Compares across two independent sessions — catches per-connection A/B testing (rug-pull precursor) |
+| **T18** Resource URI SSRF | SECURITY | 10 malicious URIs fed to `read_resource`: AWS / GCP / Azure metadata, `file://`, loopback (Redis, Elasticsearch), SSH keys, DNS-rebind probes |
+| **T19** Unicode Homoglyph | SECURITY | Confusable characters (Cyrillic / Greek / fullwidth), mixed-script identifiers, invisible controls (ZWSP, BOM, RLO). Only flags HIGH when the name collapses to an existing ASCII identifier — no false positives on legitimate i18n |
+| **T20** Memory Leak | PERFORMANCE | 40-call probe; trimmed-quartile response-size and latency drift analysis + subprocess RSS growth (stdio + psutil) |
 
 ### Real Vulnerabilities MCPSafe Catches
 
-**Prompt injection via tool arguments** — The injection module (T02) sends 12 payloads per tool including classic overrides ("Ignore previous instructions…"), role-confusion, system prompt extraction, and Base64-encoded instructions. Confirmed CRITICAL on `mcp-server-git`, `server-filesystem`, and 8 other servers tested.
+**Stored prompt injection via tool output** (T02, T09) — Every string passed to a tool parameter gets bounced back through 16 attack payloads (PI-001..PI-016). If any payload appears verbatim in the response, the test flags it. Confirmed on **server-everything**, **sqlite**, **server-filesystem**, **server-github**, **mcp-server-git**, and **mcp.stripe.com**.
 
-**Tool description rug-pull attacks** (documented by Invariant Labs, 2025) — A tool appears safe on connect but its description silently mutates to include data-exfiltration instructions. T04 snapshots all tool descriptions on connect and re-checks after a delay to detect mutation.
+**Prompt template injection** (T02, stored PI) — Prompts like `args-prompt` on server-everything and `mcp-demo` on sqlite embed raw argument values into LLM messages. **14-16 HIGH findings per server** — every payload lands in the AI's context window verbatim.
 
-**SQL/shell injection through string parameters** — T02 sends SQL metacharacters, UNION attacks, and shell metacharacters to every string-typed tool parameter. Confirmed CRITICAL on `mcp-server-sqlite` `write_query`.
+**Tool description rug-pull attacks** (T04, documented by Invariant Labs 2025) — Tool description mutates silently between `list_tools()` calls. Growth-only mutations are correctly downgraded to MEDIUM to avoid CDN truncation false positives.
 
-**Path traversal in resource URIs** — T07-003 tests `../` sequences and absolute paths in resource URIs. Confirmed on `server-filesystem`.
+**DoS via integer overflow** (T03) — Confirmed on Anthropic's `trigger-long-running-operation`: INT_MAX (2,147,483,647) and `1e308` cause 35+ second hangs.
 
-**Cross-request data leakage under concurrency** — T05-001 embeds unique UUIDs in concurrent requests and checks whether responses contain data intended for a different caller — the same class of bug found in the MCP TypeScript SDK (CVSS 7.1).
+**Cross-request data leakage under concurrency** (T05-001) — Embeds unique UUIDs in 10 concurrent calls; if call A's response contains call B's UUID, shared state is leaking between parallel requests. Same class as MCP TypeScript SDK CVE (CVSS 7.1).
 
-**Missing authentication on HTTP endpoints** — T07-001 attempts raw HTTP access to MCP endpoints without credentials and detects servers that respond successfully when they should require auth.
+**SSRF via resource URIs** (T18) — Feeds `file:///etc/passwd`, AWS metadata IP `169.254.169.254`, and 8 other malicious URIs to `read_resource`. CRITICAL when the response content actually matches metadata/file format.
 
-### T03 Fuzzer — 60 Fuzz Cases
+**Error message secret leakage** (T12) — Catches servers that stringify DB connection strings, env vars, API keys, or JWTs into exception messages — 15-pattern regex library with value redaction in reports.
 
-- **String attacks**: null bytes, Unicode overlong sequences, ANSI escapes, format strings (`%s %n`), 1MB payloads
+### T03 Fuzzer — Fuzz Case Corpus
+
+- **String attacks**: null bytes, Unicode overlong sequences, ANSI escapes, format strings (`%s %n`), 1 MB payloads
 - **Integer boundary**: `MAX_INT32+1`, `MIN_INT32-1`, beyond int64 (`9_223_372_036_854_775_808`), zero, negatives
 - **Type confusion**: strings where integers expected (`"NaN"`, `"Infinity"`, `"-1"`), objects in array slots
 - **Array attacks**: 10,000-element array, mixed-type array (1,000 elements), 100-level deep nested array
 - **Number edge cases**: `"NaN"`, `"Infinity"`, `"-Infinity"`, `1e308` (overflow), `1e-308` (underflow)
 - **Object attacks**: deeply nested objects, conflicting keys, unexpected extra fields
 
-### T07 Auth — 13 Tests
+### T07 Auth — Authentication & Protocol Tests
 
-Includes: missing auth detection, Bearer token bypass, API key abuse, HMAC signature manipulation, JWT none-algorithm attack, OAuth scope escalation, session token fixation, privilege escalation via crafted tool calls, CORS misconfiguration, rate-limit detection (429/ratelimit/throttle), protocol version abuse against all known MCP versions (`2024-11-05`, `2024-10-07`, `2025-03-26`), and duplicate `initialize()` replay with session health check.
+Missing auth detection, Bearer token bypass, API key abuse, JWT none-algorithm attack, OAuth scope escalation, session token fixation, rate-limit detection (429/ratelimit/throttle), protocol version abuse against all known MCP versions (`2024-11-05`, `2024-10-07`, `2025-03-26`), duplicate `initialize()` replay with session health check, and Unicode homoglyph tool-name spoofing.
 
-### T06 Schema — 6 Tests
+### T06 Schema — Description Quality Scoring
 
 Includes a **description quality** check (T06-006) that scores tool descriptions for LLM usability:
 
@@ -249,11 +280,11 @@ Structured report with all findings, server metadata, and summary statistics. Al
 ```json
 {
   "scan_id": "a1b2c3d4-...",
-  "mcpsafe_version": "0.1.0",
-  "started_at": "2025-01-15T10:23:45Z",
-  "server_info": { "name": "mcp-server-git", "version": "0.1.0", "tool_count": 12 },
-  "summary": { "total_tests": 512, "passed": 471, "failed": 41, "overall_severity": "CRITICAL" },
-  "results": [ { "test_id": "T02-001", "severity": "CRITICAL", "description": "..." } ]
+  "mcpsafe_version": "0.2.0",
+  "started_at": "2026-04-14T10:23:45Z",
+  "server_info": { "name": "mcp-server-git", "protocol_version": "2024-11-05", "tool_count": 12 },
+  "summary": { "total_tests": 607, "passed": 534, "failed": 73, "overall_severity": "MEDIUM" },
+  "results": [ { "test_id": "T02-001", "severity": "MEDIUM", "description": "..." } ]
 }
 ```
 
@@ -333,41 +364,54 @@ jobs:
 
 ```
 ╭─────────────────────────────────────────────╮
-│ MCPSafe v0.1.0                              │
+│ MCPSafe v0.2.0                              │
 │ MCP Server Security & Stress Tester         │
 ╰─────────────────────────────────────────────╯
 
-Target:     uvx mcp-server-git
+Target:     uvx mcp-server-git --repository .
 Transport:  stdio
-Server:     mcp-server-git v0.6.2  (protocol 2024-11-05)
+Server:     mcp-server-git  (protocol 2024-11-05)
 Tools:      12   Resources: 0   Prompts: 0
 
-Running 8 modules (117 tests)...
+Running 20 modules (600+ tests)...
 
-  ✓ T01 Discovery       6/6     0 findings
-  ✓ T08 Latency         4/4     0 findings
-  ⚠ T06 Schema          6/6     3 findings  [MEDIUM]
-  ✗ T02 Injection      12/12    5 findings  [CRITICAL]
-  ⚠ T03 Fuzzer         60/60   18 findings  [MEDIUM]
-  ✓ T04 Tool Poison     8/8     0 findings
-  ✓ T07 Auth           13/13    0 findings
-  ⚠ T05 Load            8/8     4 findings  [HIGH]
+  ✓ T01 Discovery              100%  0:00:00
+  ✓ T08 Latency Baseline       100%  0:00:00
+  ✓ T06 Schema                 100%  0:00:00
+  ⚠ T02 Injection              100%  0:00:15   [MEDIUM]
+  ⚠ T03 Fuzzer                 100%  0:00:15   [MEDIUM]
+  ✓ T04 Tool Poison            100%  0:00:13
+  ✓ T09 Output Sanitization    100%  0:00:06
+  ✓ T12 Error Secret Leakage   100%  0:00:14
+  ✓ T13 Sampling Abuse         100%  0:00:07
+  ⚠ T16 Capability Creep       100%  0:00:14   [MEDIUM]
+  ✓ T18 SSRF                   100%  0:00:00
+  ✓ T19 Homoglyph              100%  0:00:00
+  ⚠ T07 Auth                   100%  0:00:08   [LOW]
+  ✓ T11 Timing Side-Channel    100%  0:00:00
+  ✓ T15 Reentrancy             100%  0:00:00
+  ⚠ T05 Load                   100%  0:00:13   [MEDIUM]
+  ✓ T10 Cross-Session Leakage  100%  0:00:01
+  ✓ T17 Hash Drift             100%  0:00:01
+  ✓ T14 Notification Flood     100%  0:00:05
+  ✓ T20 Memory Leak            100%  0:00:00
+  ✓ T08-005 Latency Comparison 100%  0:00:00
 
 ┌──────────┬───────┐
-│ CRITICAL │  10   │
+│ CRITICAL │   0   │
 │ HIGH     │   0   │
-│ MEDIUM   │  30   │
-│ LOW      │   2   │
-│ INFO     │   3   │
-│ PASS     │  72   │
+│ MEDIUM   │  60   │
+│ LOW      │  10   │
+│ INFO     │  18   │
+│ PASS     │ 534   │
 └──────────┴───────┘
 
 Reports saved:
-  JSON → ./mcpsafe-reports/mcpsafe-mcp-server-git-a1b2c3d4-20260413-102345.json
-  HTML → ./mcpsafe-reports/mcpsafe-mcp-server-git-a1b2c3d4-20260413-102345.html
-  SARIF → ./mcpsafe-reports/mcpsafe-mcp-server-git-a1b2c3d4-20260413-102345.sarif
+  JSON  → ./mcpsafe-reports/mcpsafe-git-20260414-091438.json
+  HTML  → ./mcpsafe-reports/mcpsafe-git-20260414-091438.html
+  SARIF → ./mcpsafe-reports/mcpsafe-git-20260414-091438.sarif
 
-Exiting with code 1 — CRITICAL findings require attention.
+Exit 0 — no CRITICAL or HIGH findings.
 ```
 
 ---
@@ -380,16 +424,28 @@ mcpsafe/
 ├── runner.py           # async orchestration, module dispatch, rich progress
 ├── transport.py        # MCP connection factory (stdio / HTTP, async context managers)
 ├── models.py           # dataclasses: TestResult, ScanReport, ServerInfo, Severity, Category
-└── tests/
-│   ├── _helpers.py     # shared: sanitise_server_string, looks_like_api_rejection, timing
-│   ├── t01_discovery.py
-│   ├── t02_injection.py
-│   ├── t03_fuzzer.py
-│   ├── t04_tool_poison.py
-│   ├── t05_load.py
-│   ├── t06_schema.py
-│   ├── t07_auth.py
-│   └── t08_latency.py
+├── tests/
+│   ├── _helpers.py     # RateLimiter, SECRET_PATTERNS, cap_response, sanitise_server_string
+│   ├── t01_discovery.py            # T01 — capability enumeration
+│   ├── t02_injection.py            # T02 — prompt injection payloads
+│   ├── t03_fuzzer.py               # T03 — malformed input fuzzing
+│   ├── t04_tool_poison.py          # T04 — rug-pull mutation detection
+│   ├── t05_load.py                 # T05 — load / concurrency / UUID leakage
+│   ├── t06_schema.py               # T06 — JSON Schema validation
+│   ├── t07_auth.py                 # T07 — auth / protocol / replay tests
+│   ├── t08_latency.py              # T08 — latency benchmarks
+│   ├── t09_output_sanitization.py  # T09 — reverse PI detection ✨ v0.2.0
+│   ├── t10_cross_session.py        # T10 — cross-session data leakage ✨
+│   ├── t11_timing_side_channel.py  # T11 — timing enumeration oracles ✨
+│   ├── t12_secret_leakage.py       # T12 — 15 secret patterns in errors ✨
+│   ├── t13_sampling_abuse.py       # T13 — server-initiated sampling ✨
+│   ├── t14_notification_flood.py   # T14 — client-side DoS ✨
+│   ├── t15_reentrancy.py           # T15 — concurrent-call state bleed ✨
+│   ├── t16_capability_creep.py     # T16 — silent inventory drift ✨
+│   ├── t17_hash_drift.py           # T17 — SHA-256 cross-session fingerprints ✨
+│   ├── t18_ssrf.py                 # T18 — resource URI SSRF (10 payloads) ✨
+│   ├── t19_homoglyph.py            # T19 — Unicode confusables ✨
+│   └── t20_memory_leak.py          # T20 — RSS / latency / size drift ✨
 └── reporter/
     ├── _common.py      # canonical server_slug() used by all reporters
     ├── json_reporter.py
@@ -473,10 +529,12 @@ mcpsafe scan "uvx mcp-server-git" --verbose
 
 ### Adding a Test Module
 
-1. Create `mcpsafe/tests/t09_yourmodule.py`
+1. Create `mcpsafe/tests/t21_yourmodule.py` (next available number after T20)
 2. Implement `async def run(session, server_info, config) -> list[TestResult]`
-3. Register in `mcpsafe/runner.py`
-4. Use test IDs in format `T09-001`, `T09-002`, …
+3. Register in `mcpsafe/runner.py` (both the import block and the execution plan)
+4. Use test IDs in format `T21-001`, `T21-002`, …
+5. Return `TestResult` dataclasses — never raise exceptions; catch everything and wrap with `TestResult.from_exception()`
+6. If your module needs rate limiting on auth-gated HTTP servers, use `RateLimiter(config)` from `mcpsafe.tests._helpers`
 
 ---
 

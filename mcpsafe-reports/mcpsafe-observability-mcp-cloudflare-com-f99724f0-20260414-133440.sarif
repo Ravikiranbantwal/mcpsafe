@@ -1,0 +1,2502 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "MCPSafe",
+          "version": "0.2.0",
+          "informationUri": "https://github.com/Ravikiranbantwal/mcpsafe",
+          "rules": [
+            {
+              "id": "T01-001",
+              "name": "Server Identity",
+              "shortDescription": {
+                "text": "Server Identity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T01-002",
+              "name": "Tool Enumeration",
+              "shortDescription": {
+                "text": "Tool Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-003",
+              "name": "Resource Enumeration",
+              "shortDescription": {
+                "text": "Resource Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-004",
+              "name": "Prompt Enumeration",
+              "shortDescription": {
+                "text": "Prompt Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-005",
+              "name": "Tool Description Completeness",
+              "shortDescription": {
+                "text": "Tool Description Completeness"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-006",
+              "name": "Tool Schema Validity",
+              "shortDescription": {
+                "text": "Tool Schema Validity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-007",
+              "name": "Duplicate Tool Names",
+              "shortDescription": {
+                "text": "Duplicate Tool Names"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-008",
+              "name": "Tool Description Length",
+              "shortDescription": {
+                "text": "Tool Description Length"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-001",
+              "name": "Schema Structural Validity",
+              "shortDescription": {
+                "text": "Schema Structural Validity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-workers_get_worker",
+              "name": "Required Enforcement: workers_get_worker",
+              "shortDescription": {
+                "text": "Required Enforcement: workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-workers_get_worker.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-workers_get_worker_code",
+              "name": "Required Enforcement: workers_get_worker_code",
+              "shortDescription": {
+                "text": "Required Enforcement: workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-workers_get_worker_code.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-query_worker_observability",
+              "name": "Required Enforcement: query_worker_observability",
+              "shortDescription": {
+                "text": "Required Enforcement: query_worker_observability"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-query_worker_observability.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-observability_keys",
+              "name": "Required Enforcement: observability_keys",
+              "shortDescription": {
+                "text": "Required Enforcement: observability_keys"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-observability_keys.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-observability_values",
+              "name": "Required Enforcement: observability_values",
+              "shortDescription": {
+                "text": "Required Enforcement: observability_values"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-observability_values.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-search_cloudflare_documentation",
+              "name": "Required Enforcement: search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Required Enforcement: search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-search_cloudflare_documentation.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-003",
+              "name": "additionalProperties Strictness",
+              "shortDescription": {
+                "text": "additionalProperties Strictness"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-004",
+              "name": "Return Type Consistency",
+              "shortDescription": {
+                "text": "Return Type Consistency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-004.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-005",
+              "name": "Overly Permissive Schema Detection",
+              "shortDescription": {
+                "text": "Overly Permissive Schema Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-accounts_list",
+              "name": "Description Quality: accounts_list",
+              "shortDescription": {
+                "text": "Description Quality: accounts_list"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-accounts_list.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-workers_list",
+              "name": "Description Quality: workers_list",
+              "shortDescription": {
+                "text": "Description Quality: workers_list"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-workers_list.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-workers_get_worker",
+              "name": "Description Quality: workers_get_worker",
+              "shortDescription": {
+                "text": "Description Quality: workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-workers_get_worker.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-006-workers_get_worker_code",
+              "name": "Description Quality: workers_get_worker_code",
+              "shortDescription": {
+                "text": "Description Quality: workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-workers_get_worker_code.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-006-query_worker_observability",
+              "name": "Description Quality: query_worker_observability",
+              "shortDescription": {
+                "text": "Description Quality: query_worker_observability"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-query_worker_observability.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-observability_keys",
+              "name": "Description Quality: observability_keys",
+              "shortDescription": {
+                "text": "Description Quality: observability_keys"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-observability_keys.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-observability_values",
+              "name": "Description Quality: observability_values",
+              "shortDescription": {
+                "text": "Description Quality: observability_values"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-observability_values.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-search_cloudflare_documentation",
+              "name": "Description Quality: search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Description Quality: search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-search_cloudflare_documentation.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-migrate_pages_to_workers_guide",
+              "name": "Description Quality: migrate_pages_to_workers_guide",
+              "shortDescription": {
+                "text": "Description Quality: migrate_pages_to_workers_guide"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-migrate_pages_to_workers_guide.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-01",
+              "name": "Baseline Latency: accounts_list",
+              "shortDescription": {
+                "text": "Baseline Latency: accounts_list"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-01.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-02",
+              "name": "Baseline Latency: workers_list",
+              "shortDescription": {
+                "text": "Baseline Latency: workers_list"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-02.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-03",
+              "name": "Baseline Latency: workers_get_worker",
+              "shortDescription": {
+                "text": "Baseline Latency: workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-03.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-04",
+              "name": "Baseline Latency: workers_get_worker_code",
+              "shortDescription": {
+                "text": "Baseline Latency: workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-04.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-05",
+              "name": "Baseline Latency: query_worker_observability",
+              "shortDescription": {
+                "text": "Baseline Latency: query_worker_observability"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-05.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T08-001-06",
+              "name": "Baseline Latency: observability_keys",
+              "shortDescription": {
+                "text": "Baseline Latency: observability_keys"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-06.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T08-001-07",
+              "name": "Baseline Latency: observability_values",
+              "shortDescription": {
+                "text": "Baseline Latency: observability_values"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-07.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T08-001-08",
+              "name": "Baseline Latency: search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Baseline Latency: search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-08.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-09",
+              "name": "Baseline Latency: migrate_pages_to_workers_guide",
+              "shortDescription": {
+                "text": "Baseline Latency: migrate_pages_to_workers_guide"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-09.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-002",
+              "name": "Tool Discovery Latency",
+              "shortDescription": {
+                "text": "Tool Discovery Latency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-003-00",
+              "name": "Resource Read Latency",
+              "shortDescription": {
+                "text": "Resource Read Latency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-003-00.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T08-004",
+              "name": "Cold Start Detection",
+              "shortDescription": {
+                "text": "Cold Start Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T18-001",
+              "name": "SSRF — Summary",
+              "shortDescription": {
+                "text": "SSRF — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T18-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T19-001",
+              "name": "Non-ASCII Identifiers",
+              "shortDescription": {
+                "text": "Non-ASCII Identifiers"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-002",
+              "name": "Confusable / Homoglyph Characters",
+              "shortDescription": {
+                "text": "Confusable / Homoglyph Characters"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-003",
+              "name": "Mixed-Script Identifiers",
+              "shortDescription": {
+                "text": "Mixed-Script Identifiers"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-004",
+              "name": "Invisible / Directional Characters",
+              "shortDescription": {
+                "text": "Invisible / Directional Characters"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-005",
+              "name": "Homoglyph Scan — Summary",
+              "shortDescription": {
+                "text": "Homoglyph Scan — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T13-001",
+              "name": "Sampling Capability Advertisement",
+              "shortDescription": {
+                "text": "Sampling Capability Advertisement"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T13-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T13-002",
+              "name": "Unsolicited Sampling Requests",
+              "shortDescription": {
+                "text": "Unsolicited Sampling Requests"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T13-002.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T13-003",
+              "name": "Sampling Abuse — Summary",
+              "shortDescription": {
+                "text": "Sampling Abuse — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T13-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T16-001",
+              "name": "Tool Set Drift",
+              "shortDescription": {
+                "text": "Tool Set Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T16-002",
+              "name": "Resource Set Drift",
+              "shortDescription": {
+                "text": "Resource Set Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T16-003",
+              "name": "Tool Schema Required-Field Drift",
+              "shortDescription": {
+                "text": "Tool Schema Required-Field Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T16-004",
+              "name": "Server Capability Drift",
+              "shortDescription": {
+                "text": "Server Capability Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T16-005",
+              "name": "Capability Creep — Summary",
+              "shortDescription": {
+                "text": "Capability Creep — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-001",
+              "name": "Rug Pull Detection (Mutation Check)",
+              "shortDescription": {
+                "text": "Rug Pull Detection (Mutation Check)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-001.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T04-002",
+              "name": "Hidden Instruction Scan",
+              "shortDescription": {
+                "text": "Hidden Instruction Scan"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-003",
+              "name": "Cross-Tool Reference Detection",
+              "shortDescription": {
+                "text": "Cross-Tool Reference Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-003.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T04-004",
+              "name": "Schema Field Injection Check",
+              "shortDescription": {
+                "text": "Schema Field Injection Check"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-005",
+              "name": "Tool Count Stability Check",
+              "shortDescription": {
+                "text": "Tool Count Stability Check"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-accounts_list",
+              "name": "Output Sanitization → accounts_list",
+              "shortDescription": {
+                "text": "Output Sanitization → accounts_list"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-accounts_list.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-workers_list",
+              "name": "Output Sanitization → workers_list",
+              "shortDescription": {
+                "text": "Output Sanitization → workers_list"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-workers_list.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-workers_get_worker",
+              "name": "Output Sanitization → workers_get_worker",
+              "shortDescription": {
+                "text": "Output Sanitization → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-workers_get_worker.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-workers_get_worker_code",
+              "name": "Output Sanitization → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Output Sanitization → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-workers_get_worker_code.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-query_worker_observability",
+              "name": "Output Sanitization → query_worker_observability",
+              "shortDescription": {
+                "text": "Output Sanitization → query_worker_observability"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-query_worker_observability.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T09-TOOL-observability_keys",
+              "name": "Output Sanitization → observability_keys",
+              "shortDescription": {
+                "text": "Output Sanitization → observability_keys"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-observability_keys.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T09-TOOL-observability_values",
+              "name": "Output Sanitization → observability_values",
+              "shortDescription": {
+                "text": "Output Sanitization → observability_values"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-observability_values.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T09-TOOL-search_cloudflare_documentat",
+              "name": "Output Sanitization → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Output Sanitization → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-search_cloudflare_documentat.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-migrate_pages_to_workers_gui",
+              "name": "Output Sanitization → migrate_pages_to_workers_guide",
+              "shortDescription": {
+                "text": "Output Sanitization → migrate_pages_to_workers_guide"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-migrate_pages_to_workers_gui.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-001",
+              "name": "Output Sanitization — Summary",
+              "shortDescription": {
+                "text": "Output Sanitization — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-accounts_list",
+              "name": "Error Secret Leakage → accounts_list",
+              "shortDescription": {
+                "text": "Error Secret Leakage → accounts_list"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-accounts_list.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-workers_list",
+              "name": "Error Secret Leakage → workers_list",
+              "shortDescription": {
+                "text": "Error Secret Leakage → workers_list"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-workers_list.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-workers_get_worker",
+              "name": "Error Secret Leakage → workers_get_worker",
+              "shortDescription": {
+                "text": "Error Secret Leakage → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-workers_get_worker.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-workers_get_worker_code",
+              "name": "Error Secret Leakage → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Error Secret Leakage → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-workers_get_worker_code.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-query_worker_observability",
+              "name": "Error Secret Leakage → query_worker_observability",
+              "shortDescription": {
+                "text": "Error Secret Leakage → query_worker_observability"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-query_worker_observability.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-observability_keys",
+              "name": "Error Secret Leakage → observability_keys",
+              "shortDescription": {
+                "text": "Error Secret Leakage → observability_keys"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-observability_keys.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-observability_values",
+              "name": "Error Secret Leakage → observability_values",
+              "shortDescription": {
+                "text": "Error Secret Leakage → observability_values"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-observability_values.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-search_cloudflare_documentat",
+              "name": "Error Secret Leakage → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Error Secret Leakage → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-search_cloudflare_documentat.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-migrate_pages_to_workers_gui",
+              "name": "Error Secret Leakage → migrate_pages_to_workers_guide",
+              "shortDescription": {
+                "text": "Error Secret Leakage → migrate_pages_to_workers_guide"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-migrate_pages_to_workers_gui.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-001",
+              "name": "Error Secret Leakage — Summary",
+              "shortDescription": {
+                "text": "Error Secret Leakage — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-scriptname-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → workers_get_worker.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → workers_get_worker.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-scriptname-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-scriptname-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → workers_get_worker_code.scriptName",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → workers_get_worker_code.scriptName"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-scriptname-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-query-FUZZ-OBJ-001",
+              "name": "Fuzz FUZZ-OBJ-001 → query_worker_observability.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-001 → query_worker_observability.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-query-FUZZ-OBJ-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-query-FUZZ-OBJ-002",
+              "name": "Fuzz FUZZ-OBJ-002 → query_worker_observability.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-002 → query_worker_observability.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-query-FUZZ-OBJ-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-query-FUZZ-OBJ-003",
+              "name": "Fuzz FUZZ-OBJ-003 → query_worker_observability.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-003 → query_worker_observability.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-query-FUZZ-OBJ-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-query-FUZZ-OBJ-004",
+              "name": "Fuzz FUZZ-OBJ-004 → query_worker_observability.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-004 → query_worker_observability.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-query-FUZZ-OBJ-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-query-FUZZ-OBJ-005",
+              "name": "Fuzz FUZZ-OBJ-005 → query_worker_observability.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-005 → query_worker_observability.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-query-FUZZ-OBJ-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-query-FUZZ-OBJ-006",
+              "name": "Fuzz FUZZ-OBJ-006 → query_worker_observability.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-006 → query_worker_observability.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-query-FUZZ-OBJ-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-06-keysquery-FUZZ-OBJ-001",
+              "name": "Fuzz FUZZ-OBJ-001 → observability_keys.keysQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-001 → observability_keys.keysQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-06-keysquery-FUZZ-OBJ-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-06-keysquery-FUZZ-OBJ-002",
+              "name": "Fuzz FUZZ-OBJ-002 → observability_keys.keysQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-002 → observability_keys.keysQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-06-keysquery-FUZZ-OBJ-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-06-keysquery-FUZZ-OBJ-003",
+              "name": "Fuzz FUZZ-OBJ-003 → observability_keys.keysQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-003 → observability_keys.keysQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-06-keysquery-FUZZ-OBJ-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-06-keysquery-FUZZ-OBJ-004",
+              "name": "Fuzz FUZZ-OBJ-004 → observability_keys.keysQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-004 → observability_keys.keysQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-06-keysquery-FUZZ-OBJ-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-06-keysquery-FUZZ-OBJ-005",
+              "name": "Fuzz FUZZ-OBJ-005 → observability_keys.keysQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-005 → observability_keys.keysQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-06-keysquery-FUZZ-OBJ-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-06-keysquery-FUZZ-OBJ-006",
+              "name": "Fuzz FUZZ-OBJ-006 → observability_keys.keysQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-006 → observability_keys.keysQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-06-keysquery-FUZZ-OBJ-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-07-valuesquery-FUZZ-OBJ-001",
+              "name": "Fuzz FUZZ-OBJ-001 → observability_values.valuesQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-001 → observability_values.valuesQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-07-valuesquery-FUZZ-OBJ-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-07-valuesquery-FUZZ-OBJ-002",
+              "name": "Fuzz FUZZ-OBJ-002 → observability_values.valuesQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-002 → observability_values.valuesQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-07-valuesquery-FUZZ-OBJ-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-07-valuesquery-FUZZ-OBJ-003",
+              "name": "Fuzz FUZZ-OBJ-003 → observability_values.valuesQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-003 → observability_values.valuesQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-07-valuesquery-FUZZ-OBJ-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-07-valuesquery-FUZZ-OBJ-004",
+              "name": "Fuzz FUZZ-OBJ-004 → observability_values.valuesQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-004 → observability_values.valuesQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-07-valuesquery-FUZZ-OBJ-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-07-valuesquery-FUZZ-OBJ-005",
+              "name": "Fuzz FUZZ-OBJ-005 → observability_values.valuesQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-005 → observability_values.valuesQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-07-valuesquery-FUZZ-OBJ-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-07-valuesquery-FUZZ-OBJ-006",
+              "name": "Fuzz FUZZ-OBJ-006 → observability_values.valuesQuery",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-OBJ-006 → observability_values.valuesQuery"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-07-valuesquery-FUZZ-OBJ-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-08-query-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → search_cloudflare_documentation.query",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → search_cloudflare_documentation.query"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-08-query-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-001",
+              "name": "Injection PI-001 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-001 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-002",
+              "name": "Injection PI-002 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-002 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-003",
+              "name": "Injection PI-003 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-003 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-004",
+              "name": "Injection PI-004 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-004 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-005",
+              "name": "Injection PI-005 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-005 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-006",
+              "name": "Injection PI-006 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-006 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-007",
+              "name": "Injection PI-007 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-007 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-008",
+              "name": "Injection PI-008 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-008 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-009",
+              "name": "Injection PI-009 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-009 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-010",
+              "name": "Injection PI-010 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-010 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-011",
+              "name": "Injection PI-011 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-011 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-012",
+              "name": "Injection PI-012 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-012 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-013",
+              "name": "Injection PI-013 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-013 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-014",
+              "name": "Injection PI-014 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-014 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-015",
+              "name": "Injection PI-015 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-015 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-015.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker-PI-016",
+              "name": "Injection PI-016 → workers_get_worker",
+              "shortDescription": {
+                "text": "Injection PI-016 → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker-PI-016.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-001",
+              "name": "Injection PI-001 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-001 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-002",
+              "name": "Injection PI-002 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-002 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-003",
+              "name": "Injection PI-003 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-003 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-004",
+              "name": "Injection PI-004 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-004 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-005",
+              "name": "Injection PI-005 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-005 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-006",
+              "name": "Injection PI-006 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-006 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-007",
+              "name": "Injection PI-007 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-007 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-008",
+              "name": "Injection PI-008 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-008 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-009",
+              "name": "Injection PI-009 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-009 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-010",
+              "name": "Injection PI-010 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-010 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-011",
+              "name": "Injection PI-011 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-011 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-012",
+              "name": "Injection PI-012 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-012 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-013",
+              "name": "Injection PI-013 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-013 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-014",
+              "name": "Injection PI-014 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-014 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-015",
+              "name": "Injection PI-015 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-015 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-015.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-workers_get_worker_code-PI-016",
+              "name": "Injection PI-016 → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Injection PI-016 → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-workers_get_worker_code-PI-016.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-001",
+              "name": "Injection PI-001 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-001 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-002",
+              "name": "Injection PI-002 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-002 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-003",
+              "name": "Injection PI-003 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-003 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-004",
+              "name": "Injection PI-004 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-004 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-005",
+              "name": "Injection PI-005 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-005 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-006",
+              "name": "Injection PI-006 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-006 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-007",
+              "name": "Injection PI-007 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-007 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-008",
+              "name": "Injection PI-008 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-008 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-009",
+              "name": "Injection PI-009 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-009 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-010",
+              "name": "Injection PI-010 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-010 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-011",
+              "name": "Injection PI-011 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-011 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-012",
+              "name": "Injection PI-012 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-012 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-013",
+              "name": "Injection PI-013 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-013 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-014",
+              "name": "Injection PI-014 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-014 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-015",
+              "name": "Injection PI-015 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-015 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-015.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-search_cloudflare_documentation-PI-016",
+              "name": "Injection PI-016 → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Injection PI-016 → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-search_cloudflare_documentation-PI-016.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-TOOL-workers_get_worker",
+              "name": "Timing Side-Channel → workers_get_worker",
+              "shortDescription": {
+                "text": "Timing Side-Channel → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-TOOL-workers_get_worker.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-TOOL-workers_get_worker_code",
+              "name": "Timing Side-Channel → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Timing Side-Channel → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-TOOL-workers_get_worker_code.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-TOOL-search_cloudflare_documentat",
+              "name": "Timing Side-Channel → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Timing Side-Channel → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-TOOL-search_cloudflare_documentat.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-001",
+              "name": "Timing Side-Channel — Summary",
+              "shortDescription": {
+                "text": "Timing Side-Channel — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-TOOL-workers_get_worker",
+              "name": "Reentrancy → workers_get_worker",
+              "shortDescription": {
+                "text": "Reentrancy → workers_get_worker"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-TOOL-workers_get_worker.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-TOOL-workers_get_worker_code",
+              "name": "Reentrancy → workers_get_worker_code",
+              "shortDescription": {
+                "text": "Reentrancy → workers_get_worker_code"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-TOOL-workers_get_worker_code.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-TOOL-search_cloudflare_documentat",
+              "name": "Reentrancy → search_cloudflare_documentation",
+              "shortDescription": {
+                "text": "Reentrancy → search_cloudflare_documentation"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-TOOL-search_cloudflare_documentat.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-001",
+              "name": "Reentrancy — Summary",
+              "shortDescription": {
+                "text": "Reentrancy — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-001",
+              "name": "10 Simultaneous Calls",
+              "shortDescription": {
+                "text": "10 Simultaneous Calls"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-002",
+              "name": "50 Sequential Rapid Calls",
+              "shortDescription": {
+                "text": "50 Sequential Rapid Calls"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-003",
+              "name": "100 Concurrent Calls (Stress Test)",
+              "shortDescription": {
+                "text": "100 Concurrent Calls (Stress Test)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-004",
+              "name": "Connection Stability Under Rapid Reconnect",
+              "shortDescription": {
+                "text": "Connection Stability Under Rapid Reconnect"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T10-001",
+              "name": "Cross-Session Data Leakage",
+              "shortDescription": {
+                "text": "Cross-Session Data Leakage"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T10-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T17-001",
+              "name": "Cross-Session Hash Drift",
+              "shortDescription": {
+                "text": "Cross-Session Hash Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T17-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T17-002",
+              "name": "Description Fingerprint Inventory",
+              "shortDescription": {
+                "text": "Description Fingerprint Inventory"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T17-002.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T14-001",
+              "name": "Notification Flood Rate",
+              "shortDescription": {
+                "text": "Notification Flood Rate"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T14-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T14-002",
+              "name": "Notification Flood — Summary",
+              "shortDescription": {
+                "text": "Notification Flood — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T14-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T20-001",
+              "name": "Response-Size Drift",
+              "shortDescription": {
+                "text": "Response-Size Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T20-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T20-002",
+              "name": "Latency Drift",
+              "shortDescription": {
+                "text": "Latency Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T20-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T20-004",
+              "name": "Memory Leak — Summary",
+              "shortDescription": {
+                "text": "Memory Leak — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T20-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T00-003",
+              "name": "Connection Closed Mid-Scan (Rate Limit / Server Reset)",
+              "shortDescription": {
+                "text": "Connection Closed Mid-Scan (Rate Limit / Server Reset)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T00-003.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T01-001",
+          "level": "note",
+          "message": {
+            "text": "Server did not advertise: name, version. Got name='unknown' version='unknown' protocol='unknown'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-004",
+          "level": "note",
+          "message": {
+            "text": "No tools returned comparable JSON responses — consistency check not applicable."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-006-workers_get_worker",
+          "level": "note",
+          "message": {
+            "text": "Tool 'workers_get_worker' description does not mention its parameters (scriptName)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-006-workers_get_worker_code",
+          "level": "note",
+          "message": {
+            "text": "Tool 'workers_get_worker_code' description does not mention its parameters (scriptName)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T08-001-05",
+          "level": "note",
+          "message": {
+            "text": "Tool 'query_worker_observability' requires valid credentials or real parameters — latency probe skipped (API rejection, not a server defect)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T08-001-06",
+          "level": "note",
+          "message": {
+            "text": "Tool 'observability_keys' requires valid credentials or real parameters — latency probe skipped (API rejection, not a server defect)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T08-001-07",
+          "level": "note",
+          "message": {
+            "text": "Tool 'observability_values' requires valid credentials or real parameters — latency probe skipped (API rejection, not a server defect)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T08-003-00",
+          "level": "note",
+          "message": {
+            "text": "No resources to benchmark."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T18-001",
+          "level": "note",
+          "message": {
+            "text": "Server does not expose resources/read; SSRF probes skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T13-002",
+          "level": "note",
+          "message": {
+            "text": "MCP client SDK does not expose an incoming-request hook; unsolicited sampling detection relies on capability audit (T13-001)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T04-001",
+          "level": "warning",
+          "message": {
+            "text": "1 tool description(s) grew between two consecutive list_tools() calls (3 s apart). Descriptions only extended — likely CDN truncation or lazy-loaded content rather than a deliberate rug-pull. Verify server behaviour."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T04-003",
+          "level": "note",
+          "message": {
+            "text": "Found 4 cross-tool reference(s) in tool descriptions — server uses chained workflow guidance. Verify no sensitive data is passed between tools."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T09-TOOL-query_worker_observability",
+          "level": "note",
+          "message": {
+            "text": "Tool 'query_worker_observability' rejected probe (auth or param requirements)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T09-TOOL-observability_keys",
+          "level": "note",
+          "message": {
+            "text": "Tool 'observability_keys' rejected probe (auth or param requirements)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T09-TOOL-observability_values",
+          "level": "note",
+          "message": {
+            "text": "Tool 'observability_values' rejected probe (auth or param requirements)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T17-002",
+          "level": "note",
+          "message": {
+            "text": "Catalogued 10 SHA-256 description fingerprints. Use `mcpsafe compare` to detect drift across scans."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T00-003",
+          "level": "note",
+          "message": {
+            "text": "The HTTP server closed the connection mid-scan. This is expected behaviour for production servers that apply rate-limiting after receiving the T07 auth probe suite. All security tests completed before the connection was lost."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "https://observability.mcp.cloudflare.com/mcp"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

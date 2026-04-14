@@ -77,14 +77,39 @@ def _extract_text(response: object) -> str:
     return cap_response("\n".join(parts))
 
 
+_LONG_RUNNING_KW: frozenset[str] = frozenset({
+    "long_running", "long-running", "longrunning",
+    "trigger_long", "trigger-long",
+    "sleep", "wait", "delay",
+    "poll", "stream",
+})
+
+
+def _is_long_running(tool_name: str) -> bool:
+    name = (tool_name or "").lower()
+    return any(kw in name for kw in _LONG_RUNNING_KW)
+
+
 def _pick_probe_tool(server_info: ServerInfo):
-    """Pick the lightest-looking tool to hammer repeatedly."""
+    """
+    Pick the lightest-looking tool to hammer repeatedly.
+
+    Skips tools whose name suggests long-running behaviour (sleep, wait,
+    trigger-long-running, …) — we need 40 quick calls for meaningful drift
+    analysis; hitting a 30-second tool 40 times would take the whole scan.
+    """
     for t in server_info.tools or []:
+        if _is_long_running(t.name):
+            continue
         schema = t.input_schema
         if isinstance(schema, dict):
             required = schema.get("required", []) or []
             if len(required) <= 1:
                 return t
+    # Fall back: any non-long-running tool.
+    for t in server_info.tools or []:
+        if not _is_long_running(t.name):
+            return t
     return (server_info.tools or [None])[0]
 
 

@@ -19,6 +19,16 @@ Set-Location $ProjectRoot
 $OutDir = Join-Path $ProjectRoot "mcpsafe-reports"
 if (-not (Test-Path $OutDir)) { New-Item -ItemType Directory -Path $OutDir | Out-Null }
 
+# ---------------------------------------------------------------------------
+# Output handling - flush Python stdout immediately and use UTF-8.
+# We intentionally do NOT set RICH_FORCE_TERMINAL - through a PowerShell pipe
+# that flag makes rich re-emit every progress frame as new output, flooding
+# the console with duplicates.  Instead we use --verbose so each finding
+# prints as a discrete panel that streams cleanly.
+# ---------------------------------------------------------------------------
+$env:PYTHONUNBUFFERED = "1"
+$env:PYTHONIOENCODING = "utf-8"
+
 function Read-Secret {
     param(
         [string]$Prompt,
@@ -65,8 +75,8 @@ $AuthTargets = @(
     },
     @{
         Name         = "cloudflare-docs"
-        Transport    = "sse"
-        Target       = "https://docs.mcp.cloudflare.com/sse"
+        Transport    = "http"
+        Target       = "https://docs.mcp.cloudflare.com/mcp"
         InjectAs     = "header"
         HeaderKey    = "Authorization"
         HeaderPrefix = "Bearer "
@@ -75,8 +85,8 @@ $AuthTargets = @(
     },
     @{
         Name         = "cloudflare-observability"
-        Transport    = "sse"
-        Target       = "https://observability.mcp.cloudflare.com/sse"
+        Transport    = "http"
+        Target       = "https://observability.mcp.cloudflare.com/mcp"
         InjectAs     = "header"
         HeaderKey    = "Authorization"
         HeaderPrefix = "Bearer "
@@ -86,7 +96,7 @@ $AuthTargets = @(
     @{
         Name         = "stripe"
         Transport    = "http"
-        Target       = "https://mcp.stripe.com/v1/mcp"
+        Target       = "https://mcp.stripe.com/base"
         InjectAs     = "header"
         HeaderKey    = "Authorization"
         HeaderPrefix = "Bearer "
@@ -113,11 +123,15 @@ function Invoke-Scan {
         $t.Target,
         "--transport", $t.Transport,
         "--output", "all",
-        "--out-dir", $OutDir
+        "--out-dir", $OutDir,
+        "--verbose"
     ) + $extraArgs
 
+    Write-Host ("  Started at " + (Get-Date -Format "HH:mm:ss") + " - typical scan time 1-3 min per server, then summary prints.") -ForegroundColor DarkGray
+    Write-Host ""
+
     $start = Get-Date
-    mcpsafe @cmdArgs
+    & mcpsafe @cmdArgs
     $exitCode = $LASTEXITCODE
     $elapsed = (Get-Date) - $start
 

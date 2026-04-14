@@ -122,7 +122,15 @@ _LARGE_PAYLOAD_IDS: frozenset[str] = frozenset({"PI-013", "PI-014"})
 # • "traceback|stacktrace|exception at": any server leaking a stack trace
 #   exposes internal paths and library versions — always a genuine finding.
 SUSPICIOUS_PATTERNS: list[str] = [
-    r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b",                               # IP address leaked
+    # Private / loopback IPv4 only — public IPs appear in legitimate API
+    # responses (version numbers, timestamps, user-provided issue text) and
+    # produced too many false positives.  Leaked INTERNAL IPs (RFC 1918,
+    # loopback, or link-local) are always genuine findings.
+    r"\b(?:10\.(?:\d{1,3}\.){2}\d{1,3}"
+    r"|172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}"
+    r"|192\.168\.\d{1,3}\.\d{1,3}"
+    r"|127\.\d{1,3}\.\d{1,3}\.\d{1,3}"
+    r"|169\.254\.\d{1,3}\.\d{1,3})\b",                                       # Internal IP leaked
     r"root:.*:/bin/",                                                            # /etc/passwd content
     r"uid=\d+\(.*\)",                                                            # Unix id command output
     r"(?:your|my|actual|real)\s+system\s+prompt|system\s+prompt\s*[\"':=]\s*[A-Za-z0-9_\[{\"']|system\s+prompt\s+is\s*:",  # System prompt exposed

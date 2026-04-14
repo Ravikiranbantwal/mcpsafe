@@ -45,6 +45,7 @@ from __future__ import annotations
 import time
 from typing import Any, Optional
 
+import anyio
 from mcp import ClientSession
 
 from mcpsafe.models import (
@@ -55,6 +56,23 @@ from mcpsafe.models import (
     TestResult,
 )
 from mcpsafe.tests._helpers import RateLimiter
+
+_CALL_TIMEOUT_SEC = 10.0
+
+# Tools that are KNOWN to be long-running by name — skip these to avoid
+# deadlocks during the sampling-abuse probe (we don't actually need their
+# output; we only care whether the server initiates sampling during ANY
+# tool call).
+_LONG_RUNNING_TOOL_KEYWORDS: frozenset[str] = frozenset({
+    "long_running", "long-running", "longrunning",
+    "trigger_long", "trigger-long",
+    "sleep", "wait", "delay",
+})
+
+
+def _is_long_running(tool_name: str) -> bool:
+    name = (tool_name or "").lower()
+    return any(kw in name for kw in _LONG_RUNNING_TOOL_KEYWORDS)
 
 
 # Sensitivity markers the server might embed in a malicious sampling request.
@@ -150,11 +168,18 @@ async def _probe_unsolicited_sampling(
         except Exception:
             hooked = False
 
-    # Exercise a few tools; ignore errors — we only care about inbound requests.
+    # Exercise a few tools with a HARD timeout per call so long-running
+    # tools (e.g. server-everything's trigger-long-running-operation)
+    # cannot deadlock the whole scan.  Also skip known long-running tools
+    # entirely — we don't need their output, just any sampling request
+    # the server might initiate in parallel.
     for tool in tools:
+        if _is_long_running(tool.name):
+            continue
         await limiter.acquire()
         try:
-            await session.call_tool(tool.name, arguments={})
+            with anyio.fail_after(_CALL_TIMEOUT_SEC):
+                await session.call_tool(tool.name, arguments={})
         except Exception:
             pass
 

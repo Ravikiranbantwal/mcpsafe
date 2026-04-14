@@ -1,0 +1,3897 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "MCPSafe",
+          "version": "0.2.0",
+          "informationUri": "https://github.com/Ravikiranbantwal/mcpsafe",
+          "rules": [
+            {
+              "id": "T01-001",
+              "name": "Server Identity",
+              "shortDescription": {
+                "text": "Server Identity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T01-002",
+              "name": "Tool Enumeration",
+              "shortDescription": {
+                "text": "Tool Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-003",
+              "name": "Resource Enumeration",
+              "shortDescription": {
+                "text": "Resource Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-004",
+              "name": "Prompt Enumeration",
+              "shortDescription": {
+                "text": "Prompt Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-005",
+              "name": "Tool Description Completeness",
+              "shortDescription": {
+                "text": "Tool Description Completeness"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-006",
+              "name": "Tool Schema Validity",
+              "shortDescription": {
+                "text": "Tool Schema Validity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-007",
+              "name": "Duplicate Tool Names",
+              "shortDescription": {
+                "text": "Duplicate Tool Names"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-008",
+              "name": "Tool Description Length",
+              "shortDescription": {
+                "text": "Tool Description Length"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-001",
+              "name": "Schema Structural Validity",
+              "shortDescription": {
+                "text": "Schema Structural Validity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-create_note",
+              "name": "Required Enforcement: create_note",
+              "shortDescription": {
+                "text": "Required Enforcement: create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-create_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-get_note",
+              "name": "Required Enforcement: get_note",
+              "shortDescription": {
+                "text": "Required Enforcement: get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-get_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-update_note",
+              "name": "Required Enforcement: update_note",
+              "shortDescription": {
+                "text": "Required Enforcement: update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-update_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-delete_note",
+              "name": "Required Enforcement: delete_note",
+              "shortDescription": {
+                "text": "Required Enforcement: delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-delete_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-003",
+              "name": "additionalProperties Strictness",
+              "shortDescription": {
+                "text": "additionalProperties Strictness"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-004",
+              "name": "Return Type Consistency",
+              "shortDescription": {
+                "text": "Return Type Consistency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-004.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-005",
+              "name": "Overly Permissive Schema Detection",
+              "shortDescription": {
+                "text": "Overly Permissive Schema Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-create_note",
+              "name": "Description Quality: create_note",
+              "shortDescription": {
+                "text": "Description Quality: create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-create_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-get_note",
+              "name": "Description Quality: get_note",
+              "shortDescription": {
+                "text": "Description Quality: get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-get_note.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-006-list_notes",
+              "name": "Description Quality: list_notes",
+              "shortDescription": {
+                "text": "Description Quality: list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-list_notes.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-update_note",
+              "name": "Description Quality: update_note",
+              "shortDescription": {
+                "text": "Description Quality: update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-update_note.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-006-delete_note",
+              "name": "Description Quality: delete_note",
+              "shortDescription": {
+                "text": "Description Quality: delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-delete_note.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T08-001-01",
+              "name": "Baseline Latency: create_note",
+              "shortDescription": {
+                "text": "Baseline Latency: create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-01.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-02",
+              "name": "Baseline Latency: get_note",
+              "shortDescription": {
+                "text": "Baseline Latency: get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-02.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-03",
+              "name": "Baseline Latency: list_notes",
+              "shortDescription": {
+                "text": "Baseline Latency: list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-03.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-04",
+              "name": "Baseline Latency: update_note",
+              "shortDescription": {
+                "text": "Baseline Latency: update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-04.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-05",
+              "name": "Baseline Latency: delete_note",
+              "shortDescription": {
+                "text": "Baseline Latency: delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-05.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-002",
+              "name": "Tool Discovery Latency",
+              "shortDescription": {
+                "text": "Tool Discovery Latency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-003-00",
+              "name": "Resource Read Latency",
+              "shortDescription": {
+                "text": "Resource Read Latency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-003-00.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T08-004",
+              "name": "Cold Start Detection",
+              "shortDescription": {
+                "text": "Cold Start Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T18-001",
+              "name": "SSRF — Summary",
+              "shortDescription": {
+                "text": "SSRF — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T18-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T19-001",
+              "name": "Non-ASCII Identifiers",
+              "shortDescription": {
+                "text": "Non-ASCII Identifiers"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-002",
+              "name": "Confusable / Homoglyph Characters",
+              "shortDescription": {
+                "text": "Confusable / Homoglyph Characters"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-003",
+              "name": "Mixed-Script Identifiers",
+              "shortDescription": {
+                "text": "Mixed-Script Identifiers"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-004",
+              "name": "Invisible / Directional Characters",
+              "shortDescription": {
+                "text": "Invisible / Directional Characters"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-005",
+              "name": "Homoglyph Scan — Summary",
+              "shortDescription": {
+                "text": "Homoglyph Scan — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T13-001",
+              "name": "Sampling Capability Advertisement",
+              "shortDescription": {
+                "text": "Sampling Capability Advertisement"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T13-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T13-002",
+              "name": "Unsolicited Sampling Requests",
+              "shortDescription": {
+                "text": "Unsolicited Sampling Requests"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T13-002.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T13-003",
+              "name": "Sampling Abuse — Summary",
+              "shortDescription": {
+                "text": "Sampling Abuse — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T13-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-create_note",
+              "name": "Output Sanitization → create_note",
+              "shortDescription": {
+                "text": "Output Sanitization → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-create_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-get_note",
+              "name": "Output Sanitization → get_note",
+              "shortDescription": {
+                "text": "Output Sanitization → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-get_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-list_notes",
+              "name": "Output Sanitization → list_notes",
+              "shortDescription": {
+                "text": "Output Sanitization → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-list_notes.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-update_note",
+              "name": "Output Sanitization → update_note",
+              "shortDescription": {
+                "text": "Output Sanitization → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-update_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-delete_note",
+              "name": "Output Sanitization → delete_note",
+              "shortDescription": {
+                "text": "Output Sanitization → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-delete_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-001",
+              "name": "Output Sanitization — Summary",
+              "shortDescription": {
+                "text": "Output Sanitization — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-001",
+              "name": "Unauthenticated Access",
+              "shortDescription": {
+                "text": "Unauthenticated Access"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-002",
+              "name": "Malformed Token Rejection",
+              "shortDescription": {
+                "text": "Malformed Token Rejection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-002.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-003",
+              "name": "Resource URI Path Traversal",
+              "shortDescription": {
+                "text": "Resource URI Path Traversal"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-003.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-004",
+              "name": "Credentials in Error Messages",
+              "shortDescription": {
+                "text": "Credentials in Error Messages"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-005",
+              "name": "CORS Misconfiguration",
+              "shortDescription": {
+                "text": "CORS Misconfiguration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-005.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-006",
+              "name": "Process Privilege Check",
+              "shortDescription": {
+                "text": "Process Privilege Check"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-006.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-007",
+              "name": "Environment Variable Probe",
+              "shortDescription": {
+                "text": "Environment Variable Probe"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-008",
+              "name": "Invalid Tool Name Rejection",
+              "shortDescription": {
+                "text": "Invalid Tool Name Rejection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-008.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T07-009",
+              "name": "Oversized Argument Rejection",
+              "shortDescription": {
+                "text": "Oversized Argument Rejection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-009.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T07-010",
+              "name": "Duplicate Initialize (Replay Attack)",
+              "shortDescription": {
+                "text": "Duplicate Initialize (Replay Attack)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-010.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T07-011",
+              "name": "Deeply Nested Argument (JSON Bomb)",
+              "shortDescription": {
+                "text": "Deeply Nested Argument (JSON Bomb)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-012",
+              "name": "Unicode Homoglyph Tool Name Spoofing",
+              "shortDescription": {
+                "text": "Unicode Homoglyph Tool Name Spoofing"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-012.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T07-013",
+              "name": "Protocol Version Abuse",
+              "shortDescription": {
+                "text": "Protocol Version Abuse"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-013.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T16-001",
+              "name": "Tool Set Drift",
+              "shortDescription": {
+                "text": "Tool Set Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T16-002",
+              "name": "Resource Set Drift",
+              "shortDescription": {
+                "text": "Resource Set Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T16-003",
+              "name": "Tool Schema Required-Field Drift",
+              "shortDescription": {
+                "text": "Tool Schema Required-Field Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T16-004",
+              "name": "Server Capability Drift",
+              "shortDescription": {
+                "text": "Server Capability Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T16-005",
+              "name": "Capability Creep — Summary",
+              "shortDescription": {
+                "text": "Capability Creep — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T16-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-create_note",
+              "name": "Error Secret Leakage → create_note",
+              "shortDescription": {
+                "text": "Error Secret Leakage → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-create_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-get_note",
+              "name": "Error Secret Leakage → get_note",
+              "shortDescription": {
+                "text": "Error Secret Leakage → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-get_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-list_notes",
+              "name": "Error Secret Leakage → list_notes",
+              "shortDescription": {
+                "text": "Error Secret Leakage → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-list_notes.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-update_note",
+              "name": "Error Secret Leakage → update_note",
+              "shortDescription": {
+                "text": "Error Secret Leakage → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-update_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-delete_note",
+              "name": "Error Secret Leakage → delete_note",
+              "shortDescription": {
+                "text": "Error Secret Leakage → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-delete_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-001",
+              "name": "Error Secret Leakage — Summary",
+              "shortDescription": {
+                "text": "Error Secret Leakage — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-001",
+              "name": "Rug Pull Detection (Mutation Check)",
+              "shortDescription": {
+                "text": "Rug Pull Detection (Mutation Check)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-002",
+              "name": "Hidden Instruction Scan",
+              "shortDescription": {
+                "text": "Hidden Instruction Scan"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-003",
+              "name": "Cross-Tool Reference Detection",
+              "shortDescription": {
+                "text": "Cross-Tool Reference Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-004",
+              "name": "Schema Field Injection Check",
+              "shortDescription": {
+                "text": "Schema Field Injection Check"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T04-005",
+              "name": "Tool Count Stability Check",
+              "shortDescription": {
+                "text": "Tool Count Stability Check"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T04-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-001",
+              "name": "Injection PI-001 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-001 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-002",
+              "name": "Injection PI-002 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-002 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-003",
+              "name": "Injection PI-003 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-003 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-004",
+              "name": "Injection PI-004 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-004 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-004.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-005",
+              "name": "Injection PI-005 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-005 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-005.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-006",
+              "name": "Injection PI-006 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-006 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-006.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-007",
+              "name": "Injection PI-007 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-007 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-007.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-008",
+              "name": "Injection PI-008 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-008 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-009",
+              "name": "Injection PI-009 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-009 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-010",
+              "name": "Injection PI-010 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-010 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-011",
+              "name": "Injection PI-011 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-011 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-012",
+              "name": "Injection PI-012 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-012 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-013",
+              "name": "Injection PI-013 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-013 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-014",
+              "name": "Injection PI-014 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-014 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-015",
+              "name": "Injection PI-015 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-015 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-015.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-create_note-PI-016",
+              "name": "Injection PI-016 → create_note",
+              "shortDescription": {
+                "text": "Injection PI-016 → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-create_note-PI-016.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-001",
+              "name": "Injection PI-001 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-001 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-001.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-002",
+              "name": "Injection PI-002 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-002 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-002.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-003",
+              "name": "Injection PI-003 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-003 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-003.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-004",
+              "name": "Injection PI-004 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-004 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-004.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-005",
+              "name": "Injection PI-005 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-005 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-005.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-006",
+              "name": "Injection PI-006 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-006 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-006.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-007",
+              "name": "Injection PI-007 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-007 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-007.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-008",
+              "name": "Injection PI-008 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-008 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-009",
+              "name": "Injection PI-009 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-009 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-010",
+              "name": "Injection PI-010 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-010 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-011",
+              "name": "Injection PI-011 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-011 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-011.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-012",
+              "name": "Injection PI-012 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-012 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-012.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-013",
+              "name": "Injection PI-013 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-013 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-014",
+              "name": "Injection PI-014 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-014 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-015",
+              "name": "Injection PI-015 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-015 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-015.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-get_note-PI-016",
+              "name": "Injection PI-016 → get_note",
+              "shortDescription": {
+                "text": "Injection PI-016 → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-get_note-PI-016.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-001",
+              "name": "Injection PI-001 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-001 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-002",
+              "name": "Injection PI-002 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-002 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-003",
+              "name": "Injection PI-003 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-003 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-004",
+              "name": "Injection PI-004 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-004 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-005",
+              "name": "Injection PI-005 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-005 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-006",
+              "name": "Injection PI-006 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-006 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-007",
+              "name": "Injection PI-007 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-007 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-008",
+              "name": "Injection PI-008 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-008 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-009",
+              "name": "Injection PI-009 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-009 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-010",
+              "name": "Injection PI-010 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-010 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-011",
+              "name": "Injection PI-011 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-011 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-012",
+              "name": "Injection PI-012 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-012 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-013",
+              "name": "Injection PI-013 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-013 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-014",
+              "name": "Injection PI-014 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-014 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-015",
+              "name": "Injection PI-015 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-015 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-015.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-list_notes-PI-016",
+              "name": "Injection PI-016 → list_notes",
+              "shortDescription": {
+                "text": "Injection PI-016 → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-list_notes-PI-016.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-001",
+              "name": "Injection PI-001 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-001 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-002",
+              "name": "Injection PI-002 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-002 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-003",
+              "name": "Injection PI-003 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-003 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-004",
+              "name": "Injection PI-004 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-004 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-004.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-005",
+              "name": "Injection PI-005 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-005 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-005.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-006",
+              "name": "Injection PI-006 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-006 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-006.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-007",
+              "name": "Injection PI-007 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-007 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-007.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-008",
+              "name": "Injection PI-008 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-008 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-009",
+              "name": "Injection PI-009 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-009 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-010",
+              "name": "Injection PI-010 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-010 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-011",
+              "name": "Injection PI-011 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-011 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-012",
+              "name": "Injection PI-012 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-012 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-013",
+              "name": "Injection PI-013 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-013 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-014",
+              "name": "Injection PI-014 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-014 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-015",
+              "name": "Injection PI-015 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-015 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-015.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-update_note-PI-016",
+              "name": "Injection PI-016 → update_note",
+              "shortDescription": {
+                "text": "Injection PI-016 → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-update_note-PI-016.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-001",
+              "name": "Injection PI-001 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-001 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-001.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-002",
+              "name": "Injection PI-002 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-002 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-002.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-003",
+              "name": "Injection PI-003 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-003 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-003.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-004",
+              "name": "Injection PI-004 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-004 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-004.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-005",
+              "name": "Injection PI-005 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-005 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-005.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-006",
+              "name": "Injection PI-006 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-006 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-006.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-007",
+              "name": "Injection PI-007 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-007 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-007.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-008",
+              "name": "Injection PI-008 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-008 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-009",
+              "name": "Injection PI-009 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-009 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-010",
+              "name": "Injection PI-010 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-010 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-011",
+              "name": "Injection PI-011 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-011 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-011.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-012",
+              "name": "Injection PI-012 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-012 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-012.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-013",
+              "name": "Injection PI-013 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-013 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-013.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-014",
+              "name": "Injection PI-014 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-014 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-014.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-015",
+              "name": "Injection PI-015 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-015 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-015.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T02-delete_note-PI-016",
+              "name": "Injection PI-016 → delete_note",
+              "shortDescription": {
+                "text": "Injection PI-016 → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T02-delete_note-PI-016.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-title-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → create_note.title",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → create_note.title"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-title-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-content-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → create_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → create_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-content-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-01-tags-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → create_note.tags",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → create_note.tags"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-01-tags-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-02-note_id-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → get_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → get_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-02-note_id-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-03-tag_filter-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → list_notes.tag_filter",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → list_notes.tag_filter"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-03-tag_filter-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-note_id-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → update_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → update_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-note_id-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-04-content-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → update_note.content",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → update_note.content"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-04-content-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-001",
+              "name": "Fuzz FUZZ-STR-001 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-001 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-002",
+              "name": "Fuzz FUZZ-STR-002 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-002 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-003",
+              "name": "Fuzz FUZZ-STR-003 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-003 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-004",
+              "name": "Fuzz FUZZ-STR-004 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-004 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-005",
+              "name": "Fuzz FUZZ-STR-005 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-005 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-006",
+              "name": "Fuzz FUZZ-STR-006 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-006 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-007",
+              "name": "Fuzz FUZZ-STR-007 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-007 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-008",
+              "name": "Fuzz FUZZ-STR-008 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-008 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-009",
+              "name": "Fuzz FUZZ-STR-009 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-009 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-010",
+              "name": "Fuzz FUZZ-STR-010 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-010 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-011",
+              "name": "Fuzz FUZZ-STR-011 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-011 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T03-05-note_id-FUZZ-STR-012",
+              "name": "Fuzz FUZZ-STR-012 → delete_note.note_id",
+              "shortDescription": {
+                "text": "Fuzz FUZZ-STR-012 → delete_note.note_id"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T03-05-note_id-FUZZ-STR-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-TOOL-create_note",
+              "name": "Timing Side-Channel → create_note",
+              "shortDescription": {
+                "text": "Timing Side-Channel → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-TOOL-create_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-TOOL-get_note",
+              "name": "Timing Side-Channel → get_note",
+              "shortDescription": {
+                "text": "Timing Side-Channel → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-TOOL-get_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-TOOL-list_notes",
+              "name": "Timing Side-Channel → list_notes",
+              "shortDescription": {
+                "text": "Timing Side-Channel → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-TOOL-list_notes.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-TOOL-update_note",
+              "name": "Timing Side-Channel → update_note",
+              "shortDescription": {
+                "text": "Timing Side-Channel → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-TOOL-update_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-TOOL-delete_note",
+              "name": "Timing Side-Channel → delete_note",
+              "shortDescription": {
+                "text": "Timing Side-Channel → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-TOOL-delete_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T11-001",
+              "name": "Timing Side-Channel — Summary",
+              "shortDescription": {
+                "text": "Timing Side-Channel — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T11-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-TOOL-create_note",
+              "name": "Reentrancy → create_note",
+              "shortDescription": {
+                "text": "Reentrancy → create_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-TOOL-create_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-TOOL-get_note",
+              "name": "Reentrancy → get_note",
+              "shortDescription": {
+                "text": "Reentrancy → get_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-TOOL-get_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-TOOL-list_notes",
+              "name": "Reentrancy → list_notes",
+              "shortDescription": {
+                "text": "Reentrancy → list_notes"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-TOOL-list_notes.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-TOOL-update_note",
+              "name": "Reentrancy → update_note",
+              "shortDescription": {
+                "text": "Reentrancy → update_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-TOOL-update_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-TOOL-delete_note",
+              "name": "Reentrancy → delete_note",
+              "shortDescription": {
+                "text": "Reentrancy → delete_note"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-TOOL-delete_note.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T15-001",
+              "name": "Reentrancy — Summary",
+              "shortDescription": {
+                "text": "Reentrancy — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T15-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-001",
+              "name": "10 Simultaneous Calls",
+              "shortDescription": {
+                "text": "10 Simultaneous Calls"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-002",
+              "name": "50 Sequential Rapid Calls",
+              "shortDescription": {
+                "text": "50 Sequential Rapid Calls"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-003",
+              "name": "100 Concurrent Calls (Stress Test)",
+              "shortDescription": {
+                "text": "100 Concurrent Calls (Stress Test)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T05-004",
+              "name": "Connection Stability Under Rapid Reconnect",
+              "shortDescription": {
+                "text": "Connection Stability Under Rapid Reconnect"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T05-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T10-001",
+              "name": "Cross-Session Data Leakage",
+              "shortDescription": {
+                "text": "Cross-Session Data Leakage"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T10-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T17-001",
+              "name": "Cross-Session Hash Drift",
+              "shortDescription": {
+                "text": "Cross-Session Hash Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T17-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T17-002",
+              "name": "Description Fingerprint Inventory",
+              "shortDescription": {
+                "text": "Description Fingerprint Inventory"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T17-002.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T14-001",
+              "name": "Notification Flood Rate",
+              "shortDescription": {
+                "text": "Notification Flood Rate"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T14-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T14-002",
+              "name": "Notification Flood — Summary",
+              "shortDescription": {
+                "text": "Notification Flood — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T14-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T20-001",
+              "name": "Response-Size Drift",
+              "shortDescription": {
+                "text": "Response-Size Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T20-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T20-002",
+              "name": "Latency Drift",
+              "shortDescription": {
+                "text": "Latency Drift"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T20-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T20-004",
+              "name": "Memory Leak — Summary",
+              "shortDescription": {
+                "text": "Memory Leak — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T20-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-005",
+              "name": "Latency Degradation Under Load",
+              "shortDescription": {
+                "text": "Latency Degradation Under Load"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-005.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T01-001",
+          "level": "note",
+          "message": {
+            "text": "Server did not advertise: name, version. Got name='unknown' version='unknown' protocol='unknown'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-004",
+          "level": "note",
+          "message": {
+            "text": "No tools returned comparable JSON responses — consistency check not applicable."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-006-get_note",
+          "level": "note",
+          "message": {
+            "text": "Tool 'get_note' description does not mention its parameters (note_id)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-006-update_note",
+          "level": "note",
+          "message": {
+            "text": "Tool 'update_note' description does not mention its parameters (note_id, content)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-006-delete_note",
+          "level": "note",
+          "message": {
+            "text": "Tool 'delete_note' description does not mention its parameters (note_id)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T08-003-00",
+          "level": "note",
+          "message": {
+            "text": "No resources to benchmark."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T18-001",
+          "level": "note",
+          "message": {
+            "text": "Server does not expose resources/read; SSRF probes skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T13-002",
+          "level": "note",
+          "message": {
+            "text": "MCP client SDK does not expose an incoming-request hook; unsolicited sampling detection relies on capability audit (T13-001)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-001",
+          "level": "note",
+          "message": {
+            "text": "Unauthenticated Access test requires HTTP transport — skipped (transport='stdio')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-002",
+          "level": "note",
+          "message": {
+            "text": "Malformed Token Rejection test requires HTTP transport — skipped (transport='stdio')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-003",
+          "level": "note",
+          "message": {
+            "text": "Server advertises no resources — path traversal test skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-005",
+          "level": "note",
+          "message": {
+            "text": "CORS check requires HTTP transport — skipped (transport='stdio')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-006",
+          "level": "note",
+          "message": {
+            "text": "Privilege check not available on Windows."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-008",
+          "level": "warning",
+          "message": {
+            "text": "Server accepted call to invalid tool name '' without error."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-009",
+          "level": "warning",
+          "message": {
+            "text": "Server accepted a 1 MB argument value without error — no input size limit enforced."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-010",
+          "level": "note",
+          "message": {
+            "text": "Server accepted a second initialize() call on an already active session. The session remained usable, but the server state may have been silently reset."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-012",
+          "level": "warning",
+          "message": {
+            "text": "Server accepted unicode homoglyph of tool name 'create_note' → 'creаte_note'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-013",
+          "level": "note",
+          "message": {
+            "text": "Server did not negotiate a recognised MCP protocol version (version is empty or unknown)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-create_note-PI-004",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'create_note' echoed the raw injection payload back in its response (PI-004: SQL injection probe)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-create_note-PI-005",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'create_note' echoed the raw injection payload back in its response (PI-005: Shell injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-create_note-PI-006",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'create_note' echoed the raw injection payload back in its response (PI-006: Backtick injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-create_note-PI-007",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'create_note' echoed the raw injection payload back in its response (PI-007: Path traversal)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-create_note-PI-015",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'create_note' echoed the raw injection payload back in its response (PI-015: Jinja template injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-create_note-PI-016",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'create_note' echoed the raw injection payload back in its response (PI-016: Python format injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-001",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-001: Classic override)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-002",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-002: Newline injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-003",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-003: XML tag injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-004",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-004: SQL injection probe)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-005",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-005: Shell injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-006",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-006: Backtick injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-007",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-007: Path traversal)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-011",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-011: Rug pull attempt)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-012",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-012: Exfiltration instruction)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-015",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-015: Jinja template injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-get_note-PI-016",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'get_note' echoed the raw injection payload back in its response (PI-016: Python format injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-update_note-PI-004",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'update_note' echoed the raw injection payload back in its response (PI-004: SQL injection probe)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-update_note-PI-005",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'update_note' echoed the raw injection payload back in its response (PI-005: Shell injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-update_note-PI-006",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'update_note' echoed the raw injection payload back in its response (PI-006: Backtick injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-update_note-PI-007",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'update_note' echoed the raw injection payload back in its response (PI-007: Path traversal)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-update_note-PI-015",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'update_note' echoed the raw injection payload back in its response (PI-015: Jinja template injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-update_note-PI-016",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'update_note' echoed the raw injection payload back in its response (PI-016: Python format injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-001",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-001: Classic override)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-002",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-002: Newline injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-003",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-003: XML tag injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-004",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-004: SQL injection probe)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-005",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-005: Shell injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-006",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-006: Backtick injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-007",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-007: Path traversal)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-011",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-011: Rug pull attempt)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-012",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-012: Exfiltration instruction)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-015",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-015: Jinja template injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T02-delete_note-PI-016",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'delete_note' echoed the raw injection payload back in its response (PI-016: Python format injection)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T17-002",
+          "level": "note",
+          "message": {
+            "text": "Catalogued 5 SHA-256 description fingerprints. Use `mcpsafe compare` to detect drift across scans."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T08-005",
+          "level": "warning",
+          "message": {
+            "text": "3× latency degradation under load: baseline 48ms, load p95 168ms."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "python test_servers\\mcp_notes.py"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

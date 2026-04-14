@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCPSafe Report — 3d193b32 — 2026-04-14 13:28:16 UTC</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   MCPSafe Report — Self-contained, zero-CDN stylesheet
+   ═══════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:      #0f172a;
+  --navy-2:    #1e293b;
+  --navy-3:    #334155;
+  --slate:     #64748b;
+  --light:     #f1f5f9;
+  --white:     #ffffff;
+  --border:    #e2e8f0;
+
+  --critical:  #dc2626;
+  --high:      #ea580c;
+  --medium:    #d97706;
+  --low:       #2563eb;
+  --info-col:  #6b7280;
+  --pass:      #16a34a;
+
+  --radius:    8px;
+  --shadow:    0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,.14);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--light);
+  color: var(--navy);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+a { color: var(--low); }
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+.page-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+  color: var(--white);
+  padding: 32px 40px 28px;
+  border-bottom: 3px solid var(--low);
+}
+.page-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -.5px; }
+.page-header .subtitle { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+.page-header .meta { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 24px; }
+.page-header .meta-item { font-size: 12px; color: #cbd5e1; }
+.page-header .meta-item strong { color: var(--white); font-size: 13px; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; }
+
+section { margin-bottom: 36px; }
+section h2 {
+  font-size: 16px; font-weight: 700; color: var(--navy-2);
+  margin-bottom: 16px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  text-transform: uppercase; letter-spacing: .6px;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────── */
+.card {
+  background: var(--white); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px 24px;
+}
+
+/* ── Stat cards row ──────────────────────────────────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+.stat-card {
+  background: var(--white); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px 20px;
+  border-left: 4px solid var(--border);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stat-card .label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--slate);
+}
+.stat-card .count { font-size: 32px; font-weight: 800; line-height: 1; }
+
+.stat-card.sev-critical { border-color: var(--critical); }
+.stat-card.sev-critical .count { color: var(--critical); }
+.stat-card.sev-high     { border-color: var(--high); }
+.stat-card.sev-high     .count { color: var(--high); }
+.stat-card.sev-medium   { border-color: var(--medium); }
+.stat-card.sev-medium   .count { color: var(--medium); }
+.stat-card.sev-low      { border-color: var(--low); }
+.stat-card.sev-low      .count { color: var(--low); }
+.stat-card.sev-info     { border-color: var(--info-col); }
+.stat-card.sev-info     .count { color: var(--info-col); }
+.stat-card.sev-pass     { border-color: var(--pass); }
+.stat-card.sev-pass     .count { color: var(--pass); }
+
+/* ── Overall badge ────────────────────────────────────────────────── */
+.overall-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; padding: 4px 14px;
+  border-radius: 999px; text-transform: uppercase; letter-spacing: .5px;
+}
+.overall-badge.sev-critical { background: #fef2f2; color: var(--critical); border: 1px solid #fecaca; }
+.overall-badge.sev-high     { background: #fff7ed; color: var(--high);     border: 1px solid #fed7aa; }
+.overall-badge.sev-medium   { background: #fffbeb; color: var(--medium);   border: 1px solid #fde68a; }
+.overall-badge.sev-low      { background: #eff6ff; color: var(--low);      border: 1px solid #bfdbfe; }
+.overall-badge.sev-info     { background: #f9fafb; color: var(--info-col); border: 1px solid #e5e7eb; }
+.overall-badge.sev-pass     { background: #f0fdf4; color: var(--pass);     border: 1px solid #bbf7d0; }
+
+/* ── Summary row (donut + stats) ─────────────────────────────────── */
+.summary-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 700px) {
+  .summary-row { grid-template-columns: 1fr; }
+}
+
+/* ── Donut chart (pure CSS conic-gradient) ───────────────────────── */
+.donut-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.donut {
+  width: 160px; height: 160px; border-radius: 50%;
+  background: conic-gradient(
+  #d97706 0.0deg 6.79deg,
+  #2563eb 6.79deg 13.58deg,
+  #6b7280 13.58deg 57.74deg,
+  #16a34a 57.74deg 400.75deg
+);
+  position: relative;
+}
+.donut::after {
+  content: ""; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 90px; height: 90px; border-radius: 50%;
+  background: var(--white);
+  box-shadow: inset 0 2px 8px rgba(0,0,0,.1);
+}
+.donut-centre {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2; text-align: center; pointer-events: none;
+}
+.donut-centre .big { font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1; }
+.donut-centre .small { font-size: 10px; color: var(--slate); text-transform: uppercase; letter-spacing: .5px; }
+.donut-legend { width: 100%; }
+.donut-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; padding: 2px 0;
+}
+.donut-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.donut-legend-label { color: var(--slate); flex: 1; }
+.donut-legend-count { font-weight: 700; color: var(--navy); }
+
+/* ── Server info card ─────────────────────────────────────────────── */
+.info-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+}
+.info-item .key {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .6px; color: var(--slate); margin-bottom: 2px;
+}
+.info-item .val { font-size: 13px; color: var(--navy); word-break: break-all; }
+.tool-pills {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;
+}
+.tool-pill {
+  background: var(--light); border: 1px solid var(--border);
+  border-radius: 4px; padding: 2px 8px; font-size: 11px;
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  color: var(--navy-3);
+}
+
+/* ── Findings table ──────────────────────────────────────────────── */
+.findings-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+.findings-table thead th {
+  background: var(--navy-2); color: #e2e8f0;
+  padding: 10px 14px; text-align: left; font-weight: 600;
+  font-size: 11px; text-transform: uppercase; letter-spacing: .6px;
+  position: sticky; top: 0; z-index: 1;
+}
+.findings-table tbody tr { border-bottom: 1px solid var(--border); }
+.findings-table tbody tr:last-child { border-bottom: none; }
+.findings-table tbody tr:hover { background: #f8fafc; }
+.findings-table td { padding: 10px 14px; vertical-align: top; }
+
+/* Severity pill */
+.sev-pill {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
+  white-space: nowrap;
+}
+.sev-pill.sev-critical { background: #fef2f2; color: var(--critical); }
+.sev-pill.sev-high     { background: #fff7ed; color: var(--high); }
+.sev-pill.sev-medium   { background: #fffbeb; color: var(--medium); }
+.sev-pill.sev-low      { background: #eff6ff; color: var(--low); }
+.sev-pill.sev-info     { background: #f9fafb; color: var(--info-col); }
+.sev-pill.sev-pass     { background: #f0fdf4; color: var(--pass); }
+
+/* Expandable detail rows */
+details { cursor: pointer; }
+details summary {
+  list-style: none; display: flex; align-items: center; gap: 6px;
+}
+details summary::before { content: "▶"; font-size: 10px; color: var(--slate); transition: transform .15s; }
+details[open] summary::before { transform: rotate(90deg); }
+details summary::-webkit-details-marker { display: none; }
+
+.detail-box {
+  margin-top: 8px; padding: 10px 14px;
+  background: #f8fafc; border-radius: 4px;
+  border-left: 3px solid var(--border);
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  font-size: 12px; white-space: pre-wrap; word-break: break-all;
+  color: var(--navy-3);
+}
+.remediation-box {
+  margin-top: 6px; padding: 8px 12px;
+  background: #f0fdf4; border-radius: 4px;
+  border-left: 3px solid var(--pass);
+  font-size: 12px; color: #166534;
+}
+.remediation-box strong { font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
+
+/* Category header row */
+.cat-header td {
+  background: var(--light); font-weight: 700; font-size: 12px;
+  text-transform: uppercase; letter-spacing: .6px; color: var(--navy-3);
+  padding: 8px 14px; border-top: 2px solid var(--border);
+}
+
+/* test-id monospace */
+.tid {
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  font-size: 11px; color: var(--slate);
+  white-space: nowrap;
+}
+
+/* duration */
+.dur { font-size: 11px; color: var(--slate); white-space: nowrap; }
+
+/* ── Footer ──────────────────────────────────────────────────────── */
+.page-footer {
+  background: var(--navy); color: #64748b;
+  text-align: center; padding: 16px;
+  font-size: 11px;
+}
+.page-footer a { color: #94a3b8; }
+
+/* ── Print ───────────────────────────────────────────────────────── */
+@media print {
+  body { background: white; font-size: 11px; }
+  .page-header { background: white; color: black; border-bottom: 2px solid black; }
+  .page-header h1 { color: black; }
+  .page-header .subtitle, .page-header .meta-item { color: #555; }
+  .page-header .meta-item strong { color: black; }
+  details { open: true; }
+  details[open] .detail-box { display: block; }
+  .findings-table thead th { background: #f1f5f9; color: black; }
+  .card { box-shadow: none; border: 1px solid #e2e8f0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE HEADER
+     ═══════════════════════════════════════════════════════════════ -->
+<header class="page-header">
+  <h1>🔒 MCPSafe Security Report</h1>
+  <p class="subtitle">MCP Server Security &amp; Performance Analysis — v0.2.0</p>
+  <div class="meta">
+    <div class="meta-item"><strong>Scan ID</strong><br>3d193b32…</div>
+    <div class="meta-item"><strong>Started</strong><br>2026-04-14 13:28:16 UTC</div>
+    <div class="meta-item"><strong>Finished</strong><br>2026-04-14 13:33:44 UTC</div>
+    <div class="meta-item"><strong>Duration</strong><br>538.0s</div>
+    <div class="meta-item"><strong>Overall</strong><br>
+      <span class="overall-badge sev-medium">MEDIUM</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SUMMARY
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <h2>Summary</h2>
+    <div class="summary-row">
+
+      <!-- Donut chart -->
+      <div class="card donut-wrap">
+        <div class="donut">
+          <div class="donut-centre">
+            <div class="big">106</div>
+            <div class="small">tests</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#d97706"></div>
+            <span class="donut-legend-label">MEDIUM</span>
+            <span class="donut-legend-count">2</span>
+            <span style="color:var(--slate);font-size:11px">(1.9%)</span>
+          </div>
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#2563eb"></div>
+            <span class="donut-legend-label">LOW</span>
+            <span class="donut-legend-count">2</span>
+            <span style="color:var(--slate);font-size:11px">(1.9%)</span>
+          </div>
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#6b7280"></div>
+            <span class="donut-legend-label">INFO</span>
+            <span class="donut-legend-count">13</span>
+            <span style="color:var(--slate);font-size:11px">(12.3%)</span>
+          </div>
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#16a34a"></div>
+            <span class="donut-legend-label">PASS</span>
+            <span class="donut-legend-count">101</span>
+            <span style="color:var(--slate);font-size:11px">(95.3%)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat cards -->
+      <div>
+        <div class="stat-grid">
+          <div class="stat-card sev-critical">
+            <span class="label">CRITICAL</span>
+            <span class="count">0</span>
+          </div>
+          <div class="stat-card sev-high">
+            <span class="label">HIGH</span>
+            <span class="count">0</span>
+          </div>
+          <div class="stat-card sev-medium">
+            <span class="label">MEDIUM</span>
+            <span class="count">2</span>
+          </div>
+          <div class="stat-card sev-low">
+            <span class="label">LOW</span>
+            <span class="count">2</span>
+          </div>
+          <div class="stat-card sev-info">
+            <span class="label">INFO</span>
+            <span class="count">13</span>
+          </div>
+          <div class="stat-card sev-pass">
+            <span class="label">PASS</span>
+            <span class="count">101</span>
+          </div>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:24px; flex-wrap:wrap; font-size:13px; color:var(--slate);">
+          <span>Total: <strong style="color:var(--navy)">106</strong></span>
+          <span>Passed: <strong style="color:var(--pass)">101</strong></span>
+          <span>Failed: <strong style="color:var(--critical)">5</strong></span>
+          <span>Duration: <strong style="color:var(--navy)">538.0s</strong></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SERVER INFO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <h2>Server Information</h2>
+    <div class="card">
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="key">Server Name</div>
+          <div class="val">unknown</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Version</div>
+          <div class="val">unknown</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Protocol</div>
+          <div class="val">unknown</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Transport</div>
+          <div class="val">HTTP</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Target</div>
+          <div class="val" style="font-family:monospace;font-size:12px">https://docs.mcp.cloudflare.com/mcp</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Discovered At</div>
+          <div class="val">2026-04-14 13:28:20 UTC</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Tools</div>
+          <div class="val">2</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Resources</div>
+          <div class="val">0</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Prompts</div>
+          <div class="val">1</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <div class="key" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--slate);margin-bottom:6px;">Exposed Tools</div>
+        <div class="tool-pills">
+          <span class="tool-pill">search_cloudflare_documentation</span>
+          <span class="tool-pill">migrate_pages_to_workers_guide</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FINDINGS TABLE
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <h2>Findings (106 tests)</h2>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="findings-table">
+        <thead>
+          <tr>
+            <th style="width:90px">Test ID</th>
+            <th style="width:100px">Severity</th>
+            <th>Test Name</th>
+            <th>Description / Details</th>
+            <th style="width:80px">Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cat-header">
+            <td colspan="5">SECURITY &nbsp;·&nbsp; 77 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-002-02</td>
+            <td>
+              <span class="sev-pill sev-medium">MEDIUM</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Malformed Token: Empty bearer token</td>
+            <td>
+              <details>
+                <summary>Unexpected exception: LocalProtocolError</summary>
+                <div class="detail-box">Illegal header value b&#39;Bearer &#39;</div>
+              </details>
+            </td>
+            <td class="dur">769ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-005</td>
+            <td>
+              <span class="sev-pill sev-medium">MEDIUM</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">CORS Misconfiguration</td>
+            <td>
+              <details>
+                <summary>Server returns &#39;Access-Control-Allow-Origin: *&#39; — any browser origin can connect to this MCP server.</summary>
+                <div class="detail-box">Wildcard CORS — any browser origin can connect to this MCP server</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Restrict the CORS origin allowlist to known, trusted domains. A wildcard allows a malicious web page to make authenticated cross-origin calls to this MCP server.
+                </div>
+              </details>
+            </td>
+            <td class="dur">729ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-010</td>
+            <td>
+              <span class="sev-pill sev-low">LOW</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Duplicate Initialize (Replay Attack)</td>
+            <td>
+              <details>
+                <summary>Server accepted a second initialize() call on an already active session. The session remained usable, but the server sta…</summary>
+                <div class="detail-box">Double initialize() succeeded.
+Post-replay list_tools() succeeded — session is still functional but capabilities or internal state may have been altered.</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>The server should reject or ignore repeated initialize() calls. Accepting them enables mid-session protocol version downgrade and capability reset attacks.
+                </div>
+              </details>
+            </td>
+            <td class="dur">173ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-013</td>
+            <td>
+              <span class="sev-pill sev-low">LOW</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Protocol Version Abuse</td>
+            <td>
+              <details>
+                <summary>Server did not negotiate a recognised MCP protocol version (version is empty or unknown).</summary>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Ensure the server returns a valid protocolVersion in its initialize response (e.g. &#39;2024-11-05&#39;). Clients rely on this to select compatible behaviour.
+                </div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Unauthenticated MCP Access</td>
+            <td>
+              <details>
+                <summary>Unexpected HTTP status 404 on unauthenticated probe.</summary>
+                <div class="detail-box">Unexpected status: 404</div>
+              </details>
+            </td>
+            <td class="dur">662ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-002-01</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Malformed Token: Invalid bearer token</td>
+            <td>
+              HTTP 404 for Invalid bearer token — unable to confirm rejection.
+            </td>
+            <td class="dur">717ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-002-03</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Malformed Token: Basic auth instead of Bearer</td>
+            <td>
+              HTTP 404 for Basic auth instead of Bearer — unable to confirm rejection.
+            </td>
+            <td class="dur">780ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-002-04</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Malformed Token: Wrong API key format</td>
+            <td>
+              HTTP 404 for Wrong API key format — unable to confirm rejection.
+            </td>
+            <td class="dur">713ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-003</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Resource URI Path Traversal</td>
+            <td>
+              Server advertises no resources — path traversal test skipped.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-006</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Process Privilege Check</td>
+            <td>
+              Process privilege check requires STDIO transport — skipped (transport=&#39;http&#39;).
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-007</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Environment Variable Probe</td>
+            <td>
+              Environment variable probe requires STDIO transport — skipped (transport=&#39;http&#39;).
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T13-002</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Unsolicited Sampling Requests</td>
+            <td>
+              MCP client SDK does not expose an incoming-request hook; unsolicited sampling detection relies on capability audit (T13-001).
+            </td>
+            <td class="dur">1292ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T17-002</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Fingerprint Inventory</td>
+            <td>
+              <details>
+                <summary>Catalogued 3 SHA-256 description fingerprints. Use `mcpsafe compare` to detect drift across scans.</summary>
+                <div class="detail-box">tool:search_cloudflare_documentation = fb5bf70a271f9ccaf9062c13f058b203e21fe88ee413284e495d9035eb2c7513
+tool:migrate_pages_to_workers_guide = fc1b50a88c58bc18d7add334587e6d1624d0b88357cd88486ea9bd6f1be37808
+prompt:workers-prompt-full = 07abf707ebcefee88382f79d897d6044c2bbd61df9689f3592e599d9154c42b3</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T18-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSRF — Summary</td>
+            <td>
+              Server does not expose resources/read; SSRF probes skipped.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-001 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-001 (Classic override) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/waf/detections/ai-security-for-apps/prompt-injection/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n### Why a score instead of a boolea&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2475ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-002 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-002 (Newline injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/ai-search/configuration/system-prompt/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n# System prompt\n\nSystem prompts allow you to guide&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1335ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-003 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-003 (XML tag injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1626ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-004 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-004 (SQL injection probe) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2140ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-005 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-005 (Shell injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/workers/wrangler/commands/general/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n## `auth`\n\n### `auth token`\n\nRetrieve your current aut&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2062ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-006 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-006 (Backtick injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/workers-ai/models/kimi-k2.5/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n* `id` ` string ` required  \n                               &#39;</div>
+              </details>
+            </td>
+            <td class="dur">2397ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-007 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-007 (Path traversal) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2386ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-008 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-008 (Right-to-left override unicode) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2225ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-009 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-009 (Null byte injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&lt;result&gt;\n&lt;url&gt;https://developers.cloudflare.com/https://developers.cloudflare.com/workers/best-practices/workers-best-practices/&lt;/url&gt;\n&lt;title&gt;&lt;/title&gt;\n&lt;text&gt;\n// ✅ Good: test the null case explicitly\n\n&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2190ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-010 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-010 (BOM character) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2001ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-011 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-011 (Rug pull attempt) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2021ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-012 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-012 (Exfiltration instruction) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">1803ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-013</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-013 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-013 (Large payload DoS probe 10k) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2639ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-014</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-014 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-014 (Large payload DoS probe 100k) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">5389ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-015</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-015 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-015 (Jinja template injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2212ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T02-search_cloudflare_documentation-PI-016</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Injection PI-016 → search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled PI-016 (Python format injection) gracefully.</summary>
+                <div class="detail-box">Response excerpt: &#39;&#39;</div>
+              </details>
+            </td>
+            <td class="dur">2469ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-001 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-001 (empty string) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;All search methods failed: vector&#39;, annotations=None, meta=None)] structuredContent=None isError=True&#34;</div>
+              </details>
+            </td>
+            <td class="dur">350ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-002 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-002 (single space) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;All search methods failed: vector&#39;, annotations=None, meta=None)] structuredContent=None isError=True&#34;</div>
+              </details>
+            </td>
+            <td class="dur">317ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-003 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-003 (whitespace only) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;All search methods failed: vector&#39;, annotations=None, meta=None)] structuredContent=None isError=True&#34;</div>
+              </details>
+            </td>
+            <td class="dur">216ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-004 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-004 (null value) on param &#39;query&#39; — hand…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;null&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received null&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">260ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-005 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-005 (integer as string field) on param &#39;…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;number&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received number&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">244ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-006 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-006 (boolean as string field) on param &#39;…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;boolean&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received boolean&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">169ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-007 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-007 (list as string field) on param &#39;que…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;array&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received array&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">228ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-008 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; returned a structured error for FUZZ-STR-008 (dict as string field) on param &#39;que…</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;object&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ],
+    &#34;message&#34;: &#34;Expected string, received object&#34;
+  }
+]</div>
+              </details>
+            </td>
+            <td class="dur">290ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-009 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-009 (very long string 10k) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">2266ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-010 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-010 (newlines and tabs) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;All search methods failed: vector&#39;, annotations=None, meta=None)] structuredContent=None isError=True&#34;</div>
+              </details>
+            </td>
+            <td class="dur">415ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-011 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-011 (null byte in string) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1747ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T03-01-query-FUZZ-STR-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Fuzz FUZZ-STR-012 → search_cloudflare_documentation.query</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; handled FUZZ-STR-012 (all unicode planes) on param &#39;query&#39; correctly.</summary>
+                <div class="detail-box">Response excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;&#39;, annotations=None, meta=None)] structuredContent=None isError=False&#34;</div>
+              </details>
+            </td>
+            <td class="dur">1935ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Rug Pull Detection (Mutation Check)</td>
+            <td>
+              All 2 tool description(s) were stable across two list_tools() calls (3 s apart).
+            </td>
+            <td class="dur">3173ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Hidden Instruction Scan</td>
+            <td>
+              No suspicious patterns found in 2 tool description(s).
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Cross-Tool Reference Detection</td>
+            <td>
+              No cross-tool name references found across 2 tool descriptions.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Schema Field Injection Check</td>
+            <td>
+              All 2 tool inputSchema(s) contain only sanctioned JSON Schema fields.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T04-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Count Stability Check</td>
+            <td>
+              <details>
+                <summary>Tool count stable at 2 across 5 polls (2.5s window).</summary>
+                <div class="detail-box">Counts per poll: [2, 2, 2, 2, 2]</div>
+              </details>
+            </td>
+            <td class="dur">3496ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Credentials in Error Messages</td>
+            <td>
+              <details>
+                <summary>No credential patterns found in error response for non-existent tool call.</summary>
+                <div class="detail-box">Error excerpt: &#39;MCP error -32602: Tool mcpsafe_nonexistent_tool_probe not found&#39;</div>
+              </details>
+            </td>
+            <td class="dur">198ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Invalid Tool Name Rejection</td>
+            <td>
+              Server correctly rejected all invalid tool names.
+            </td>
+            <td class="dur">1236ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Oversized Argument Rejection</td>
+            <td>
+              Server correctly rejected oversized tool arguments.
+            </td>
+            <td class="dur">903ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deeply Nested Argument (JSON Bomb)</td>
+            <td>
+              Server rejected deeply nested JSON argument.
+            </td>
+            <td class="dur">1ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Unicode Homoglyph Tool Name Spoofing</td>
+            <td>
+              Server rejected homoglyph tool name &#39;seаrch_cloudflare_documentation&#39; correctly.
+            </td>
+            <td class="dur">324ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T09-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Output Sanitization — Summary</td>
+            <td>
+              All 2 tool outputs and 0 resource reads passed PI-marker scanning.
+            </td>
+            <td class="dur">1287ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T09-TOOL-migrate_pages_to_workers_gui</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Output Sanitization → migrate_pages_to_workers_guide</td>
+            <td>
+              Tool &#39;migrate_pages_to_workers_guide&#39; output clean — no prompt-injection markers detected.
+            </td>
+            <td class="dur">933ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T09-TOOL-search_cloudflare_documentat</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Output Sanitization → search_cloudflare_documentation</td>
+            <td>
+              Tool &#39;search_cloudflare_documentation&#39; output clean — no prompt-injection markers detected.
+            </td>
+            <td class="dur">352ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T10-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Cross-Session Data Leakage</td>
+            <td>
+              Marker planted in 1 tool(s) via session A did not leak into an independent session B — state appears correctly partitioned.
+            </td>
+            <td class="dur">6512ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T11-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Timing Side-Channel — Summary</td>
+            <td>
+              Probed 1 tool(s); no timing oracles detected.
+            </td>
+            <td class="dur">16914ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T11-TOOL-search_cloudflare_documentat</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Timing Side-Channel → search_cloudflare_documentation</td>
+            <td>
+              Tool &#39;search_cloudflare_documentation&#39; does not appear to leak timing information (mean 2074.0 ms vs 1866.9 ms, ratio 1.11×).
+            </td>
+            <td class="dur">16913ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T12-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Error Secret Leakage — Summary</td>
+            <td>
+              Probed 2 tool(s) and 0 resources; no secret patterns detected in error messages.
+            </td>
+            <td class="dur">4457ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T12-TOOL-migrate_pages_to_workers_gui</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Error Secret Leakage → migrate_pages_to_workers_guide</td>
+            <td>
+              Tool &#39;migrate_pages_to_workers_guide&#39; never errored on malformed inputs — nothing to scan.
+            </td>
+            <td class="dur">193ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T12-TOOL-search_cloudflare_documentat</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Error Secret Leakage → search_cloudflare_documentation</td>
+            <td>
+              Tool &#39;search_cloudflare_documentation&#39; errored on 2 malformed input(s); no secret patterns found in error text.
+            </td>
+            <td class="dur">4262ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T13-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Sampling Capability Advertisement</td>
+            <td>
+              Server does not advertise the &#39;sampling&#39; capability.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T13-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Sampling Abuse — Summary</td>
+            <td>
+              No sampling-abuse surface detected.
+            </td>
+            <td class="dur">1292ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T14-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Notification Flood Rate</td>
+            <td>
+              Server sent 0 notifications during a 5s quiet window (0.0/sec) — well within expected bounds.
+            </td>
+            <td class="dur">6221ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T14-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Notification Flood — Summary</td>
+            <td>
+              No notification-flood risk detected.
+            </td>
+            <td class="dur">6221ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T15-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Reentrancy — Summary</td>
+            <td>
+              Probed 1 tool(s) with 6 concurrent invocations each; no state-bleed detected.
+            </td>
+            <td class="dur">4010ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T15-TOOL-search_cloudflare_documentat</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Reentrancy → search_cloudflare_documentation</td>
+            <td>
+              6 concurrent calls to &#39;search_cloudflare_documentation&#39; returned independent results — no state bleed detected.
+            </td>
+            <td class="dur">4009ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T16-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Set Drift</td>
+            <td>
+              Tool inventory stable across snapshots.
+            </td>
+            <td class="dur">5018ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T16-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Resource Set Drift</td>
+            <td>
+              Resource inventory stable.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T16-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Server Capability Drift</td>
+            <td>
+              Server capabilities stable.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T16-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Capability Creep — Summary</td>
+            <td>
+              All capability surfaces stable over 3s window.
+            </td>
+            <td class="dur">5018ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T17-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Cross-Session Hash Drift</td>
+            <td>
+              All 3 descriptions match byte-for-byte across two independent sessions.
+            </td>
+            <td class="dur">3541ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Non-ASCII Identifiers</td>
+            <td>
+              All identifiers are pure ASCII.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Confusable / Homoglyph Characters</td>
+            <td>
+              No Unicode confusables detected in identifiers.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Mixed-Script Identifiers</td>
+            <td>
+              No mixed-script identifiers found.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Invisible / Directional Characters</td>
+            <td>
+              No invisible characters in identifiers.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Homoglyph Scan — Summary</td>
+            <td>
+              Scanned 3 identifier(s); no impersonation signals detected.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr class="cat-header">
+            <td colspan="5">DISCOVERY &nbsp;·&nbsp; 8 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Server Identity</td>
+            <td>
+              <details>
+                <summary>Server did not advertise: name, version. Got name=&#39;unknown&#39; version=&#39;unknown&#39; protocol=&#39;unknown&#39;.</summary>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Ensure the MCP server returns a populated &#39;serverInfo&#39; object in its initialize response (name and version fields).
+                </div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Enumeration</td>
+            <td>
+              <details>
+                <summary>Discovered 2 tool(s): search_cloudflare_documentation, migrate_pages_to_workers_guide.</summary>
+                <div class="detail-box">search_cloudflare_documentation: &#39;Search the Cloudflare documentation.\n\n\t\tThis tool should be used to answer any q&#39;
+migrate_pages_to_workers_guide: &#39;ALWAYS read this guide before migrating Pages projects to Workers.&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Resource Enumeration</td>
+            <td>
+              Discovered 0 resource(s).
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Prompt Enumeration</td>
+            <td>
+              <details>
+                <summary>Discovered 1 prompt(s): workers-prompt-full.</summary>
+                <div class="detail-box">workers-prompt-full: &#39;Detailed prompt for generating Cloudflare Workers code (and other developer plat&#39; (0 arg(s))</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Description Completeness</td>
+            <td>
+              All 2 tool(s) have non-empty descriptions.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Schema Validity</td>
+            <td>
+              All 2 tool(s) have valid JSON Schema inputSchema.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Duplicate Tool Names</td>
+            <td>
+              All 2 tool name(s) are unique.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Description Length</td>
+            <td>
+              All 2 tool description(s) are within the 2,000-character limit.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr class="cat-header">
+            <td colspan="5">SCHEMA &nbsp;·&nbsp; 8 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-004</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Return Type Consistency</td>
+            <td>
+              No tools returned comparable JSON responses — consistency check not applicable.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Schema Structural Validity</td>
+            <td>
+              All 2 tool inputSchema(s) are structurally valid.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-002-search_cloudflare_documentation</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Required Enforcement: search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; correctly raised an error when called with missing required fields.</summary>
+                <div class="detail-box">McpError: MCP error -32602: Invalid arguments for tool search_cloudflare_documentation: [
+  {
+    &#34;code&#34;: &#34;invalid_type&#34;,
+    &#34;expected&#34;: &#34;string&#34;,
+    &#34;received&#34;: &#34;undefined&#34;,
+    &#34;path&#34;: [
+      &#34;query&#34;
+    ]</div>
+              </details>
+            </td>
+            <td class="dur">194ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">additionalProperties Strictness</td>
+            <td>
+              All 2 tool(s) have &#39;additionalProperties&#39;: false.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Overly Permissive Schema Detection</td>
+            <td>
+              All 2 tool schema(s) are acceptably strict.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-migrate_pages_to_workers_guide</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: migrate_pages_to_workers_guide</td>
+            <td>
+              <details>
+                <summary>Tool &#39;migrate_pages_to_workers_guide&#39; has an adequate description (66 chars).</summary>
+                <div class="detail-box">Description: &#39;ALWAYS read this guide before migrating Pages projects to Workers.&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-search_cloudflare_documentation</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39; has an adequate description (541 chars).</summary>
+                <div class="detail-box">Description: &#39;Search the Cloudflare documentation.\n\n\t\tThis tool should be used to answer any question about Cloudflare products or features, including:\n\t\t- Workers, Pages, R2, Images, Stream, D1, Durable Objects, K&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T16-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Schema Required-Field Drift</td>
+            <td>
+              No required-field drift detected.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr class="cat-header">
+            <td colspan="5">PERFORMANCE &nbsp;·&nbsp; 13 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-003-00</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Resource Read Latency</td>
+            <td>
+              No resources to benchmark.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T05-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">10 Simultaneous Calls</td>
+            <td>
+              <details>
+                <summary>All 10 concurrent calls to &#39;search_cloudflare_documentation&#39; succeeded with no data leakage.</summary>
+                <div class="detail-box">min=1669ms  mean=2064ms  max=2411ms</div>
+              </details>
+            </td>
+            <td class="dur">2720ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T05-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">50 Sequential Rapid Calls</td>
+            <td>
+              <details>
+                <summary>p50=1925ms  p95=2596ms  p99=3182ms</summary>
+                <div class="detail-box">{
+  &#34;tool&#34;: &#34;search_cloudflare_documentation&#34;,
+  &#34;calls&#34;: 50,
+  &#34;errors&#34;: 0,
+  &#34;min_ms&#34;: 1431.19,
+  &#34;mean_ms&#34;: 1960.9,
+  &#34;max_ms&#34;: 3182.28,
+  &#34;p50_ms&#34;: 1925.46,
+  &#34;p95_ms&#34;: 2595.89,
+  &#34;p99_ms&#34;: 3182.28
+}</div>
+              </details>
+            </td>
+            <td class="dur">98045ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T05-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">100 Concurrent Calls (Stress Test)</td>
+            <td>
+              <details>
+                <summary>All 100 calls succeeded. Throughput: 5.0 calls/sec</summary>
+                <div class="detail-box">Throughput: 5.0 calls/sec</div>
+              </details>
+            </td>
+            <td class="dur">20200ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T05-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Connection Stability Under Rapid Reconnect</td>
+            <td>
+              <details>
+                <summary>Tool list consistent across all 5 reconnects: [&#39;migrate_pages_to_workers_guide&#39;, &#39;search_cloudflare_documentation&#39;].</summary>
+                <div class="detail-box">Reconnects: 5. Tools per connect: 2.</div>
+              </details>
+            </td>
+            <td class="dur">22805ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-01</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: search_cloudflare_documentation</td>
+            <td>
+              <details>
+                <summary>Tool &#39;search_cloudflare_documentation&#39;: mean=2244ms  min=1233ms  max=4463ms (5 samples).</summary>
+                <div class="detail-box">{
+  &#34;search_cloudflare_documentation&#34;: {
+    &#34;mean_ms&#34;: 2243.91,
+    &#34;min_ms&#34;: 1232.71,
+    &#34;max_ms&#34;: 4462.99,
+    &#34;samples&#34;: [
+      4462.99,
+      1796.89,
+      1712.11,
+      2014.83,
+      1232.71
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">11220ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-02</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: migrate_pages_to_workers_guide</td>
+            <td>
+              <details>
+                <summary>Tool &#39;migrate_pages_to_workers_guide&#39;: mean=392ms  min=190ms  max=586ms (5 samples).</summary>
+                <div class="detail-box">{
+  &#34;migrate_pages_to_workers_guide&#34;: {
+    &#34;mean_ms&#34;: 392.08,
+    &#34;min_ms&#34;: 189.69,
+    &#34;max_ms&#34;: 586.29,
+    &#34;samples&#34;: [
+      189.69,
+      586.29,
+      547.78,
+      310.78,
+      325.88
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">1960ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Discovery Latency</td>
+            <td>
+              <details>
+                <summary>list_tools() mean=364ms  min=216ms  max=528ms.</summary>
+                <div class="detail-box">{
+  &#34;list_tools&#34;: {
+    &#34;mean_ms&#34;: 364.42,
+    &#34;min_ms&#34;: 216.47,
+    &#34;max_ms&#34;: 528.26,
+    &#34;samples&#34;: [
+      528.26,
+      354.31,
+      254.23,
+      216.47,
+      468.85
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">1822ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Cold Start Detection</td>
+            <td>
+              <details>
+                <summary>No significant cold-start penalty detected (ratio 1.4×, threshold 10×).</summary>
+                <div class="detail-box">Call 1 (cold): 2344ms
+Calls 2-5 (warm): 2073ms, 1868ms, 1448ms, 1536ms
+Warm mean: 1731ms  Ratio: 1.4×</div>
+              </details>
+            </td>
+            <td class="dur">9269ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Latency Degradation Under Load</td>
+            <td>
+              <details>
+                <summary>Latency stable under load: baseline 1318ms, load p95 2596ms (ratio 2.0×).</summary>
+                <div class="detail-box">Baseline mean: 1318ms  Load p95: 2596ms  Degradation ratio: 2.0×</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T20-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Response-Size Drift</td>
+            <td>
+              Response sizes stable (11061→11061 bytes, ratio 1.00×).
+            </td>
+            <td class="dur">73886ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T20-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Latency Drift</td>
+            <td>
+              Latency stable (1800.1→1742.8ms, ratio 0.97×).
+            </td>
+            <td class="dur">73886ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T20-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Memory Leak — Summary</td>
+            <td>
+              No memory growth signals over 39 probe calls.
+            </td>
+            <td class="dur">73886ms</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="page-footer">
+  Generated by <a href="https://github.com/Ravikiranbantwal/mcpsafe">MCPSafe v0.2.0</a>
+  &nbsp;·&nbsp; Scan 3d193b32
+  &nbsp;·&nbsp; 2026-04-14 13:28:16 UTC
+  <div style="margin-top:10px;font-size:0.78rem;color:var(--slate);max-width:780px;margin-left:auto;margin-right:auto;line-height:1.5;">
+    ⚠️ <strong>Responsible Use:</strong> MCPSafe is intended for use against MCP servers you own or have explicit written
+    permission to test. Unauthorised scanning of third-party servers may violate computer fraud laws in your jurisdiction.
+    Treat findings as confidential until disclosed to the server operator.
+  </div>
+</footer>
+
+</body>
+</html>

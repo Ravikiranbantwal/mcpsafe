@@ -101,6 +101,32 @@ _MAX_TEST_ID_LEN = 64
 _MAX_RESOURCES_SCANNED = 10
 _CALL_TIMEOUT_SEC = 15.0
 
+# Pass-through tools return raw data (file contents, diffs, search results,
+# API responses) verbatim. Scanning their output for prompt-injection markers
+# false-positives on any document that merely *discusses* prompt injection —
+# e.g. a git diff against our own docs, or a documentation page about AI
+# safety. Reverse-injection risk for these tools is still real, but it
+# must be evaluated in the broader context of whether the LLM should trust
+# that content source at all, not via pattern matching on the payload.
+#
+# We match tool names that contain any of these substrings (case-insensitive).
+_PASSTHROUGH_TOOL_KEYWORDS: frozenset[str] = frozenset({
+    "read_file", "read_text", "readfile",
+    "git_diff", "git_log", "git_show", "git_blame",
+    "cat_file", "get_file_contents", "show_file",
+    "fetch", "http_get", "http_fetch",
+    "search_code", "search_issues", "search_pr",
+    "search_repo", "search_repositories", "list_repo",
+    "search_users", "search_commits", "search_wiki",
+    "read_resource", "read_uri", "get_resource",
+})
+
+
+def _is_passthrough_tool(tool_name: str) -> bool:
+    """Return True when *tool_name* is clearly a data pass-through surface."""
+    name = (tool_name or "").lower()
+    return any(kw in name for kw in _PASSTHROUGH_TOOL_KEYWORDS)
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -211,6 +237,27 @@ async def _probe_tool(
         tid = tid[:_MAX_TEST_ID_LEN]
     tname = f"Output Sanitization → {tool.name}"
     t0 = time.perf_counter()
+
+    # Pass-through tools return verbatim data from disk / network / API.
+    # Pattern-matching their output for PI markers false-positives on any
+    # document discussing prompt injection. Skip them with an INFO result.
+    if _is_passthrough_tool(tool.name):
+        return TestResult(
+            test_id=tid, test_name=tname,
+            category=Category.SECURITY, severity=Severity.INFO, passed=True,
+            description=(
+                f"Tool {tool.name!r} is a data pass-through surface (file/diff/"
+                f"fetch/search). Output reflects external data verbatim; reverse-"
+                f"injection risk depends on trust of the data source, not the "
+                f"tool itself. Skipping content scan to avoid false positives."
+            ),
+            duration_ms=(time.perf_counter() - t0) * 1000.0,
+            remediation=(
+                "Reverse-injection defence for pass-through tools belongs in the "
+                "LLM's system prompt: instruct the model to treat content from "
+                "these tools as untrusted data, not instructions."
+            ),
+        )
 
     try:
         await limiter.acquire()

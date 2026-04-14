@@ -92,9 +92,22 @@ _INVISIBLE_CHARS: set[str] = {
 def _char_script(ch: str) -> str:
     """
     Return a coarse script label: 'Latin', 'Cyrillic', 'Greek', 'Common', 'Other'.
+
+    ASCII digits, whitespace, and common punctuation are classified as
+    ``'Common'`` — they are script-neutral and appear in legitimate names
+    across all languages.  Only actual letters contribute to script-mixing
+    detection.
     """
-    if ch.isascii() and (ch.isalnum() or ch in "_-"):
+    # ASCII letters and identifier separators = Latin.
+    if ch.isascii() and (ch.isalpha() or ch in "_-"):
         return "Latin"
+    # ASCII digits, whitespace, and common punctuation = script-neutral.
+    if ch.isascii():
+        return "Common"
+    # Non-letter non-ASCII (emoji, symbols, punctuation) = neutral too;
+    # they don't constitute script mixing on their own.
+    if not ch.isalpha():
+        return "Common"
     try:
         name = unicodedata.name(ch)
     except ValueError:
@@ -153,6 +166,27 @@ async def run(
     mixed_script: list[str] = []
     invisible_hits: list[str] = []
 
+    # Set of existing ASCII-normalised identifier names on the server.
+    # A confusable / mixed-script identifier is ONLY a genuine impersonation
+    # risk when its ASCII-equivalent collides with another real identifier
+    # already registered — otherwise non-ASCII is just legitimate i18n.
+    ascii_identifiers: set[str] = {
+        name.lower()
+        for _kind, name in identifiers
+        if name and all(c.isascii() for c in name)
+    }
+
+    def _impersonates_existing(candidate: str) -> bool:
+        """Return True if *candidate* collapses to an existing ASCII id."""
+        if not candidate:
+            return False
+        ascii_form = "".join(_CONFUSABLES.get(c, c) for c in candidate).lower()
+        # Same as self? Not impersonation.
+        if ascii_form == candidate.lower():
+            return False
+        # Does it match something else that's already on the server?
+        return ascii_form in ascii_identifiers
+
     for kind, name in identifiers:
         if not name:
             continue
@@ -171,19 +205,29 @@ async def run(
                 saw_nonascii = True
             scripts.add(_char_script(ch))
 
-        # Mixed-script: Latin blended with Cyrillic/Greek/etc.
+        # Mixed-script: ONLY flag when multiple scripts appear in letters
+        # AND the ASCII-normalised form matches an existing identifier
+        # (i.e. the identifier is impersonating a real one).
         filtered = {s for s in scripts if s not in ("Common",)}
-        if "Latin" in filtered and len(filtered - {"Latin"}) > 0:
-            # Find the foreign scripts.
+        if ("Latin" in filtered
+                and len(filtered - {"Latin"}) > 0
+                and _impersonates_existing(name)):
             foreign = filtered - {"Latin"}
-            mixed_script.append(f"{kind}:{name!r} mixes Latin+{sorted(foreign)}")
+            mixed_script.append(
+                f"{kind}:{name!r} mixes Latin+{sorted(foreign)} and collapses "
+                f"to existing identifier"
+            )
 
         if saw_invisible:
             invisible_hits.append(f"{kind}:{name!r}")
-        if saw_confusable:
-            # Show what the visually-equivalent ASCII would be.
+        # Confusables: only flag when ASCII equivalent collides with an
+        # existing identifier on the same server.  A standalone non-ASCII
+        # name (e.g. a prompt called "Résumé") is NOT an impersonation.
+        if saw_confusable and _impersonates_existing(name):
             ascii_form = "".join(_CONFUSABLES.get(c, c) for c in name)
-            confusable_hits.append(f"{kind}:{name!r} visually equivalent to {ascii_form!r}")
+            confusable_hits.append(
+                f"{kind}:{name!r} visually equivalent to existing {ascii_form!r}"
+            )
         if saw_nonascii:
             nonascii.append(f"{kind}:{name!r}")
 

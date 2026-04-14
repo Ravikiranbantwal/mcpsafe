@@ -63,6 +63,38 @@ _T05_004_RECONNECT_DELAY_HTTP = 3.0 # longer delay on HTTP to avoid rate-limit c
 _P95_HIGH_MS    = 30_000.0
 _P95_MEDIUM_MS  =  5_000.0
 
+# Failure-message substrings that indicate the server cannot handle
+# concurrent requests structurally (no connection pool, single-threaded,
+# rate-limited by stream) — this is a RELIABILITY limit, not a security
+# vulnerability, so we downgrade to MEDIUM.
+_CONNECTION_DROP_PATTERNS: tuple[str, ...] = (
+    "closedresourceerror",
+    "closed resource",
+    "connection closed",
+    "broken pipe",
+    "connectionreseterror",
+    "connection reset",
+    "eof",
+    "streamclosed",
+    "stream closed",
+    "transport error",
+    "session terminated",
+)
+
+
+def _all_connection_drops(failures: list[str]) -> bool:
+    """
+    Return True when EVERY failure message looks like a connection-drop
+    (structural concurrency limit) rather than a logic or data-corruption
+    error.  Empty list returns False.
+    """
+    if not failures:
+        return False
+    return all(
+        any(pat in f.lower() for pat in _CONNECTION_DROP_PATTERNS)
+        for f in failures
+    )
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -232,19 +264,35 @@ async def _t05_001_concurrent_10(
                     duration_ms=duration_ms,
                     details="\n".join(failures[:5]),
                 )
-            return TestResult(
-                test_id=tid, test_name=tname, category=_CAT,
-                severity=Severity.HIGH, passed=False,
-                description=(
-                    f"{len(failures)}/10 concurrent calls failed."
-                ),
-                duration_ms=duration_ms,
-                details="\n".join(failures),
-                remediation=(
+            # Downgrade to MEDIUM when every failure is a connection-drop —
+            # that's a structural concurrency limit, not a security hole.
+            if _all_connection_drops(failures):
+                severity = Severity.MEDIUM
+                desc = (
+                    f"{len(failures)}/10 concurrent calls failed with "
+                    f"connection-drop errors. The server cannot handle "
+                    f"concurrent requests structurally (no pool / single-"
+                    f"threaded / stream-closed)."
+                )
+                remediation = (
+                    "This is a reliability limit, not a security flaw. "
+                    "Add a connection pool or document the concurrency ceiling."
+                )
+            else:
+                severity = Severity.HIGH
+                desc = f"{len(failures)}/10 concurrent calls failed."
+                remediation = (
                     "The server cannot handle 10 simultaneous calls. "
                     "Add connection pooling, async handling, or rate-limit "
                     "documentation so callers know the concurrency ceiling."
-                ),
+                )
+            return TestResult(
+                test_id=tid, test_name=tname, category=_CAT,
+                severity=severity, passed=False,
+                description=desc,
+                duration_ms=duration_ms,
+                details="\n".join(failures),
+                remediation=remediation,
             )
 
         stats = (
@@ -322,10 +370,18 @@ async def _t05_002_sequential_50(
                     duration_ms=duration_ms,
                     details="\n".join(errors[:5]),
                 )
+            sev = (
+                Severity.MEDIUM if _all_connection_drops(errors)
+                else Severity.HIGH
+            )
             return TestResult.make_fail(
                 test_id=tid, test_name=tname, category=_CAT,
-                severity=Severity.HIGH,
-                description=f"All 50 sequential calls to {tool.name!r} failed.",
+                severity=sev,
+                description=(
+                    f"All 50 sequential calls to {tool.name!r} failed"
+                    + (" (connection drops — reliability limit, not security)."
+                       if sev == Severity.MEDIUM else ".")
+                ),
                 duration_ms=duration_ms,
                 details="\n".join(errors[:20]),
             )
@@ -488,12 +544,21 @@ async def _t05_003_stress_100(
                     duration_ms=duration_ms,
                     details="\n".join(sample_errors[:5]),
                 )
+            # Downgrade HIGH → MEDIUM when every failure is a connection drop
+            # (structural concurrency limit rather than a stability bug).
+            sev = (
+                Severity.MEDIUM if _all_connection_drops(sample_errors)
+                else Severity.HIGH
+            )
             return TestResult.make_fail(
                 test_id=tid, test_name=tname, category=_CAT,
-                severity=Severity.HIGH,
+                severity=sev,
                 description=(
                     f"{total_failures}/{_T05_003_TOTAL} calls failed "
-                    f"({failure_rate:.0%}) — server unstable under stress load."
+                    f"({failure_rate:.0%})"
+                    + (" — server cannot handle concurrent load (connection drops)."
+                       if sev == Severity.MEDIUM
+                       else " — server unstable under stress load.")
                 ),
                 duration_ms=duration_ms,
                 details=f"{total_failures}/100 calls failed",
