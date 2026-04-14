@@ -6,7 +6,7 @@
 [![Tests](https://img.shields.io/badge/tests-6425%20run-green.svg)]()
 [![SARIF](https://img.shields.io/badge/output-SARIF%202.1.0-blueviolet)](https://sarifweb.azurewebsites.net/)
 
-> MCP has 97 million installs. Zero dedicated security testing tools existed for it. Until now.
+> MCP has 97 million installs. Most MCP security tools scan static config files or tool descriptions. MCPSafe is the first to connect to a live running server and test actual runtime behavior — including load testing, latency benchmarking, and cross-request data leakage under concurrency.
 
 MCPSafe is the first open-source security and stress-testing framework for MCP (Model Context Protocol) servers. Connect it to any MCP server over stdio or HTTP and get a full audit — prompt injection, path traversal, type confusion, missing auth, load behaviour, and more — in a single command.
 
