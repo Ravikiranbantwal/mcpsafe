@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mcpsafe"
-version = "0.3.0"
+version = "0.3.1"
 description = "Live-runtime security and stress testing for MCP servers — adversarial payloads, load & concurrency, latency, auth bypass. SARIF output."
 readme = "README.md"
 license = {file = "LICENSE"}

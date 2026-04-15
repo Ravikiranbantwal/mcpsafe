@@ -151,7 +151,7 @@ mcpsafe compare report-v1.json report-v2.json
 
 ## What It Tests
 
-MCPSafe v0.3.0 runs **330+ test types** across **30 modules** covering discovery, security, performance, and schema validation.
+MCPSafe v0.3.1 runs **330+ test types** across **30 modules** covering discovery, security, performance, and schema validation.
 
 ### Core Modules (T01–T08) — Foundation
 
@@ -308,7 +308,7 @@ Structured report with all findings, server metadata, and summary statistics. Al
 ```json
 {
   "scan_id": "a1b2c3d4-...",
-  "mcpsafe_version": "0.3.0",
+  "mcpsafe_version": "0.3.1",
   "started_at": "2026-04-15T09:47:04Z",
   "server_info": { "name": "mcp-server-git", "protocol_version": "2024-11-05", "tool_count": 12 },
   "summary": { "total_tests": 832, "passed": 762, "failed": 70, "overall_severity": "MEDIUM" },
@@ -392,7 +392,7 @@ jobs:
 
 ```
 ╭─────────────────────────────────────────────╮
-│ MCPSafe v0.3.0                              │
+│ MCPSafe v0.3.1                              │
 │ MCP Server Security & Stress Tester         │
 ╰─────────────────────────────────────────────╯
 

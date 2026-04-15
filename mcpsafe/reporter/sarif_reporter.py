@@ -77,7 +77,7 @@ class SarifReporter:
                     "tool": {
                         "driver": {
                             "name": "MCPSafe",
-                            "version": "0.3.0",
+                            "version": "0.3.1",
                             "informationUri": "https://github.com/Ravikiranbantwal/mcpsafe",
                             "rules": rules,
                         }

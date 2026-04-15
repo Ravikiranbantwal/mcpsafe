@@ -692,7 +692,7 @@ class ScanRunner:
         self.console.print(
             Panel(
                 "\n".join(lines),
-                title="[bold blue]MCPSafe v0.3.0 — Security & Performance Scanner[/bold blue]",
+                title="[bold blue]MCPSafe v0.3.1 — Security & Performance Scanner[/bold blue]",
                 border_style="blue",
                 padding=(1, 2),
             )
