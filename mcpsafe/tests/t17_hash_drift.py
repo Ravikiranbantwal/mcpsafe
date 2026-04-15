@@ -205,17 +205,40 @@ async def run(
             )
         )
     elif only_a or only_b:
+        # Noise filter: when one session saw N extra identifiers but those
+        # identifiers all share a common namespace prefix (e.g. auto-generated
+        # ``test://static/resource/*`` URIs, or resources created from earlier
+        # probes in this scan), the difference is a stateful-generator artefact
+        # rather than per-connection capability routing.  Downgrade to LOW.
+        def _is_auto_generator_noise(ids: set[str]) -> bool:
+            if len(ids) < 5:
+                return False
+            def _strip_tail(u: str) -> str:
+                slash = u.rfind("/")
+                return u[:slash] if slash > 0 else u
+            prefixes = {_strip_tail(u) for u in ids}
+            return len(prefixes) <= 2
+
+        asymmetry_is_noise = (
+            _is_auto_generator_noise(only_a) or _is_auto_generator_noise(only_b)
+        )
         results.append(
             TestResult(
                 test_id="T17-001",
                 test_name="Cross-Session Hash Drift",
                 category=Category.SECURITY,
-                severity=Severity.MEDIUM,
+                severity=Severity.LOW if asymmetry_is_noise else Severity.MEDIUM,
                 passed=False,
                 description=(
                     f"Sessions saw different identifier sets (A-only={len(only_a)}, "
-                    f"B-only={len(only_b)}). Server exposes different capabilities "
-                    f"to different connections."
+                    f"B-only={len(only_b)}). "
+                    + (
+                        "All extras share a common namespace prefix — likely a "
+                        "server-side auto-generator or side-effect of earlier "
+                        "probes, not capability routing."
+                        if asymmetry_is_noise
+                        else "Server exposes different capabilities to different connections."
+                    )
                 ),
                 duration_ms=duration,
                 details=f"only-A: {sorted(only_a)[:10]}\nonly-B: {sorted(only_b)[:10]}",

@@ -95,6 +95,16 @@ from mcpsafe.tests import (
     t18_ssrf,
     t19_homoglyph,
     t20_memory_leak,
+    t21_path_traversal,
+    t22_command_injection,
+    t23_sql_injection,
+    t24_deserialization,
+    t25_idor,
+    t26_ssti,
+    t27_session_token,
+    t28_header_injection,
+    t29_redos,
+    t30_oauth_flow,
 )
 
 # ---------------------------------------------------------------------------
@@ -319,6 +329,57 @@ class ScanRunner:
                             progress, t19_task,
                         ),
                     ]
+                    # ── v0.3.0 Tier-4 modules (concurrent with the above) ──
+                    t21_task = progress.add_task("[magenta]T21 Path Traversal[/magenta]", total=1)
+                    t22_task = progress.add_task("[magenta]T22 Command Injection[/magenta]", total=1)
+                    t23_task = progress.add_task("[magenta]T23 SQL Injection Deep[/magenta]", total=1)
+                    t24_task = progress.add_task("[magenta]T24 Deserialization[/magenta]", total=1)
+                    t25_task = progress.add_task("[magenta]T25 IDOR[/magenta]", total=1)
+                    t26_task = progress.add_task("[magenta]T26 SSTI[/magenta]", total=1)
+                    t28_task = progress.add_task("[magenta]T28 Header Injection[/magenta]", total=1)
+                    t30_task = progress.add_task("[magenta]T30 OAuth Flow[/magenta]", total=1)
+                    concurrent_modules.extend([
+                        self._run_module(
+                            "T21 Path Traversal",
+                            t21_path_traversal.run(session, server_info, self.config),
+                            progress, t21_task,
+                        ),
+                        self._run_module(
+                            "T22 Command Injection",
+                            t22_command_injection.run(session, server_info, self.config),
+                            progress, t22_task,
+                        ),
+                        self._run_module(
+                            "T23 SQL Injection Deep",
+                            t23_sql_injection.run(session, server_info, self.config),
+                            progress, t23_task,
+                        ),
+                        self._run_module(
+                            "T24 Deserialization",
+                            t24_deserialization.run(session, server_info, self.config),
+                            progress, t24_task,
+                        ),
+                        self._run_module(
+                            "T25 IDOR",
+                            t25_idor.run(session, server_info, self.config),
+                            progress, t25_task,
+                        ),
+                        self._run_module(
+                            "T26 SSTI",
+                            t26_ssti.run(session, server_info, self.config),
+                            progress, t26_task,
+                        ),
+                        self._run_module(
+                            "T28 Header Injection",
+                            t28_header_injection.run(session, server_info, self.config),
+                            progress, t28_task,
+                        ),
+                        self._run_module(
+                            "T30 OAuth Flow",
+                            t30_oauth_flow.run(session, server_info, self.config),
+                            progress, t30_task,
+                        ),
+                    ])
                     if not is_http:
                         # For stdio: include T07 here (concurrent with the above)
                         t07_task = progress.add_task(
@@ -352,6 +413,24 @@ class ScanRunner:
                         "T15 Reentrancy",
                         t15_reentrancy.run(session, server_info, self.config),
                         progress, t15_task,
+                    )
+                    # T29 ReDoS — solo, timing-sensitive (like T11).
+                    t29_task = progress.add_task(
+                        "[magenta]T29 ReDoS[/magenta]", total=1
+                    )
+                    await self._run_module(
+                        "T29 ReDoS",
+                        t29_redos.run(session, server_info, self.config),
+                        progress, t29_task,
+                    )
+                    # T27 Session Token — opens a second connection (HTTP only).
+                    t27_task = progress.add_task(
+                        "[magenta]T27 Session Tokens[/magenta]", total=1
+                    )
+                    await self._run_module(
+                        "T27 Session Tokens",
+                        t27_session_token.run(session, server_info, self.config),
+                        progress, t27_task,
                     )
 
                     # 3.4 ── T05 Load ──────────────────────────────────────
@@ -613,7 +692,7 @@ class ScanRunner:
         self.console.print(
             Panel(
                 "\n".join(lines),
-                title="[bold blue]MCPSafe v0.2.0 — Security & Performance Scanner[/bold blue]",
+                title="[bold blue]MCPSafe v0.3.0 — Security & Performance Scanner[/bold blue]",
                 border_style="blue",
                 padding=(1, 2),
             )

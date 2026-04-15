@@ -222,6 +222,38 @@ def _find_suspicious_pattern(text: str) -> Optional[str]:
     return None
 
 
+# --- Pass-through content-surfacing tools ------------------------------------
+# Tools whose primary purpose is to return *third-party content* (search
+# results, file contents, fetched documents, issue text, PR bodies, etc.).
+# Private-range IPv4 addresses appear constantly in such content because
+# users legitimately discuss networking bugs, docker-compose setups,
+# localhost URLs, and VPN subnets. Flagging those as "leaked internal IP"
+# is a noisy false-positive, so we suppress the IPv4 SUSPICIOUS_PATTERN
+# for these tools.
+_CONTENT_PASS_THROUGH_KEYWORDS: tuple[str, ...] = (
+    "search_", "list_", "read_", "fetch", "get_", "show_",
+    "browse", "query_", "lookup", "find_", "open_", "retrieve",
+    "download",
+)
+
+
+def _is_content_pass_through_tool(name: str) -> bool:
+    """
+    Heuristic: does this tool's name indicate that its response is
+    third-party content rather than the server's own sensitive state?
+    """
+    lname = (name or "").lower()
+    for kw in _CONTENT_PASS_THROUGH_KEYWORDS:
+        if kw in lname:
+            return True
+    return False
+
+
+# The private-range IPv4 regex is the first entry in SUSPICIOUS_PATTERNS.
+# We need to recognise it so we can suppress it for pass-through tools.
+_IPV4_PATTERN_RAW = SUSPICIOUS_PATTERNS[0]
+
+
 def _find_suspicious_pattern_outside_payload(
     response_text: str, payload_text: str
 ) -> Optional[str]:
@@ -437,6 +469,14 @@ async def _run_single_injection(
         matched_pattern = _find_suspicious_pattern_outside_payload(
             response_text, payload_text
         )
+        # Suppress the private-range IPv4 pattern for pass-through / content-
+        # surfacing tools (search_*, list_*, fetch, read_*, get_*, ...).
+        # Users routinely paste 127.0.0.1 / 192.168.x / 10.x / 172.16.x in
+        # issue bodies, READMEs, and docs, so an IPv4 match on a content-
+        # pass-through tool is almost certainly user-authored content, not
+        # a genuine internal-IP leak.
+        if matched_pattern == _IPV4_PATTERN_RAW and _is_content_pass_through_tool(tool.name):
+            matched_pattern = None
         if matched_pattern:
             return TestResult(
                 test_id=tid,

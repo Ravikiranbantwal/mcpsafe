@@ -515,8 +515,23 @@ async def run(
     results: list[TestResult] = []
     skip_large: bool = getattr(config, "no_load", False)
 
+    # Tools whose name indicates the server deliberately blocks on them
+    # (e.g. server-everything's ``trigger-long-running-operation``). Fuzzing
+    # these with huge ints / floats triggers multi-minute hangs that are not
+    # a vulnerability — they are the tool's documented behaviour. Skip them.
+    _LONG_RUNNING_KW = (
+        "long_running", "long-running", "trigger_long", "trigger-long",
+        "sleep", "wait", "delay",
+    )
+
+    def _is_long_running(tool_name: str) -> bool:
+        n = (tool_name or "").lower()
+        return any(kw in n for kw in _LONG_RUNNING_KW)
+
     testable: list[tuple[int, MCPTool, list[tuple[str, str]]]] = []
     for idx, tool in enumerate(server_info.tools, start=1):
+        if _is_long_running(tool.name):
+            continue
         params = _collect_params(tool)
         if params:
             testable.append((idx, tool, params))

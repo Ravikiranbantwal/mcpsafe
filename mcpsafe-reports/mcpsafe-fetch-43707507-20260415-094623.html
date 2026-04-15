@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCPSafe Report — 43707507 — 2026-04-15 09:46:23 UTC</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   MCPSafe Report — Self-contained, zero-CDN stylesheet
+   ═══════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:      #0f172a;
+  --navy-2:    #1e293b;
+  --navy-3:    #334155;
+  --slate:     #64748b;
+  --light:     #f1f5f9;
+  --white:     #ffffff;
+  --border:    #e2e8f0;
+
+  --critical:  #dc2626;
+  --high:      #ea580c;
+  --medium:    #d97706;
+  --low:       #2563eb;
+  --info-col:  #6b7280;
+  --pass:      #16a34a;
+
+  --radius:    8px;
+  --shadow:    0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,.14);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--light);
+  color: var(--navy);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+a { color: var(--low); }
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+.page-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+  color: var(--white);
+  padding: 32px 40px 28px;
+  border-bottom: 3px solid var(--low);
+}
+.page-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -.5px; }
+.page-header .subtitle { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+.page-header .meta { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 24px; }
+.page-header .meta-item { font-size: 12px; color: #cbd5e1; }
+.page-header .meta-item strong { color: var(--white); font-size: 13px; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; }
+
+section { margin-bottom: 36px; }
+section h2 {
+  font-size: 16px; font-weight: 700; color: var(--navy-2);
+  margin-bottom: 16px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  text-transform: uppercase; letter-spacing: .6px;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────── */
+.card {
+  background: var(--white); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px 24px;
+}
+
+/* ── Stat cards row ──────────────────────────────────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+.stat-card {
+  background: var(--white); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px 20px;
+  border-left: 4px solid var(--border);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stat-card .label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--slate);
+}
+.stat-card .count { font-size: 32px; font-weight: 800; line-height: 1; }
+
+.stat-card.sev-critical { border-color: var(--critical); }
+.stat-card.sev-critical .count { color: var(--critical); }
+.stat-card.sev-high     { border-color: var(--high); }
+.stat-card.sev-high     .count { color: var(--high); }
+.stat-card.sev-medium   { border-color: var(--medium); }
+.stat-card.sev-medium   .count { color: var(--medium); }
+.stat-card.sev-low      { border-color: var(--low); }
+.stat-card.sev-low      .count { color: var(--low); }
+.stat-card.sev-info     { border-color: var(--info-col); }
+.stat-card.sev-info     .count { color: var(--info-col); }
+.stat-card.sev-pass     { border-color: var(--pass); }
+.stat-card.sev-pass     .count { color: var(--pass); }
+
+/* ── Overall badge ────────────────────────────────────────────────── */
+.overall-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; padding: 4px 14px;
+  border-radius: 999px; text-transform: uppercase; letter-spacing: .5px;
+}
+.overall-badge.sev-critical { background: #fef2f2; color: var(--critical); border: 1px solid #fecaca; }
+.overall-badge.sev-high     { background: #fff7ed; color: var(--high);     border: 1px solid #fed7aa; }
+.overall-badge.sev-medium   { background: #fffbeb; color: var(--medium);   border: 1px solid #fde68a; }
+.overall-badge.sev-low      { background: #eff6ff; color: var(--low);      border: 1px solid #bfdbfe; }
+.overall-badge.sev-info     { background: #f9fafb; color: var(--info-col); border: 1px solid #e5e7eb; }
+.overall-badge.sev-pass     { background: #f0fdf4; color: var(--pass);     border: 1px solid #bbf7d0; }
+
+/* ── Summary row (donut + stats) ─────────────────────────────────── */
+.summary-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 700px) {
+  .summary-row { grid-template-columns: 1fr; }
+}
+
+/* ── Donut chart (pure CSS conic-gradient) ───────────────────────── */
+.donut-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.donut {
+  width: 160px; height: 160px; border-radius: 50%;
+  background: conic-gradient(
+  #d97706 0.0deg 10.69deg,
+  #2563eb 10.69deg 28.51deg,
+  #6b7280 28.51deg 85.54deg,
+  #16a34a 85.54deg 413.47deg
+);
+  position: relative;
+}
+.donut::after {
+  content: ""; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 90px; height: 90px; border-radius: 50%;
+  background: var(--white);
+  box-shadow: inset 0 2px 8px rgba(0,0,0,.1);
+}
+.donut-centre {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2; text-align: center; pointer-events: none;
+}
+.donut-centre .big { font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1; }
+.donut-centre .small { font-size: 10px; color: var(--slate); text-transform: uppercase; letter-spacing: .5px; }
+.donut-legend { width: 100%; }
+.donut-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; padding: 2px 0;
+}
+.donut-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.donut-legend-label { color: var(--slate); flex: 1; }
+.donut-legend-count { font-weight: 700; color: var(--navy); }
+
+/* ── Server info card ─────────────────────────────────────────────── */
+.info-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+}
+.info-item .key {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .6px; color: var(--slate); margin-bottom: 2px;
+}
+.info-item .val { font-size: 13px; color: var(--navy); word-break: break-all; }
+.tool-pills {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;
+}
+.tool-pill {
+  background: var(--light); border: 1px solid var(--border);
+  border-radius: 4px; padding: 2px 8px; font-size: 11px;
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  color: var(--navy-3);
+}
+
+/* ── Findings table ──────────────────────────────────────────────── */
+.findings-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+.findings-table thead th {
+  background: var(--navy-2); color: #e2e8f0;
+  padding: 10px 14px; text-align: left; font-weight: 600;
+  font-size: 11px; text-transform: uppercase; letter-spacing: .6px;
+  position: sticky; top: 0; z-index: 1;
+}
+.findings-table tbody tr { border-bottom: 1px solid var(--border); }
+.findings-table tbody tr:last-child { border-bottom: none; }
+.findings-table tbody tr:hover { background: #f8fafc; }
+.findings-table td { padding: 10px 14px; vertical-align: top; }
+
+/* Severity pill */
+.sev-pill {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
+  white-space: nowrap;
+}
+.sev-pill.sev-critical { background: #fef2f2; color: var(--critical); }
+.sev-pill.sev-high     { background: #fff7ed; color: var(--high); }
+.sev-pill.sev-medium   { background: #fffbeb; color: var(--medium); }
+.sev-pill.sev-low      { background: #eff6ff; color: var(--low); }
+.sev-pill.sev-info     { background: #f9fafb; color: var(--info-col); }
+.sev-pill.sev-pass     { background: #f0fdf4; color: var(--pass); }
+
+/* Expandable detail rows */
+details { cursor: pointer; }
+details summary {
+  list-style: none; display: flex; align-items: center; gap: 6px;
+}
+details summary::before { content: "▶"; font-size: 10px; color: var(--slate); transition: transform .15s; }
+details[open] summary::before { transform: rotate(90deg); }
+details summary::-webkit-details-marker { display: none; }
+
+.detail-box {
+  margin-top: 8px; padding: 10px 14px;
+  background: #f8fafc; border-radius: 4px;
+  border-left: 3px solid var(--border);
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  font-size: 12px; white-space: pre-wrap; word-break: break-all;
+  color: var(--navy-3);
+}
+.remediation-box {
+  margin-top: 6px; padding: 8px 12px;
+  background: #f0fdf4; border-radius: 4px;
+  border-left: 3px solid var(--pass);
+  font-size: 12px; color: #166534;
+}
+.remediation-box strong { font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
+
+/* Category header row */
+.cat-header td {
+  background: var(--light); font-weight: 700; font-size: 12px;
+  text-transform: uppercase; letter-spacing: .6px; color: var(--navy-3);
+  padding: 8px 14px; border-top: 2px solid var(--border);
+}
+
+/* test-id monospace */
+.tid {
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  font-size: 11px; color: var(--slate);
+  white-space: nowrap;
+}
+
+/* duration */
+.dur { font-size: 11px; color: var(--slate); white-space: nowrap; }
+
+/* ── Footer ──────────────────────────────────────────────────────── */
+.page-footer {
+  background: var(--navy); color: #64748b;
+  text-align: center; padding: 16px;
+  font-size: 11px;
+}
+.page-footer a { color: #94a3b8; }
+
+/* ── Print ───────────────────────────────────────────────────────── */
+@media print {
+  body { background: white; font-size: 11px; }
+  .page-header { background: white; color: black; border-bottom: 2px solid black; }
+  .page-header h1 { color: black; }
+  .page-header .subtitle, .page-header .meta-item { color: #555; }
+  .page-header .meta-item strong { color: black; }
+  details { open: true; }
+  details[open] .detail-box { display: block; }
+  .findings-table thead th { background: #f1f5f9; color: black; }
+  .card { box-shadow: none; border: 1px solid #e2e8f0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE HEADER
+     ═══════════════════════════════════════════════════════════════ -->
+<header class="page-header">
+  <h1>🔒 MCPSafe Security Report</h1>
+  <p class="subtitle">MCP Server Security &amp; Performance Analysis — v0.3.0</p>
+  <div class="meta">
+    <div class="meta-item"><strong>Scan ID</strong><br>43707507…</div>
+    <div class="meta-item"><strong>Started</strong><br>2026-04-15 09:46:23 UTC</div>
+    <div class="meta-item"><strong>Finished</strong><br>2026-04-15 09:46:31 UTC</div>
+    <div class="meta-item"><strong>Duration</strong><br>28.8s</div>
+    <div class="meta-item"><strong>Overall</strong><br>
+      <span class="overall-badge sev-medium">MEDIUM</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SUMMARY
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <h2>Summary</h2>
+    <div class="summary-row">
+
+      <!-- Donut chart -->
+      <div class="card donut-wrap">
+        <div class="donut">
+          <div class="donut-centre">
+            <div class="big">101</div>
+            <div class="small">tests</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#d97706"></div>
+            <span class="donut-legend-label">MEDIUM</span>
+            <span class="donut-legend-count">3</span>
+            <span style="color:var(--slate);font-size:11px">(3.0%)</span>
+          </div>
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#2563eb"></div>
+            <span class="donut-legend-label">LOW</span>
+            <span class="donut-legend-count">5</span>
+            <span style="color:var(--slate);font-size:11px">(5.0%)</span>
+          </div>
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#6b7280"></div>
+            <span class="donut-legend-label">INFO</span>
+            <span class="donut-legend-count">16</span>
+            <span style="color:var(--slate);font-size:11px">(15.8%)</span>
+          </div>
+          <div class="donut-legend-item">
+            <div class="donut-legend-dot" style="background:#16a34a"></div>
+            <span class="donut-legend-label">PASS</span>
+            <span class="donut-legend-count">92</span>
+            <span style="color:var(--slate);font-size:11px">(91.1%)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat cards -->
+      <div>
+        <div class="stat-grid">
+          <div class="stat-card sev-critical">
+            <span class="label">CRITICAL</span>
+            <span class="count">0</span>
+          </div>
+          <div class="stat-card sev-high">
+            <span class="label">HIGH</span>
+            <span class="count">0</span>
+          </div>
+          <div class="stat-card sev-medium">
+            <span class="label">MEDIUM</span>
+            <span class="count">3</span>
+          </div>
+          <div class="stat-card sev-low">
+            <span class="label">LOW</span>
+            <span class="count">5</span>
+          </div>
+          <div class="stat-card sev-info">
+            <span class="label">INFO</span>
+            <span class="count">16</span>
+          </div>
+          <div class="stat-card sev-pass">
+            <span class="label">PASS</span>
+            <span class="count">92</span>
+          </div>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:24px; flex-wrap:wrap; font-size:13px; color:var(--slate);">
+          <span>Total: <strong style="color:var(--navy)">101</strong></span>
+          <span>Passed: <strong style="color:var(--pass)">92</strong></span>
+          <span>Failed: <strong style="color:var(--critical)">9</strong></span>
+          <span>Duration: <strong style="color:var(--navy)">28.8s</strong></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SERVER INFO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <h2>Server Information</h2>
+    <div class="card">
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="key">Server Name</div>
+          <div class="val">unknown</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Version</div>
+          <div class="val">unknown</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Protocol</div>
+          <div class="val">unknown</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Transport</div>
+          <div class="val">STDIO</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Target</div>
+          <div class="val" style="font-family:monospace;font-size:12px">uvx mcp-server-fetch</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Discovered At</div>
+          <div class="val">2026-04-15 09:46:27 UTC</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Tools</div>
+          <div class="val">1</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Resources</div>
+          <div class="val">0</div>
+        </div>
+        <div class="info-item">
+          <div class="key">Prompts</div>
+          <div class="val">1</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <div class="key" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--slate);margin-bottom:6px;">Exposed Tools</div>
+        <div class="tool-pills">
+          <span class="tool-pill">fetch</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FINDINGS TABLE
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <h2>Findings (101 tests)</h2>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="findings-table">
+        <thead>
+          <tr>
+            <th style="width:90px">Test ID</th>
+            <th style="width:100px">Severity</th>
+            <th>Test Name</th>
+            <th>Description / Details</th>
+            <th style="width:80px">Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cat-header">
+            <td colspan="5">SECURITY &nbsp;·&nbsp; 82 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-008</td>
+            <td>
+              <span class="sev-pill sev-medium">MEDIUM</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Invalid Tool Name Rejection</td>
+            <td>
+              <details>
+                <summary>Server accepted call to invalid tool name &#39;&#39; without error.</summary>
+                <div class="detail-box">Tool name &#39;&#39; was accepted with no error response.</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Validate tool names on the server side. Empty, whitespace, null-byte, or non-existent tool names must be rejected with a structured error.
+                </div>
+              </details>
+            </td>
+            <td class="dur">48ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-009</td>
+            <td>
+              <span class="sev-pill sev-medium">MEDIUM</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Oversized Argument Rejection</td>
+            <td>
+              <details>
+                <summary>Server accepted a 1 MB argument value without error — no input size limit enforced.</summary>
+                <div class="detail-box">Tool accepted 10 KB key + 1 MB value payload.</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Enforce maximum argument size limits (e.g. 64 KB total per call). Unbounded inputs allow memory exhaustion attacks.
+                </div>
+              </details>
+            </td>
+            <td class="dur">23ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-012</td>
+            <td>
+              <span class="sev-pill sev-medium">MEDIUM</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Unicode Homoglyph Tool Name Spoofing</td>
+            <td>
+              <details>
+                <summary>Server accepted unicode homoglyph of tool name &#39;fetch&#39; → &#39;fеtch&#39;.</summary>
+                <div class="detail-box">Original: &#39;fetch&#39;
+Spoofed:  &#39;fеtch&#39;
+Server executed the spoofed name without rejection.</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Validate tool names using exact byte-for-byte comparison and reject any name not in the known tool manifest. Homoglyph acceptance allows log poisoning and UI spoofing.
+                </div>
+              </details>
+            </td>
+            <td class="dur">32ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-010</td>
+            <td>
+              <span class="sev-pill sev-low">LOW</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Duplicate Initialize (Replay Attack)</td>
+            <td>
+              <details>
+                <summary>Server accepted a second initialize() call on an already active session. The session remained usable, but the server sta…</summary>
+                <div class="detail-box">Double initialize() succeeded.
+Post-replay list_tools() succeeded — session is still functional but capabilities or internal state may have been altered.</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>The server should reject or ignore repeated initialize() calls. Accepting them enables mid-session protocol version downgrade and capability reset attacks.
+                </div>
+              </details>
+            </td>
+            <td class="dur">29ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-013</td>
+            <td>
+              <span class="sev-pill sev-low">LOW</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Protocol Version Abuse</td>
+            <td>
+              <details>
+                <summary>Server did not negotiate a recognised MCP protocol version (version is empty or unknown).</summary>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Ensure the server returns a valid protocolVersion in its initialize response (e.g. &#39;2024-11-05&#39;). Clients rely on this to select compatible behaviour.
+                </div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T24-001</td>
+            <td>
+              <span class="sev-pill sev-low">LOW</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deserialisation — Summary</td>
+            <td>
+              2 tool(s) leaked deserialiser markers in error messages.
+            </td>
+            <td class="dur">880ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T24-TOOL-fetch-DS-002</td>
+            <td>
+              <span class="sev-pill sev-low">LOW</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deserialisation DS-002 → fetch</td>
+            <td>
+              <details>
+                <summary>Tool &#39;fetch&#39; error suggests PyYAML unsafe is being invoked on user input. No confirmed RCE — review code path.</summary>
+                <div class="detail-box">Match: &#39;!!python/object&#39;</div>
+              </details>
+            </td>
+            <td class="dur">36ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T24-TOOL-fetch-DS-003</td>
+            <td>
+              <span class="sev-pill sev-low">LOW</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deserialisation DS-003 → fetch</td>
+            <td>
+              <details>
+                <summary>Tool &#39;fetch&#39; error suggests PyYAML unsafe is being invoked on user input. No confirmed RCE — review code path.</summary>
+                <div class="detail-box">Match: &#39;!!python/object&#39;</div>
+              </details>
+            </td>
+            <td class="dur">28ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Unauthenticated Access</td>
+            <td>
+              Unauthenticated Access test requires HTTP transport — skipped (transport=&#39;stdio&#39;).
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-002</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Malformed Token Rejection</td>
+            <td>
+              Malformed Token Rejection test requires HTTP transport — skipped (transport=&#39;stdio&#39;).
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-003</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Resource URI Path Traversal</td>
+            <td>
+              Server advertises no resources — path traversal test skipped.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-005</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">CORS Misconfiguration</td>
+            <td>
+              CORS check requires HTTP transport — skipped (transport=&#39;stdio&#39;).
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-006</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Process Privilege Check</td>
+            <td>
+              Privilege check not available on Windows.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T09-TOOL-fetch</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Output Sanitization → fetch</td>
+            <td>
+              <details>
+                <summary>Tool &#39;fetch&#39; is a data pass-through surface (file/diff/fetch/search). Output reflects external data verbatim; reverse-in…</summary>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Reverse-injection defence for pass-through tools belongs in the LLM&#39;s system prompt: instruct the model to treat content from these tools as untrusted data, not instructions.
+                </div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T13-002</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Unsolicited Sampling Requests</td>
+            <td>
+              MCP client SDK does not expose an incoming-request hook; unsolicited sampling detection relies on capability audit (T13-001).
+            </td>
+            <td class="dur">23ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T18-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSRF — Summary</td>
+            <td>
+              Server does not expose resources/read; SSRF probes skipped.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T25-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">IDOR — Summary</td>
+            <td>
+              Server does not expose resources — IDOR probe skipped.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T28-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Header Injection — Summary</td>
+            <td>
+              STDIO transport has no HTTP headers — CRLF/header injection probe skipped.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T30-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">OAuth Flow Abuse — Summary</td>
+            <td>
+              STDIO transport has no OAuth flow — probes skipped.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Credentials in Error Messages</td>
+            <td>
+              <details>
+                <summary>No credential patterns found in error response for non-existent tool call.</summary>
+                <div class="detail-box">Error excerpt: &#34;meta=None content=[TextContent(type=&#39;text&#39;, text=&#39;1 validation error for Fetch\\nurl\\n  Field required [type=missing, input_value={}, input_type=dict]\\n    For further information visit https://errors.&#34;</div>
+              </details>
+            </td>
+            <td class="dur">574ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Environment Variable Probe</td>
+            <td>
+              <details>
+                <summary>Tool &#39;fetch&#39; did not expand environment variable references in its response.</summary>
+                <div class="detail-box">Response excerpt: &#39;meta=None content=[TextContent(type=\&#39;text\&#39;, text=&#34;1 validation error for Fetch\\nurl\\n  Input should be a valid URL, relative URL without a base [type=url_parsing, input_value=\&#39;$HOME $USER $PATH $AWS_S&#39;</div>
+              </details>
+            </td>
+            <td class="dur">27ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T07-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deeply Nested Argument (JSON Bomb)</td>
+            <td>
+              Server rejected deeply nested JSON argument.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T09-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Output Sanitization — Summary</td>
+            <td>
+              All 1 tool outputs and 0 resource reads passed PI-marker scanning.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T12-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Error Secret Leakage — Summary</td>
+            <td>
+              Probed 1 tool(s) and 0 resources; no secret patterns detected in error messages.
+            </td>
+            <td class="dur">603ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T12-TOOL-fetch</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Error Secret Leakage → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; never errored on malformed inputs — nothing to scan.
+            </td>
+            <td class="dur">603ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T13-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Sampling Capability Advertisement</td>
+            <td>
+              Server does not advertise the &#39;sampling&#39; capability.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T13-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Sampling Abuse — Summary</td>
+            <td>
+              No sampling-abuse surface detected.
+            </td>
+            <td class="dur">23ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Non-ASCII Identifiers</td>
+            <td>
+              All identifiers are pure ASCII.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Confusable / Homoglyph Characters</td>
+            <td>
+              No Unicode confusables detected in identifiers.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Mixed-Script Identifiers</td>
+            <td>
+              No mixed-script identifiers found.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Invisible / Directional Characters</td>
+            <td>
+              No invisible characters in identifiers.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T19-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Homoglyph Scan — Summary</td>
+            <td>
+              Scanned 2 identifier(s); no impersonation signals detected.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal — Summary</td>
+            <td>
+              12 probe(s) sent, no traversal to sensitive files confirmed.
+            </td>
+            <td class="dur">2865ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-001 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected Plain Unix.
+            </td>
+            <td class="dur">44ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-002 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected Plain Windows.
+            </td>
+            <td class="dur">555ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-003 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected URL-encoded.
+            </td>
+            <td class="dur">10ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-004 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected Double URL-encoded.
+            </td>
+            <td class="dur">45ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-005 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected UTF-8 overlong.
+            </td>
+            <td class="dur">24ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-006 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected Backslash + forward.
+            </td>
+            <td class="dur">47ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-007 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected Unicode normalisation.
+            </td>
+            <td class="dur">43ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-008 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected NUL byte truncation.
+            </td>
+            <td class="dur">111ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-009 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected Absolute Unix path.
+            </td>
+            <td class="dur">44ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-010 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected Absolute Windows path.
+            </td>
+            <td class="dur">953ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-011</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-011 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected Resource file:// scheme.
+            </td>
+            <td class="dur">493ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T21-TOOL-fetch-PT-012</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Path Traversal PT-012 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely rejected Proto-smuggling.
+            </td>
+            <td class="dur">497ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T22-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Command Injection — Summary</td>
+            <td>
+              8 probe(s) sent, no shell execution confirmed.
+            </td>
+            <td class="dur">879ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T22-TOOL-fetch-CI-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Command Injection CI-001 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely handled Semicolon chain.
+            </td>
+            <td class="dur">555ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T22-TOOL-fetch-CI-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Command Injection CI-002 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely handled Pipe.
+            </td>
+            <td class="dur">44ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T22-TOOL-fetch-CI-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Command Injection CI-003 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely handled Background ampersand.
+            </td>
+            <td class="dur">17ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T22-TOOL-fetch-CI-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Command Injection CI-004 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely handled Logical AND.
+            </td>
+            <td class="dur">39ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T22-TOOL-fetch-CI-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Command Injection CI-005 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely handled Logical OR.
+            </td>
+            <td class="dur">30ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T22-TOOL-fetch-CI-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Command Injection CI-006 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely handled Command substitution $().
+            </td>
+            <td class="dur">41ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T22-TOOL-fetch-CI-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Command Injection CI-007 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely handled Backtick cmdsub.
+            </td>
+            <td class="dur">47ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T22-TOOL-fetch-CI-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Command Injection CI-010 → fetch</td>
+            <td>
+              Tool &#39;fetch&#39; safely handled Windows cmd chain.
+            </td>
+            <td class="dur">106ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL Injection Deep — Summary</td>
+            <td>
+              No deep SQLi findings across 1 probed tool(s).
+            </td>
+            <td class="dur">2369ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-001 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via UNION version on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=40ms</div>
+              </details>
+            </td>
+            <td class="dur">40ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-002 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via UNION sqlite_ver on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=23ms</div>
+              </details>
+            </td>
+            <td class="dur">23ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-003 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via Boolean true on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=33ms</div>
+              </details>
+            </td>
+            <td class="dur">33ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-004 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via Boolean false on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=36ms</div>
+              </details>
+            </td>
+            <td class="dur">36ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-005 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via Time blind PG on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=36ms</div>
+              </details>
+            </td>
+            <td class="dur">36ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-006 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via Time blind MS on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=47ms</div>
+              </details>
+            </td>
+            <td class="dur">47ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-007 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via Time blind MySQL on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=106ms</div>
+              </details>
+            </td>
+            <td class="dur">106ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-008 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via Stacked drop on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=43ms</div>
+              </details>
+            </td>
+            <td class="dur">43ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-009 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via NoSQL $ne on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=1436ms</div>
+              </details>
+            </td>
+            <td class="dur">1436ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T23-TOOL-fetch-SQL-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SQL SQL-010 → fetch</td>
+            <td>
+              <details>
+                <summary>No SQLi detected via NoSQL $gt on &#39;fetch&#39;.</summary>
+                <div class="detail-box">baseline=559ms payload=11ms</div>
+              </details>
+            </td>
+            <td class="dur">11ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T24-TOOL-fetch-DS-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deserialisation DS-001 → fetch</td>
+            <td>
+              Python pickle (b64) — no deserialisation markers detected.
+            </td>
+            <td class="dur">563ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T24-TOOL-fetch-DS-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deserialisation DS-004 → fetch</td>
+            <td>
+              XML XXE file:// — no deserialisation markers detected.
+            </td>
+            <td class="dur">29ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T24-TOOL-fetch-DS-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deserialisation DS-005 → fetch</td>
+            <td>
+              XML XXE parameter entity — no deserialisation markers detected.
+            </td>
+            <td class="dur">39ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T24-TOOL-fetch-DS-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deserialisation DS-006 → fetch</td>
+            <td>
+              Java serialised magic (b64) — no deserialisation markers detected.
+            </td>
+            <td class="dur">38ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T24-TOOL-fetch-DS-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deserialisation DS-007 → fetch</td>
+            <td>
+              Ruby Marshal magic (b64) — no deserialisation markers detected.
+            </td>
+            <td class="dur">47ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T24-TOOL-fetch-DS-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Deserialisation DS-008 → fetch</td>
+            <td>
+              JSON __proto__ pollution — no deserialisation markers detected.
+            </td>
+            <td class="dur">99ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI — Summary</td>
+            <td>
+              No SSTI detected across 1 probed tool(s).
+            </td>
+            <td class="dur">2359ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-001 → fetch</td>
+            <td>
+              No template evaluation detected for Jinja/Twig {{7*7}} on &#39;fetch&#39;.
+            </td>
+            <td class="dur">567ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-002 → fetch</td>
+            <td>
+              No template evaluation detected for Jinja concat on &#39;fetch&#39;.
+            </td>
+            <td class="dur">33ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-003 → fetch</td>
+            <td>
+              No template evaluation detected for Handlebars #with on &#39;fetch&#39;.
+            </td>
+            <td class="dur">36ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-004 → fetch</td>
+            <td>
+              No template evaluation detected for ERB &lt;%= 7*7 %&gt; on &#39;fetch&#39;.
+            </td>
+            <td class="dur">22ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-005 → fetch</td>
+            <td>
+              No template evaluation detected for Freemarker ${7*7} on &#39;fetch&#39;.
+            </td>
+            <td class="dur">38ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-006 → fetch</td>
+            <td>
+              No template evaluation detected for Velocity #set on &#39;fetch&#39;.
+            </td>
+            <td class="dur">45ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-007 → fetch</td>
+            <td>
+              No template evaluation detected for JSP ${7*7} on &#39;fetch&#39;.
+            </td>
+            <td class="dur">40ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-008 → fetch</td>
+            <td>
+              No template evaluation detected for Smarty {$x=7*7} on &#39;fetch&#39;.
+            </td>
+            <td class="dur">139ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-009</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-009 → fetch</td>
+            <td>
+              No template evaluation detected for Razor @(7*7) on &#39;fetch&#39;.
+            </td>
+            <td class="dur">9ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T26-TOOL-fetch-SSTI-010</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">SSTI SSTI-010 → fetch</td>
+            <td>
+              No template evaluation detected for Mako &lt;%= 7*7 %&gt; on &#39;fetch&#39;.
+            </td>
+            <td class="dur">1429ms</td>
+          </tr>
+          <tr class="cat-header">
+            <td colspan="5">DISCOVERY &nbsp;·&nbsp; 8 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-001</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Server Identity</td>
+            <td>
+              <details>
+                <summary>Server did not advertise: name, version. Got name=&#39;unknown&#39; version=&#39;unknown&#39; protocol=&#39;unknown&#39;.</summary>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Ensure the MCP server returns a populated &#39;serverInfo&#39; object in its initialize response (name and version fields).
+                </div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Enumeration</td>
+            <td>
+              <details>
+                <summary>Discovered 1 tool(s): fetch.</summary>
+                <div class="detail-box">fetch: &#39;Fetches a URL from the internet and optionally extracts its contents as markdown&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-003</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Resource Enumeration</td>
+            <td>
+              Discovered 0 resource(s).
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Prompt Enumeration</td>
+            <td>
+              <details>
+                <summary>Discovered 1 prompt(s): fetch.</summary>
+                <div class="detail-box">fetch: &#39;Fetch a URL and extract its contents as markdown&#39; (1 arg(s))</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Description Completeness</td>
+            <td>
+              All 1 tool(s) have non-empty descriptions.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-006</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Schema Validity</td>
+            <td>
+              All 1 tool(s) have valid JSON Schema inputSchema.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-007</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Duplicate Tool Names</td>
+            <td>
+              All 1 tool name(s) are unique.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T01-008</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Description Length</td>
+            <td>
+              All 1 tool description(s) are within the 2,000-character limit.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr class="cat-header">
+            <td colspan="5">SCHEMA &nbsp;·&nbsp; 6 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-003</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">additionalProperties Strictness</td>
+            <td>
+              <details>
+                <summary>1/1 tool(s) missing &#39;additionalProperties&#39;: false.</summary>
+                <div class="detail-box">Tools missing additionalProperties:false: fetch</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Adding &#39;additionalProperties&#39;: false to every inputSchema prevents callers from silently passing undeclared fields that could confuse server-side processing.
+                </div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-004</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Return Type Consistency</td>
+            <td>
+              All tools have required fields — return-type consistency test skipped.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-001</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Schema Structural Validity</td>
+            <td>
+              All 1 tool inputSchema(s) are structurally valid.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-002-fetch</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Required Enforcement: fetch</td>
+            <td>
+              Tool &#39;fetch&#39; returned an error response for missing required fields.
+            </td>
+            <td class="dur">19ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-005</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Overly Permissive Schema Detection</td>
+            <td>
+              All 1 tool schema(s) are acceptably strict.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T06-006-fetch</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Description Quality: fetch</td>
+            <td>
+              <details>
+                <summary>Tool &#39;fetch&#39; has an adequate description (307 chars).</summary>
+                <div class="detail-box">Description: &#39;Fetches a URL from the internet and optionally extracts its contents as markdown.\n\nAlthough originally you did not have internet access, and were advised to refuse and tell the user this, this tool no&#39;</div>
+              </details>
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr class="cat-header">
+            <td colspan="5">PERFORMANCE &nbsp;·&nbsp; 5 tests</td>
+          </tr>
+          <tr>
+            <td class="tid">T00-003</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Connection Closed Mid-Scan (Rate Limit / Server Reset)</td>
+            <td>
+              <details>
+                <summary>The HTTP server closed the connection mid-scan. This is expected behaviour for production servers that apply rate-limiti…</summary>
+                <div class="detail-box">Unexpected stdio transport error: ConnectionResetError: Connection lost (caused by ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception))</div>
+                <div class="remediation-box">
+                  <strong>Remediation:</strong><br>Re-run with --no-load to skip T05 load tests and reduce the number of requests sent to the server. The connection drop does not indicate a vulnerability.
+                </div>
+              </details>
+            </td>
+            <td class="dur">8576ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-003-00</td>
+            <td>
+              <span class="sev-pill sev-info">INFO</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Resource Read Latency</td>
+            <td>
+              No resources to benchmark.
+            </td>
+            <td class="dur">0ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-001-01</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Baseline Latency: fetch</td>
+            <td>
+              <details>
+                <summary>Tool &#39;fetch&#39;: mean=7ms  min=4ms  max=13ms (5 samples).</summary>
+                <div class="detail-box">{
+  &#34;fetch&#34;: {
+    &#34;mean_ms&#34;: 6.65,
+    &#34;min_ms&#34;: 4.44,
+    &#34;max_ms&#34;: 12.7,
+    &#34;samples&#34;: [
+      12.7,
+      7.02,
+      4.61,
+      4.49,
+      4.44
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">33ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-002</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Tool Discovery Latency</td>
+            <td>
+              <details>
+                <summary>list_tools() mean=3ms  min=3ms  max=3ms.</summary>
+                <div class="detail-box">{
+  &#34;list_tools&#34;: {
+    &#34;mean_ms&#34;: 2.74,
+    &#34;min_ms&#34;: 2.51,
+    &#34;max_ms&#34;: 2.98,
+    &#34;samples&#34;: [
+      2.98,
+      2.95,
+      2.68,
+      2.59,
+      2.51
+    ]
+  }
+}</div>
+              </details>
+            </td>
+            <td class="dur">14ms</td>
+          </tr>
+          <tr>
+            <td class="tid">T08-004</td>
+            <td>
+              <span class="sev-pill sev-pass">PASS</span>
+            </td>
+            <td style="font-weight:600;min-width:180px">Cold Start Detection</td>
+            <td>
+              <details>
+                <summary>No significant cold-start penalty detected (ratio 1.1×, threshold 10×).</summary>
+                <div class="detail-box">Call 1 (cold): 5ms
+Calls 2-5 (warm): 4ms, 4ms, 4ms, 5ms
+Warm mean: 4ms  Ratio: 1.1×</div>
+              </details>
+            </td>
+            <td class="dur">23ms</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="page-footer">
+  Generated by <a href="https://github.com/Ravikiranbantwal/mcpsafe">MCPSafe v0.3.0</a>
+  &nbsp;·&nbsp; Scan 43707507
+  &nbsp;·&nbsp; 2026-04-15 09:46:23 UTC
+  <div style="margin-top:10px;font-size:0.78rem;color:var(--slate);max-width:780px;margin-left:auto;margin-right:auto;line-height:1.5;">
+    ⚠️ <strong>Responsible Use:</strong> MCPSafe is intended for use against MCP servers you own or have explicit written
+    permission to test. Unauthorised scanning of third-party servers may violate computer fraud laws in your jurisdiction.
+    Treat findings as confidential until disclosed to the server operator.
+  </div>
+</footer>
+
+</body>
+</html>

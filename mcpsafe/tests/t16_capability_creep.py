@@ -167,26 +167,79 @@ async def run(
     # ── T16-002 resource set drift ─────────────────────────────────────
     added_res = snap_b["resources"] - snap_a["resources"]
     removed_res = snap_a["resources"] - snap_b["resources"]
+
+    # Noise filter: auto-generated resource streams (e.g. server-everything's
+    # periodic ``test://static/resource/{N}`` feed, or any server that creates
+    # resources from our own T02 injection payloads via a
+    # ``create-resource-from-input`` tool).  If ALL newly-added resources share
+    # a common prefix up to the final path component, we treat the change as
+    # a server-side auto-generator rather than capability creep.
+    def _is_auto_generator_noise(uris: set[str]) -> bool:
+        if len(uris) < 5:
+            return False
+        # Strip trailing numeric / hash-like suffix from each URI, look for a
+        # shared prefix.
+        def _strip_tail(u: str) -> str:
+            # Remove the last path segment (after final '/').
+            slash = u.rfind("/")
+            return u[:slash] if slash > 0 else u
+        prefixes = {_strip_tail(u) for u in uris}
+        # If all N URIs collapse to ≤ 2 distinct prefixes, it's a bulk-create
+        # pattern (server is numbering resources under a single namespace).
+        return len(prefixes) <= 2
+
+    added_is_noise = _is_auto_generator_noise(added_res)
+
     if added_res or removed_res:
-        results.append(
-            TestResult(
-                test_id="T16-002",
-                test_name="Resource Set Drift",
-                category=Category.SECURITY,
-                severity=Severity.MEDIUM,
-                passed=False,
-                description=(
-                    f"Resource inventory changed within {_WAIT_SECONDS:.0f}s: "
-                    f"{len(added_res)} added, {len(removed_res)} removed."
-                ),
-                duration_ms=(time.perf_counter() - t_start) * 1000.0,
-                details=f"added: {sorted(added_res)}\nremoved: {sorted(removed_res)}",
-                remediation=(
-                    "Subscribe to resource-list-changed notifications explicitly; "
-                    "do not expose new resources mid-session without client consent."
-                ),
+        if added_is_noise and not removed_res:
+            # Demote to LOW with a different description so the operator
+            # still sees the event but isn't alarmed.
+            results.append(
+                TestResult(
+                    test_id="T16-002",
+                    test_name="Resource Set Drift",
+                    category=Category.SECURITY,
+                    severity=Severity.LOW,
+                    passed=False,
+                    description=(
+                        f"Server added {len(added_res)} resource(s) within "
+                        f"{_WAIT_SECONDS:.0f}s, but all share a common namespace "
+                        f"prefix — likely an auto-generated resource stream or "
+                        f"a create-from-input side-effect of earlier tests, not "
+                        f"capability creep."
+                    ),
+                    duration_ms=(time.perf_counter() - t_start) * 1000.0,
+                    details=(
+                        f"added (sample): "
+                        f"{sorted(added_res)[:3]} … ({len(added_res)} total)"
+                    ),
+                    remediation=(
+                        "If this resource stream is intentional (e.g. "
+                        "documenting user uploads), document it in the server "
+                        "manifest so downstream clients don't treat it as drift."
+                    ),
+                )
             )
-        )
+        else:
+            results.append(
+                TestResult(
+                    test_id="T16-002",
+                    test_name="Resource Set Drift",
+                    category=Category.SECURITY,
+                    severity=Severity.MEDIUM,
+                    passed=False,
+                    description=(
+                        f"Resource inventory changed within {_WAIT_SECONDS:.0f}s: "
+                        f"{len(added_res)} added, {len(removed_res)} removed."
+                    ),
+                    duration_ms=(time.perf_counter() - t_start) * 1000.0,
+                    details=f"added: {sorted(added_res)}\nremoved: {sorted(removed_res)}",
+                    remediation=(
+                        "Subscribe to resource-list-changed notifications explicitly; "
+                        "do not expose new resources mid-session without client consent."
+                    ),
+                )
+            )
     else:
         results.append(
             TestResult.make_pass(

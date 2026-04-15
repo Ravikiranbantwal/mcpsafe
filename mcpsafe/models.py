@@ -286,7 +286,7 @@ class ScanReport:
     finished_at: Optional[datetime] = None
     server_info: Optional[ServerInfo] = None
     results: list[TestResult] = field(default_factory=list)
-    mcpsafe_version: str = "0.2.0"
+    mcpsafe_version: str = "0.3.0"
 
     # ------------------------------------------------------------------
     # Derived statistics (computed on demand, not stored)

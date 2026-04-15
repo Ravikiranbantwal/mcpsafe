@@ -203,10 +203,10 @@ a:hover { text-decoration: underline; }
   <h1>🛡️ MCPSafe</h1>
   <p class="subtitle">Your complete guide to understanding the code — from zero to expert</p>
   <div class="badge-row">
-    <span class="badge badge-purple">v0.2.0</span>
+    <span class="badge badge-purple">v0.3.0</span>
     <span class="badge badge-blue">🐍 Python 3.11+</span>
-    <span class="badge badge-green"><span class="pulse"></span>Open Source</span>
-    <span class="badge badge-orange">20 Test Modules · 200+ Tests</span>
+    <span class="badge badge-green"><span class="pulse"></span>Open Source · MIT</span>
+    <span class="badge badge-orange">30 Test Modules · 330+ Test Types</span>
     <span class="badge badge-purple">Built by Ravikiran Bantwal</span>
   </div>
 </div>
@@ -365,7 +365,7 @@ mcpsafe scan <span class="str">"https://api.example.com/mcp"</span> --transport 
   </div>
 
   <div class="highlight-box">
-    <strong>🎯 Who it's for:</strong> MCP server developers who want to catch security issues before shipping, security researchers auditing AI-agent infrastructure, students learning LLM security, and anyone who needs an automated second opinion on their MCP server's hardening. Free for personal, academic, and open-source use under the Polyform Noncommercial License.
+    <strong>🎯 Who it's for:</strong> MCP server developers who want to catch security issues before shipping, security researchers auditing AI-agent infrastructure, students learning LLM security, and anyone who needs an automated second opinion on their MCP server's hardening. Released under the MIT License — free for personal, commercial, academic, and open-source use.
   </div>
 </div>
 
@@ -1302,56 +1302,86 @@ console.<span class="fn">print</span>(<span class="cls">Panel</span>(<span class
 ═══════════════════════════════════════════ -->
 <div class="section" id="tab-findings">
   <div class="section-title">📊 Real Findings from Real Servers</div>
-  <p class="section-sub">MCPSafe has been tested against 12+ real MCP servers. Here's what it found.</p>
+  <p class="section-sub">MCPSafe v0.3.0 scanned 13 real MCP servers — production Stripe, Cloudflare, GitHub, Anthropic reference servers, uvx demos. 9,341 tests · 0 CRITICAL · 29 HIGH · 522 MEDIUM.</p>
 
   <div class="findings-grid">
     <div class="finding-stat">
       <div class="fs-server">server-everything (Anthropic)</div>
       <div class="fs-overall" style="color:#ea580c">HIGH</div>
-      <div class="fs-counts">16 HIGH · 69 MEDIUM · 3 LOW</div>
+      <div class="fs-counts">14 HIGH · 70 MEDIUM · 12 LOW</div>
       <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:30%;background:#ea580c"></div></div></div>
     </div>
     <div class="finding-stat">
-      <div class="fs-server">Cloudflare Observability</div>
+      <div class="fs-server">mcp-server-sqlite</div>
+      <div class="fs-overall" style="color:#ea580c">HIGH</div>
+      <div class="fs-counts">14 HIGH · 8 MEDIUM · 2 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:28%;background:#ea580c"></div></div></div>
+    </div>
+    <div class="finding-stat">
+      <div class="fs-server">Stripe Payments (live)</div>
       <div class="fs-overall" style="color:#d97706">MEDIUM</div>
-      <div class="fs-counts">0 CRITICAL · 0 HIGH · 1 MEDIUM</div>
-      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:5%;background:#d97706"></div></div></div>
+      <div class="fs-counts">0 HIGH · 170 MEDIUM · 7 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:18%;background:#d97706"></div></div></div>
+    </div>
+    <div class="finding-stat">
+      <div class="fs-server">mcp-text-processor</div>
+      <div class="fs-overall" style="color:#ea580c">HIGH</div>
+      <div class="fs-counts">1 HIGH · 42 MEDIUM · 7 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:10%;background:#ea580c"></div></div></div>
     </div>
     <div class="finding-stat">
       <div class="fs-server">mcp-server-filesystem</div>
-      <div class="fs-overall" style="color:#16a34a">PASS</div>
-      <div class="fs-counts">Clean · 0 issues above LOW</div>
-      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:2%;background:#16a34a"></div></div></div>
+      <div class="fs-overall" style="color:#d97706">MEDIUM</div>
+      <div class="fs-counts">0 HIGH · 91 MEDIUM · 4 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:12%;background:#d97706"></div></div></div>
     </div>
     <div class="finding-stat">
       <div class="fs-server">mcp-server-git</div>
-      <div class="fs-overall" style="color:#2563eb">LOW</div>
-      <div class="fs-counts">Schema quality issues only</div>
-      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:3%;background:#2563eb"></div></div></div>
+      <div class="fs-overall" style="color:#d97706">MEDIUM</div>
+      <div class="fs-counts">0 HIGH · 59 MEDIUM · 10 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:9%;background:#d97706"></div></div></div>
     </div>
     <div class="finding-stat">
-      <div class="fs-server">mcp-server-sqlite</div>
-      <div class="fs-overall" style="color:#2563eb">LOW</div>
-      <div class="fs-counts">Minor schema gaps</div>
-      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:3%;background:#2563eb"></div></div></div>
+      <div class="fs-server">server-github (live, auth)</div>
+      <div class="fs-overall" style="color:#d97706">MEDIUM</div>
+      <div class="fs-counts">0 HIGH · 3 MEDIUM · 10 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:4%;background:#d97706"></div></div></div>
     </div>
     <div class="finding-stat">
       <div class="fs-server">mcp-server-fetch</div>
-      <div class="fs-overall" style="color:#16a34a">PASS</div>
-      <div class="fs-counts">Clean scan</div>
-      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:1%;background:#16a34a"></div></div></div>
-    </div>
-    <div class="finding-stat">
-      <div class="fs-server">Cloudflare Docs MCP</div>
       <div class="fs-overall" style="color:#d97706">MEDIUM</div>
-      <div class="fs-counts">1 MEDIUM · echo reflection</div>
+      <div class="fs-counts">0 HIGH · 3 MEDIUM · 5 LOW</div>
       <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:4%;background:#d97706"></div></div></div>
     </div>
     <div class="finding-stat">
       <div class="fs-server">mcp-server-time</div>
-      <div class="fs-overall" style="color:#16a34a">PASS</div>
-      <div class="fs-counts">Cleanest server tested</div>
-      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:1%;background:#16a34a"></div></div></div>
+      <div class="fs-overall" style="color:#d97706">MEDIUM</div>
+      <div class="fs-counts">0 HIGH · 14 MEDIUM · 5 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:5%;background:#d97706"></div></div></div>
+    </div>
+    <div class="finding-stat">
+      <div class="fs-server">mcp-calculator</div>
+      <div class="fs-overall" style="color:#d97706">MEDIUM</div>
+      <div class="fs-counts">0 HIGH · 21 MEDIUM · 5 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:6%;background:#d97706"></div></div></div>
+    </div>
+    <div class="finding-stat">
+      <div class="fs-server">mcp-notes</div>
+      <div class="fs-overall" style="color:#d97706">MEDIUM</div>
+      <div class="fs-counts">0 HIGH · 38 MEDIUM · 5 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:8%;background:#d97706"></div></div></div>
+    </div>
+    <div class="finding-stat">
+      <div class="fs-server">Cloudflare Docs MCP</div>
+      <div class="fs-overall" style="color:#d97706">MEDIUM</div>
+      <div class="fs-counts">0 HIGH · 2 MEDIUM · 4 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:4%;background:#d97706"></div></div></div>
+    </div>
+    <div class="finding-stat">
+      <div class="fs-server">Cloudflare Observability</div>
+      <div class="fs-overall" style="color:#d97706">MEDIUM</div>
+      <div class="fs-counts">0 HIGH · 1 MEDIUM · 3 LOW</div>
+      <div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:3%;background:#d97706"></div></div></div>
     </div>
   </div>
 

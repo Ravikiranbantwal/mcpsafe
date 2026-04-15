@@ -1,0 +1,1514 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "MCPSafe",
+          "version": "0.3.0",
+          "informationUri": "https://github.com/Ravikiranbantwal/mcpsafe",
+          "rules": [
+            {
+              "id": "T01-001",
+              "name": "Server Identity",
+              "shortDescription": {
+                "text": "Server Identity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T01-002",
+              "name": "Tool Enumeration",
+              "shortDescription": {
+                "text": "Tool Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-003",
+              "name": "Resource Enumeration",
+              "shortDescription": {
+                "text": "Resource Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-004",
+              "name": "Prompt Enumeration",
+              "shortDescription": {
+                "text": "Prompt Enumeration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-005",
+              "name": "Tool Description Completeness",
+              "shortDescription": {
+                "text": "Tool Description Completeness"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-006",
+              "name": "Tool Schema Validity",
+              "shortDescription": {
+                "text": "Tool Schema Validity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-007",
+              "name": "Duplicate Tool Names",
+              "shortDescription": {
+                "text": "Duplicate Tool Names"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T01-008",
+              "name": "Tool Description Length",
+              "shortDescription": {
+                "text": "Tool Description Length"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T01-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-001",
+              "name": "Schema Structural Validity",
+              "shortDescription": {
+                "text": "Schema Structural Validity"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-002-fetch",
+              "name": "Required Enforcement: fetch",
+              "shortDescription": {
+                "text": "Required Enforcement: fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-002-fetch.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-003",
+              "name": "additionalProperties Strictness",
+              "shortDescription": {
+                "text": "additionalProperties Strictness"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-003.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-004",
+              "name": "Return Type Consistency",
+              "shortDescription": {
+                "text": "Return Type Consistency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-004.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T06-005",
+              "name": "Overly Permissive Schema Detection",
+              "shortDescription": {
+                "text": "Overly Permissive Schema Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T06-006-fetch",
+              "name": "Description Quality: fetch",
+              "shortDescription": {
+                "text": "Description Quality: fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T06-006-fetch.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-001-01",
+              "name": "Baseline Latency: fetch",
+              "shortDescription": {
+                "text": "Baseline Latency: fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-001-01.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-002",
+              "name": "Tool Discovery Latency",
+              "shortDescription": {
+                "text": "Tool Discovery Latency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T08-003-00",
+              "name": "Resource Read Latency",
+              "shortDescription": {
+                "text": "Resource Read Latency"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-003-00.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T08-004",
+              "name": "Cold Start Detection",
+              "shortDescription": {
+                "text": "Cold Start Detection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T08-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T09-TOOL-fetch",
+              "name": "Output Sanitization → fetch",
+              "shortDescription": {
+                "text": "Output Sanitization → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-TOOL-fetch.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T09-001",
+              "name": "Output Sanitization — Summary",
+              "shortDescription": {
+                "text": "Output Sanitization — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T09-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T18-001",
+              "name": "SSRF — Summary",
+              "shortDescription": {
+                "text": "SSRF — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T18-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T19-001",
+              "name": "Non-ASCII Identifiers",
+              "shortDescription": {
+                "text": "Non-ASCII Identifiers"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-002",
+              "name": "Confusable / Homoglyph Characters",
+              "shortDescription": {
+                "text": "Confusable / Homoglyph Characters"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-003",
+              "name": "Mixed-Script Identifiers",
+              "shortDescription": {
+                "text": "Mixed-Script Identifiers"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-004",
+              "name": "Invisible / Directional Characters",
+              "shortDescription": {
+                "text": "Invisible / Directional Characters"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T19-005",
+              "name": "Homoglyph Scan — Summary",
+              "shortDescription": {
+                "text": "Homoglyph Scan — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T19-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T25-001",
+              "name": "IDOR — Summary",
+              "shortDescription": {
+                "text": "IDOR — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T25-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T28-001",
+              "name": "Header Injection — Summary",
+              "shortDescription": {
+                "text": "Header Injection — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T28-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T30-001",
+              "name": "OAuth Flow Abuse — Summary",
+              "shortDescription": {
+                "text": "OAuth Flow Abuse — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T30-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T13-001",
+              "name": "Sampling Capability Advertisement",
+              "shortDescription": {
+                "text": "Sampling Capability Advertisement"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T13-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T13-002",
+              "name": "Unsolicited Sampling Requests",
+              "shortDescription": {
+                "text": "Unsolicited Sampling Requests"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T13-002.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T13-003",
+              "name": "Sampling Abuse — Summary",
+              "shortDescription": {
+                "text": "Sampling Abuse — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T13-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-TOOL-fetch",
+              "name": "Error Secret Leakage → fetch",
+              "shortDescription": {
+                "text": "Error Secret Leakage → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-TOOL-fetch.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T12-001",
+              "name": "Error Secret Leakage — Summary",
+              "shortDescription": {
+                "text": "Error Secret Leakage — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T12-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-001",
+              "name": "Unauthenticated Access",
+              "shortDescription": {
+                "text": "Unauthenticated Access"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-001.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-002",
+              "name": "Malformed Token Rejection",
+              "shortDescription": {
+                "text": "Malformed Token Rejection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-002.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-003",
+              "name": "Resource URI Path Traversal",
+              "shortDescription": {
+                "text": "Resource URI Path Traversal"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-003.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-004",
+              "name": "Credentials in Error Messages",
+              "shortDescription": {
+                "text": "Credentials in Error Messages"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-005",
+              "name": "CORS Misconfiguration",
+              "shortDescription": {
+                "text": "CORS Misconfiguration"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-005.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-006",
+              "name": "Process Privilege Check",
+              "shortDescription": {
+                "text": "Process Privilege Check"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-006.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "T07-007",
+              "name": "Environment Variable Probe",
+              "shortDescription": {
+                "text": "Environment Variable Probe"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-008",
+              "name": "Invalid Tool Name Rejection",
+              "shortDescription": {
+                "text": "Invalid Tool Name Rejection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-008.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T07-009",
+              "name": "Oversized Argument Rejection",
+              "shortDescription": {
+                "text": "Oversized Argument Rejection"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-009.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T07-010",
+              "name": "Duplicate Initialize (Replay Attack)",
+              "shortDescription": {
+                "text": "Duplicate Initialize (Replay Attack)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-010.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T07-011",
+              "name": "Deeply Nested Argument (JSON Bomb)",
+              "shortDescription": {
+                "text": "Deeply Nested Argument (JSON Bomb)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T07-012",
+              "name": "Unicode Homoglyph Tool Name Spoofing",
+              "shortDescription": {
+                "text": "Unicode Homoglyph Tool Name Spoofing"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-012.md",
+              "properties": {
+                "severity": "MEDIUM"
+              }
+            },
+            {
+              "id": "T07-013",
+              "name": "Protocol Version Abuse",
+              "shortDescription": {
+                "text": "Protocol Version Abuse"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T07-013.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T22-TOOL-fetch-CI-001",
+              "name": "Command Injection CI-001 → fetch",
+              "shortDescription": {
+                "text": "Command Injection CI-001 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T22-TOOL-fetch-CI-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T22-TOOL-fetch-CI-002",
+              "name": "Command Injection CI-002 → fetch",
+              "shortDescription": {
+                "text": "Command Injection CI-002 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T22-TOOL-fetch-CI-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T22-TOOL-fetch-CI-003",
+              "name": "Command Injection CI-003 → fetch",
+              "shortDescription": {
+                "text": "Command Injection CI-003 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T22-TOOL-fetch-CI-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T22-TOOL-fetch-CI-004",
+              "name": "Command Injection CI-004 → fetch",
+              "shortDescription": {
+                "text": "Command Injection CI-004 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T22-TOOL-fetch-CI-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T22-TOOL-fetch-CI-005",
+              "name": "Command Injection CI-005 → fetch",
+              "shortDescription": {
+                "text": "Command Injection CI-005 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T22-TOOL-fetch-CI-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T22-TOOL-fetch-CI-006",
+              "name": "Command Injection CI-006 → fetch",
+              "shortDescription": {
+                "text": "Command Injection CI-006 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T22-TOOL-fetch-CI-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T22-TOOL-fetch-CI-007",
+              "name": "Command Injection CI-007 → fetch",
+              "shortDescription": {
+                "text": "Command Injection CI-007 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T22-TOOL-fetch-CI-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T22-TOOL-fetch-CI-010",
+              "name": "Command Injection CI-010 → fetch",
+              "shortDescription": {
+                "text": "Command Injection CI-010 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T22-TOOL-fetch-CI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T22-001",
+              "name": "Command Injection — Summary",
+              "shortDescription": {
+                "text": "Command Injection — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T22-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T24-TOOL-fetch-DS-001",
+              "name": "Deserialisation DS-001 → fetch",
+              "shortDescription": {
+                "text": "Deserialisation DS-001 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T24-TOOL-fetch-DS-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T24-TOOL-fetch-DS-002",
+              "name": "Deserialisation DS-002 → fetch",
+              "shortDescription": {
+                "text": "Deserialisation DS-002 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T24-TOOL-fetch-DS-002.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T24-TOOL-fetch-DS-003",
+              "name": "Deserialisation DS-003 → fetch",
+              "shortDescription": {
+                "text": "Deserialisation DS-003 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T24-TOOL-fetch-DS-003.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T24-TOOL-fetch-DS-004",
+              "name": "Deserialisation DS-004 → fetch",
+              "shortDescription": {
+                "text": "Deserialisation DS-004 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T24-TOOL-fetch-DS-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T24-TOOL-fetch-DS-005",
+              "name": "Deserialisation DS-005 → fetch",
+              "shortDescription": {
+                "text": "Deserialisation DS-005 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T24-TOOL-fetch-DS-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T24-TOOL-fetch-DS-006",
+              "name": "Deserialisation DS-006 → fetch",
+              "shortDescription": {
+                "text": "Deserialisation DS-006 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T24-TOOL-fetch-DS-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T24-TOOL-fetch-DS-007",
+              "name": "Deserialisation DS-007 → fetch",
+              "shortDescription": {
+                "text": "Deserialisation DS-007 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T24-TOOL-fetch-DS-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T24-TOOL-fetch-DS-008",
+              "name": "Deserialisation DS-008 → fetch",
+              "shortDescription": {
+                "text": "Deserialisation DS-008 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T24-TOOL-fetch-DS-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T24-001",
+              "name": "Deserialisation — Summary",
+              "shortDescription": {
+                "text": "Deserialisation — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T24-001.md",
+              "properties": {
+                "severity": "LOW"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-001",
+              "name": "SSTI SSTI-001 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-001 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-002",
+              "name": "SSTI SSTI-002 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-002 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-003",
+              "name": "SSTI SSTI-003 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-003 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-004",
+              "name": "SSTI SSTI-004 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-004 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-005",
+              "name": "SSTI SSTI-005 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-005 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-006",
+              "name": "SSTI SSTI-006 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-006 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-007",
+              "name": "SSTI SSTI-007 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-007 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-008",
+              "name": "SSTI SSTI-008 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-008 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-009",
+              "name": "SSTI SSTI-009 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-009 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-TOOL-fetch-SSTI-010",
+              "name": "SSTI SSTI-010 → fetch",
+              "shortDescription": {
+                "text": "SSTI SSTI-010 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-TOOL-fetch-SSTI-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T26-001",
+              "name": "SSTI — Summary",
+              "shortDescription": {
+                "text": "SSTI — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T26-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-001",
+              "name": "SQL SQL-001 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-001 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-002",
+              "name": "SQL SQL-002 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-002 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-003",
+              "name": "SQL SQL-003 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-003 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-004",
+              "name": "SQL SQL-004 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-004 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-005",
+              "name": "SQL SQL-005 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-005 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-006",
+              "name": "SQL SQL-006 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-006 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-007",
+              "name": "SQL SQL-007 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-007 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-008",
+              "name": "SQL SQL-008 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-008 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-009",
+              "name": "SQL SQL-009 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-009 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-TOOL-fetch-SQL-010",
+              "name": "SQL SQL-010 → fetch",
+              "shortDescription": {
+                "text": "SQL SQL-010 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-TOOL-fetch-SQL-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T23-001",
+              "name": "SQL Injection Deep — Summary",
+              "shortDescription": {
+                "text": "SQL Injection Deep — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T23-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-001",
+              "name": "Path Traversal PT-001 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-001 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-002",
+              "name": "Path Traversal PT-002 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-002 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-002.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-003",
+              "name": "Path Traversal PT-003 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-003 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-003.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-004",
+              "name": "Path Traversal PT-004 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-004 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-004.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-005",
+              "name": "Path Traversal PT-005 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-005 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-005.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-006",
+              "name": "Path Traversal PT-006 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-006 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-006.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-007",
+              "name": "Path Traversal PT-007 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-007 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-007.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-008",
+              "name": "Path Traversal PT-008 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-008 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-008.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-009",
+              "name": "Path Traversal PT-009 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-009 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-009.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-010",
+              "name": "Path Traversal PT-010 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-010 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-010.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-011",
+              "name": "Path Traversal PT-011 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-011 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-011.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-TOOL-fetch-PT-012",
+              "name": "Path Traversal PT-012 → fetch",
+              "shortDescription": {
+                "text": "Path Traversal PT-012 → fetch"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-TOOL-fetch-PT-012.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T21-001",
+              "name": "Path Traversal — Summary",
+              "shortDescription": {
+                "text": "Path Traversal — Summary"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T21-001.md",
+              "properties": {
+                "severity": "PASS"
+              }
+            },
+            {
+              "id": "T00-003",
+              "name": "Connection Closed Mid-Scan (Rate Limit / Server Reset)",
+              "shortDescription": {
+                "text": "Connection Closed Mid-Scan (Rate Limit / Server Reset)"
+              },
+              "helpUri": "https://github.com/Ravikiranbantwal/mcpsafe/blob/main/docs/T00-003.md",
+              "properties": {
+                "severity": "INFO"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T01-001",
+          "level": "note",
+          "message": {
+            "text": "Server did not advertise: name, version. Got name='unknown' version='unknown' protocol='unknown'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-003",
+          "level": "note",
+          "message": {
+            "text": "1/1 tool(s) missing 'additionalProperties': false."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T06-004",
+          "level": "note",
+          "message": {
+            "text": "All tools have required fields — return-type consistency test skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T08-003-00",
+          "level": "note",
+          "message": {
+            "text": "No resources to benchmark."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T09-TOOL-fetch",
+          "level": "note",
+          "message": {
+            "text": "Tool 'fetch' is a data pass-through surface (file/diff/fetch/search). Output reflects external data verbatim; reverse-injection risk depends on trust of the data source, not the tool itself. Skipping content scan to avoid false positives."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T18-001",
+          "level": "note",
+          "message": {
+            "text": "Server does not expose resources/read; SSRF probes skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T25-001",
+          "level": "note",
+          "message": {
+            "text": "Server does not expose resources — IDOR probe skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T28-001",
+          "level": "note",
+          "message": {
+            "text": "STDIO transport has no HTTP headers — CRLF/header injection probe skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T30-001",
+          "level": "note",
+          "message": {
+            "text": "STDIO transport has no OAuth flow — probes skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T13-002",
+          "level": "note",
+          "message": {
+            "text": "MCP client SDK does not expose an incoming-request hook; unsolicited sampling detection relies on capability audit (T13-001)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-001",
+          "level": "note",
+          "message": {
+            "text": "Unauthenticated Access test requires HTTP transport — skipped (transport='stdio')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-002",
+          "level": "note",
+          "message": {
+            "text": "Malformed Token Rejection test requires HTTP transport — skipped (transport='stdio')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-003",
+          "level": "note",
+          "message": {
+            "text": "Server advertises no resources — path traversal test skipped."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-005",
+          "level": "note",
+          "message": {
+            "text": "CORS check requires HTTP transport — skipped (transport='stdio')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-006",
+          "level": "note",
+          "message": {
+            "text": "Privilege check not available on Windows."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-008",
+          "level": "warning",
+          "message": {
+            "text": "Server accepted call to invalid tool name '' without error."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-009",
+          "level": "warning",
+          "message": {
+            "text": "Server accepted a 1 MB argument value without error — no input size limit enforced."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-010",
+          "level": "note",
+          "message": {
+            "text": "Server accepted a second initialize() call on an already active session. The session remained usable, but the server state may have been silently reset."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-012",
+          "level": "warning",
+          "message": {
+            "text": "Server accepted unicode homoglyph of tool name 'fetch' → 'fеtch'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T07-013",
+          "level": "note",
+          "message": {
+            "text": "Server did not negotiate a recognised MCP protocol version (version is empty or unknown)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T24-TOOL-fetch-DS-002",
+          "level": "note",
+          "message": {
+            "text": "Tool 'fetch' error suggests PyYAML unsafe is being invoked on user input. No confirmed RCE — review code path."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T24-TOOL-fetch-DS-003",
+          "level": "note",
+          "message": {
+            "text": "Tool 'fetch' error suggests PyYAML unsafe is being invoked on user input. No confirmed RCE — review code path."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T24-001",
+          "level": "note",
+          "message": {
+            "text": "2 tool(s) leaked deserialiser markers in error messages."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "T00-003",
+          "level": "note",
+          "message": {
+            "text": "The HTTP server closed the connection mid-scan. This is expected behaviour for production servers that apply rate-limiting after receiving the T07 auth probe suite. All security tests completed before the connection was lost."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "uvx mcp-server-fetch"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

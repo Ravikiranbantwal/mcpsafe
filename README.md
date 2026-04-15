@@ -2,9 +2,9 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/mcpsafe.svg)](https://pypi.org/project/mcpsafe/)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
-[![License: Noncommercial](https://img.shields.io/badge/License-Polyform%20NC-blue.svg)](LICENSE)
-[![Modules](https://img.shields.io/badge/modules-20-green.svg)]()
-[![Tests](https://img.shields.io/badge/tests-200%2B-green.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Modules](https://img.shields.io/badge/modules-30-green.svg)]()
+[![Tests](https://img.shields.io/badge/tests-330%2B-green.svg)]()
 [![SARIF](https://img.shields.io/badge/output-SARIF%202.1.0-blueviolet)](https://sarifweb.azurewebsites.net/)
 
 > MCP has 97 million installs. Most MCP security tools scan static config files or tool descriptions. MCPSafe is the first to connect to a live running server and test actual runtime behavior — including load testing, latency benchmarking, and cross-request data leakage under concurrency.
@@ -47,6 +47,16 @@ runtime behavior.
 | **SSRF via resource URIs (10 payloads)** | **Nobody** | **✅ via T18** |
 | **Unicode homoglyph tool impersonation** | **Nobody** | **✅ via T19** |
 | **Server-side memory-leak detection** | **Nobody** | **✅ via T20** |
+| **Deep path traversal (12 encodings)** | **Nobody** | **✅ via T21** |
+| **Shell command injection (10 primitives)** | **Nobody** | **✅ via T22** |
+| **Deep SQLi — UNION / blind / time-based** | **Nobody** | **✅ via T23** |
+| **Insecure deserialisation (pickle/YAML/XML/Java/Ruby)** | **Nobody** | **✅ via T24** |
+| **IDOR probing (resource URI substitution)** | **Nobody** | **✅ via T25** |
+| **SSTI (Jinja/Twig/ERB/Velocity/Razor)** | **Nobody** | **✅ via T26** |
+| **Session token entropy + reuse + leak** | **Nobody** | **✅ via T27** |
+| **CRLF / header injection + smuggling** | **Nobody** | **✅ via T28** |
+| **ReDoS (regex DoS) with baseline comparison** | **Nobody** | **✅ via T29** |
+| **OAuth flow abuse (redirect URI, state)** | **Nobody** | **✅ via T30** |
 | SARIF for GitHub Security tab | Nobody (yet) | ✅ |
 | Regression tracking (compare) | Nobody | ✅ |
 | No account or API key needed | mcpwn only | ✅ |
@@ -56,34 +66,37 @@ runtime behavior.
 
 ## Real-World Results
 
-MCPSafe v0.2.0 audited **13 MCP servers** — including Stripe's, Cloudflare's, GitHub's, and Anthropic's reference servers. Four false-positive fixes have been applied and the numbers below are the audited, validated counts after those fixes:
+MCPSafe v0.3.0 audited **13 MCP servers** — including Stripe's, Cloudflare's, GitHub's, and Anthropic's reference servers. The numbers below are the validated counts after the v0.3.0 noise-reduction pass:
 
-- **T02 Injection** — IPv4 pattern now matches only private-range IPs (10.x, 172.16-31.x, 192.168.x, 127.x, 169.254.x). Public IPs in legitimate API responses (GitHub JSON, timestamps, version strings) no longer false-positive.
-- **T05 Load** — connection-drop failures downgraded from HIGH to MEDIUM (a reliability limit, not a security hole). Genuine concurrency bugs still flagged HIGH.
-- **T09 Output Sanitization** — pass-through tools (read_file, git_diff, fetch, search_issues, etc.) no longer scanned for PI markers, since their output is verbatim data.
-- **T19 Homoglyph** — confusable / mixed-script identifiers only flagged HIGH when the name actually collides with an existing ASCII identifier on the same server.
+- **T22 Command Injection** — removed newline & NUL primitives (unreliable under JSON-escape echoing); added JSON-unicode-escape stripping and an `echo`-prefix guard so a transformed echo of our payload no longer reads as canary survival.
+- **T24 Deserialisation** — payloads whose canary lives inside the payload (`DS-002`, `DS-003`, `DS-008`) skip the canary-survives-CRITICAL path and rely on error-marker LOW detection; they cannot reliably be distinguished from echoes.
+- **T02 Injection** — private-range IPv4 regex suppressed on pass-through content tools (`search_*`, `list_*`, `fetch`, `read_*`, `get_*`, …) where private IPs are user-authored content rather than internal leaks.
+- **T30 OAuth** — open-redirect check compares the Location URL's hostname via `urlparse`, not a substring of the raw header, so legitimate login redirects with an authorize-URL in a query param no longer flag CRITICAL.
+- **T28 Header Injection** — JSON-escape-aware payload strip plus an in-JSON-value gate so an injected header name echoed inside a product/field name is no longer flagged as a real CRLF injection.
+- **T16 / T17 Capability Creep** — auto-generator noise filter: when ≥ 5 newly added resources share ≤ 2 namespace prefixes, downgrade MEDIUM → LOW with a "likely auto-generator or side-effect" label.
+- **T03 Fuzzer** — `trigger-long-running-operation` / sleep / wait / delay tools are now skipped, eliminating the 35-second timeout false-positives.
 
-**3,500+ tests across 20 modules · 0 CRITICAL · 33 HIGH · ~470 MEDIUM**
+**9,341 tests across 30 modules · 0 CRITICAL · 29 HIGH · 522 MEDIUM · 79 LOW · 13 INFO · 8,698 PASS**
 
 | Server | Transport | CRITICAL | HIGH | MEDIUM | Notable Finding |
 |--------|-----------|:--------:|:----:|:------:|-----------------|
-| `@modelcontextprotocol/server-everything` | stdio | — | **16** | 71 | Stored PI via `args-prompt`; DoS via INT_MAX on `trigger-long-running-operation` |
+| `@modelcontextprotocol/server-everything` | stdio | — | **14** | 70 | Stored PI via `args-prompt` (14 HIGH — every PI-### payload echoed verbatim into LLM messages) |
 | `mcp-server-sqlite` *(uvx)* | stdio | — | **14** | 8 | Stored PI via `mcp-demo` prompt template |
 | `mcp.stripe.com` *(auth)* 💳 | HTTP | — | — | 170 | Injection echoes across `create_refund`, `cancel_subscription`, `list_payment_intents` |
-| `mcp-server-fetch` *(uvx)* | stdio | — | 2 | 15 | Prompt injection in `fetch` tool; 100 KB payload DoS |
-| `mcp_text_processor` *(test)* | stdio | — | 1 | 42 | 100 KB payload triggered hard timeout |
+| `mcp-server-fetch` *(uvx)* | stdio | — | — | 3 | — |
+| `mcp_text_processor` *(test)* | stdio | — | **1** | 42 | `extract_emails` hard-timed out on 100 KB payload (resource-exhaustion DoS) |
 | `@modelcontextprotocol/server-filesystem` | stdio | — | — | 91 | Injection echoes in OS error messages |
-| `@modelcontextprotocol/server-github` *(auth)* | stdio | — | — | 45 | Injection payloads echoed in search-result error messages |
-| `mcp-server-git` *(uvx)* | stdio | — | — | ~60 | Git tool error messages echo injection payloads |
-| `mcp_calculator` *(test)* | stdio | — | — | 20 | — |
-| `mcp_notes` *(test)* | stdio | — | — | 37 | — |
+| `@modelcontextprotocol/server-github` *(auth)* | stdio | — | — | 3 | Injection echoes in `search_issues` results |
+| `mcp-server-git` *(uvx)* | stdio | — | — | 59 | Git error messages echo injection payloads |
+| `mcp_calculator` *(test)* | stdio | — | — | 21 | — |
+| `mcp_notes` *(test)* | stdio | — | — | 38 | — |
 | `mcp-server-time` *(uvx)* | stdio | — | — | 14 | — |
 | `docs.mcp.cloudflare.com` *(auth)* | HTTP | — | — | 2 | — |
 | `observability.mcp.cloudflare.com` *(auth)* | HTTP | — | — | 1 | — |
 
 ### Selected Findings
 
-**`@modelcontextprotocol/server-everything` (Anthropic's reference server)** — **16 HIGH, 0 CRITICAL**. Two vulnerability classes: (1) **Stored prompt injection** — 14 HIGH findings from the `args-prompt` prompt template, which embeds raw argument values directly into generated LLM messages. (2) **DoS via integer overflow** — `trigger-long-running-operation` hangs 35+ seconds on `2147483647` (INT_MAX) and `1e308` (max float), confirmed resource-exhaustion DoS on Anthropic's own reference implementation.
+**`@modelcontextprotocol/server-everything` (Anthropic's reference server)** — **14 HIGH, 0 CRITICAL**. All 14 HIGHs are stored-prompt-injection findings on the `args-prompt` prompt template, which embeds raw argument values directly into generated LLM messages. Every PI-001..PI-016 payload landed in the model's context window verbatim — a textbook stored-injection surface.
 
 **`mcp-server-sqlite` (uvx)** — **14 HIGH**, all from the `mcp-demo` prompt template. The prompt embeds raw argument values into generated messages without sanitisation. Every PI-001..PI-016 payload becomes a stored prompt injection landing in the LLM context window.
 
@@ -91,13 +104,11 @@ MCPSafe v0.2.0 audited **13 MCP servers** — including Stripe's, Cloudflare's, 
 
 **`@modelcontextprotocol/server-filesystem`** — **91 MEDIUM** injection echoes across file-path tools (`read_file`, `write_file`, `list_directory`). The tools pass raw argument strings to OS syscalls; malformed paths return OS errors containing the injection payload verbatim.
 
-**`@modelcontextprotocol/server-github`** — **45 MEDIUM** injection echoes via `search_issues` / `search_repositories`. These tools pass user `query` strings to GitHub's API, which returns search results verbatim. An LLM reading the output could follow injected instructions — lower severity than a direct data leak because the echo is bounded by the API's search response shape.
-
-**`mcp-server-fetch` (uvx)** — **2 HIGH**: classic prompt injection via the `fetch` tool's URL/prompt arguments, and a type-validation crash on float-where-int input.
+**`@modelcontextprotocol/server-github`** — **3 MEDIUM** injection echoes via `search_issues`. The tool passes user `query` strings to GitHub's API, which returns search results verbatim. An LLM reading the output could follow injected instructions — MEDIUM because the echo is bounded by the API's search response shape.
 
 **`mcp_text_processor` (test server)** — **1 HIGH**: `extract_emails` hard-timed out on a 100 KB payload — real resource-exhaustion DoS.
 
-**`observability.mcp.cloudflare.com` (Cloudflare, live HTTP, auth)** — **1 MEDIUM**. T04-001 detected description growth (1,001 → 1,603 chars) between calls — consistent with CDN edge truncation, correctly classified as MEDIUM (not a deliberate rug-pull).
+**`observability.mcp.cloudflare.com` (Cloudflare, live HTTP, auth)** — **1 MEDIUM**. T04-001 detected description growth between calls — consistent with CDN edge truncation, correctly classified as MEDIUM (not a deliberate rug-pull).
 
 ---
 
@@ -140,7 +151,7 @@ mcpsafe compare report-v1.json report-v2.json
 
 ## What It Tests
 
-MCPSafe v0.2.0 runs **200+ test types** across **20 modules** covering discovery, security, performance, and schema validation.
+MCPSafe v0.3.0 runs **330+ test types** across **30 modules** covering discovery, security, performance, and schema validation.
 
 ### Core Modules (T01–T08) — Foundation
 
@@ -173,6 +184,23 @@ Features found in **no other MCP security tool**:
 | **T18** Resource URI SSRF | SECURITY | 10 malicious URIs fed to `read_resource`: AWS / GCP / Azure metadata, `file://`, loopback (Redis, Elasticsearch), SSH keys, DNS-rebind probes |
 | **T19** Unicode Homoglyph | SECURITY | Confusable characters (Cyrillic / Greek / fullwidth), mixed-script identifiers, invisible controls (ZWSP, BOM, RLO). Only flags HIGH when the name collapses to an existing ASCII identifier — no false positives on legitimate i18n |
 | **T20** Memory Leak | PERFORMANCE | 40-call probe; trimmed-quartile response-size and latency drift analysis + subprocess RSS growth (stdio + psutil) |
+
+### New in v0.3.0 (T21–T30) — Classic Web Security Classes, Applied to MCP
+
+These are **CVE-class** attack surfaces — the same categories that OWASP Top 10 covers, mapped to MCP's tool + resource interfaces. Bug bounty programs pay for findings in these classes:
+
+| Module | Category | What It Checks |
+|--------|----------|----------------|
+| **T21** Path Traversal Deep | SECURITY | 12 traversal encodings (URL / double-URL / UTF-8-overlong / Unicode slash / NUL truncation / absolute paths) against every path-like parameter. Detects actual `/etc/passwd`, `win.ini`, `/proc/self/environ` content in responses — CRITICAL when confirmed |
+| **T22** Command Injection | SECURITY | 10 shell-metacharacter primitives (`;`, `\|`, `&&`, `$()`, backticks, newlines, NUL + chain) with per-call random canaries. CRITICAL when canary survives payload-stripping — proves shell evaluation |
+| **T23** SQL Injection Deep | SECURITY | Beyond T02's quote probe: UNION version extraction, boolean-based blind, time-based blind (pg_sleep/WAITFOR/SLEEP), MongoDB `$ne`/`$gt`. CRITICAL on UNION data extraction, HIGH on time-based |
+| **T24** Insecure Deserialisation | SECURITY | Python pickle / PyYAML `!!python/object` / XML XXE / Java ObjectInputStream magic / Ruby Marshal / prototype pollution. Canary-based execution detection — CRITICAL on real RCE |
+| **T25** IDOR | SECURITY | Numeric ID increment / decrement, user-token substitution (`user` → `admin`, `me` → `root`) in resource URIs. HIGH when forged URI returns non-trivial content not in the advertised list |
+| **T26** SSTI | SECURITY | 10 template primitives (Jinja/Twig `{{7*7}}`, ERB `<%=`, Freemarker `${}`, Velocity `#set`, Razor `@()`, Mako, Smarty). Marker-bracketed detection — CRITICAL on evaluation |
+| **T27** Session Token Handling | SECURITY | Token reuse after close, Shannon-entropy check (< 2 bits/char = MEDIUM), token leak into tool responses (HIGH) |
+| **T28** Header Injection | SECURITY | CRLF / URL-encoded / Unicode newline injection with distinctive header name. HIGH when `X-MCPSafe-Injected` survives payload-stripping in the response — suggests CRLF decoded |
+| **T29** ReDoS | SECURITY | 5 catastrophic-backtracking patterns vs benign baseline. MEDIUM on 5× ratio + 3s delta, HIGH when attack input hits the 30s client timeout |
+| **T30** OAuth Flow Abuse | SECURITY | `.well-known/oauth-authorization-server` discovery → redirect-URI spoof test → state-parameter entropy. CRITICAL on open-redirect acceptance |
 
 ### Real Vulnerabilities MCPSafe Catches
 
@@ -373,7 +401,7 @@ Transport:  stdio
 Server:     mcp-server-git  (protocol 2024-11-05)
 Tools:      12   Resources: 0   Prompts: 0
 
-Running 20 modules (600+ tests)...
+Running 30 modules (600+ tests)...
 
   ✓ T01 Discovery              100%  0:00:00
   ✓ T08 Latency Baseline       100%  0:00:00
@@ -561,9 +589,7 @@ Use MCPSafe responsibly:
 
 ## License
 
-**Polyform Noncommercial License 1.0.0** — free for personal use, academic research, open-source projects, and non-profit security work. Commercial use (paid audits, SaaS products, managed-service integration, or any use directed at commercial advantage) requires a separate commercial licence — contact [bantwalravikiran@gmail.com](mailto:bantwalravikiran@gmail.com).
-
-See [LICENSE](LICENSE) for full terms.
+**MIT License** — free for personal, commercial, academic, and open-source use. Just keep the copyright notice intact. See [LICENSE](LICENSE) for full terms.
 
 ---
 
