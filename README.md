@@ -192,25 +192,25 @@ These are **CVE-class** attack surfaces — the same categories that OWASP Top 1
 | Module | Category | What It Checks |
 |--------|----------|----------------|
 | **T21** Path Traversal Deep | SECURITY | 12 traversal encodings (URL / double-URL / UTF-8-overlong / Unicode slash / NUL truncation / absolute paths) against every path-like parameter. Detects actual `/etc/passwd`, `win.ini`, `/proc/self/environ` content in responses — CRITICAL when confirmed |
-| **T22** Command Injection | SECURITY | 10 shell-metacharacter primitives (`;`, `\|`, `&&`, `$()`, backticks, newlines, NUL + chain) with per-call random canaries. CRITICAL when canary survives payload-stripping — proves shell evaluation |
+| **T22** Command Injection | SECURITY | 8 shell-metacharacter primitives (`;`, `\|`, `&`, `&&`, `\|\|`, `$()`, backticks, Windows cmd chain) with per-call random canaries. CRITICAL when canary survives JSON-unicode-escape stripping AND is not preceded by `echo ` — proves real shell evaluation, not echo of payload |
 | **T23** SQL Injection Deep | SECURITY | Beyond T02's quote probe: UNION version extraction, boolean-based blind, time-based blind (pg_sleep/WAITFOR/SLEEP), MongoDB `$ne`/`$gt`. CRITICAL on UNION data extraction, HIGH on time-based |
-| **T24** Insecure Deserialisation | SECURITY | Python pickle / PyYAML `!!python/object` / XML XXE / Java ObjectInputStream magic / Ruby Marshal / prototype pollution. Canary-based execution detection — CRITICAL on real RCE |
+| **T24** Insecure Deserialisation | SECURITY | Python pickle / PyYAML `!!python/object` / XML XXE / Java ObjectInputStream magic / Ruby Marshal / prototype pollution. Canary-based execution detection — CRITICAL on real RCE for primitives where the canary is OUTSIDE the payload (pickle / XXE / Java / Ruby); LOW error-marker detection only for primitives where the canary lives INSIDE the payload (YAML apply, `__proto__`) since echo cannot be reliably distinguished from execution |
 | **T25** IDOR | SECURITY | Numeric ID increment / decrement, user-token substitution (`user` → `admin`, `me` → `root`) in resource URIs. HIGH when forged URI returns non-trivial content not in the advertised list |
 | **T26** SSTI | SECURITY | 10 template primitives (Jinja/Twig `{{7*7}}`, ERB `<%=`, Freemarker `${}`, Velocity `#set`, Razor `@()`, Mako, Smarty). Marker-bracketed detection — CRITICAL on evaluation |
 | **T27** Session Token Handling | SECURITY | Token reuse after close, Shannon-entropy check (< 2 bits/char = MEDIUM), token leak into tool responses (HIGH) |
-| **T28** Header Injection | SECURITY | CRLF / URL-encoded / Unicode newline injection with distinctive header name. HIGH when `X-MCPSafe-Injected` survives payload-stripping in the response — suggests CRLF decoded |
+| **T28** Header Injection | SECURITY | CRLF / URL-encoded / Unicode newline injection with distinctive header name. HIGH when `X-MCPSafe-Injected` survives JSON-escape-aware payload-stripping AND is NOT inside a JSON string value (gates against echo-as-field-value FPs) |
 | **T29** ReDoS | SECURITY | 5 catastrophic-backtracking patterns vs benign baseline. MEDIUM on 5× ratio + 3s delta, HIGH when attack input hits the 30s client timeout |
-| **T30** OAuth Flow Abuse | SECURITY | `.well-known/oauth-authorization-server` discovery → redirect-URI spoof test → state-parameter entropy. CRITICAL on open-redirect acceptance |
+| **T30** OAuth Flow Abuse | SECURITY | `.well-known/oauth-authorization-server` discovery → redirect-URI spoof test → state-parameter entropy. CRITICAL only when the Location URL's HOSTNAME is attacker-controlled (urlparse-based check) — substring matches on attacker URLs embedded as query params of legitimate hosts no longer fire |
 
 ### Real Vulnerabilities MCPSafe Catches
 
 **Stored prompt injection via tool output** (T02, T09) — Every string passed to a tool parameter gets bounced back through 16 attack payloads (PI-001..PI-016). If any payload appears verbatim in the response, the test flags it. Confirmed on **server-everything**, **sqlite**, **server-filesystem**, **server-github**, **mcp-server-git**, and **mcp.stripe.com**.
 
-**Prompt template injection** (T02, stored PI) — Prompts like `args-prompt` on server-everything and `mcp-demo` on sqlite embed raw argument values into LLM messages. **14-16 HIGH findings per server** — every payload lands in the AI's context window verbatim.
+**Prompt template injection** (T02, stored PI) — Prompts like `args-prompt` on server-everything and `mcp-demo` on sqlite embed raw argument values into LLM messages. **14 HIGH findings per server** — every payload lands in the AI's context window verbatim.
 
 **Tool description rug-pull attacks** (T04, documented by Invariant Labs 2025) — Tool description mutates silently between `list_tools()` calls. Growth-only mutations are correctly downgraded to MEDIUM to avoid CDN truncation false positives.
 
-**DoS via integer overflow** (T03) — Confirmed on Anthropic's `trigger-long-running-operation`: INT_MAX (2,147,483,647) and `1e308` cause 35+ second hangs.
+**DoS via large payloads** (T02) — Confirmed on `mcp-text-processor`'s `extract_emails` (100 KB payload triggers hard 10s timeout) and on `mcp-server-sqlite`'s tool surface (14 HIGH findings via large-input timeouts). Tools that are intentionally long-running (e.g. `trigger-long-running-operation`) are skipped from fuzzing to avoid documented-behaviour false positives.
 
 **Cross-request data leakage under concurrency** (T05-001) — Embeds unique UUIDs in 10 concurrent calls; if call A's response contains call B's UUID, shared state is leaking between parallel requests. Same class as MCP TypeScript SDK CVE (CVSS 7.1).
 
@@ -308,10 +308,10 @@ Structured report with all findings, server metadata, and summary statistics. Al
 ```json
 {
   "scan_id": "a1b2c3d4-...",
-  "mcpsafe_version": "0.2.0",
-  "started_at": "2026-04-14T10:23:45Z",
+  "mcpsafe_version": "0.3.0",
+  "started_at": "2026-04-15T09:47:04Z",
   "server_info": { "name": "mcp-server-git", "protocol_version": "2024-11-05", "tool_count": 12 },
-  "summary": { "total_tests": 607, "passed": 534, "failed": 73, "overall_severity": "MEDIUM" },
+  "summary": { "total_tests": 832, "passed": 762, "failed": 70, "overall_severity": "MEDIUM" },
   "results": [ { "test_id": "T02-001", "severity": "MEDIUM", "description": "..." } ]
 }
 ```
@@ -392,7 +392,7 @@ jobs:
 
 ```
 ╭─────────────────────────────────────────────╮
-│ MCPSafe v0.2.0                              │
+│ MCPSafe v0.3.0                              │
 │ MCP Server Security & Stress Tester         │
 ╰─────────────────────────────────────────────╯
 
@@ -401,23 +401,33 @@ Transport:  stdio
 Server:     mcp-server-git  (protocol 2024-11-05)
 Tools:      12   Resources: 0   Prompts: 0
 
-Running 30 modules (600+ tests)...
+Running 30 modules (830+ tests)...
 
   ✓ T01 Discovery              100%  0:00:00
   ✓ T08 Latency Baseline       100%  0:00:00
   ✓ T06 Schema                 100%  0:00:00
   ⚠ T02 Injection              100%  0:00:15   [MEDIUM]
-  ⚠ T03 Fuzzer                 100%  0:00:15   [MEDIUM]
+  ✓ T03 Fuzzer                 100%  0:00:01
   ✓ T04 Tool Poison            100%  0:00:13
   ✓ T09 Output Sanitization    100%  0:00:06
   ✓ T12 Error Secret Leakage   100%  0:00:14
   ✓ T13 Sampling Abuse         100%  0:00:07
   ⚠ T16 Capability Creep       100%  0:00:14   [MEDIUM]
   ✓ T18 SSRF                   100%  0:00:00
-  ✓ T19 Homoglyph              100%  0:00:00
-  ⚠ T07 Auth                   100%  0:00:08   [LOW]
+  ⚠ T19 Homoglyph              100%  0:00:00   [MEDIUM]
+  ✓ T21 Path Traversal         100%  0:00:10
+  ✓ T22 Command Injection      100%  0:00:08
+  ✓ T23 SQL Injection Deep     100%  0:00:10
+  ⚠ T24 Deserialization        100%  0:00:08   [LOW]
+  ✓ T25 IDOR                   100%  0:00:00
+  ✓ T26 SSTI                   100%  0:00:08
+  ✓ T28 Header Injection       100%  0:00:00
+  ✓ T30 OAuth Flow             100%  0:00:00
+  ⚠ T07 Auth                   100%  0:00:08   [MEDIUM]
   ✓ T11 Timing Side-Channel    100%  0:00:00
   ✓ T15 Reentrancy             100%  0:00:00
+  ✓ T29 ReDoS                  100%  0:00:01
+  ✓ T27 Session Tokens         100%  0:00:00
   ⚠ T05 Load                   100%  0:00:13   [MEDIUM]
   ✓ T10 Cross-Session Leakage  100%  0:00:01
   ✓ T17 Hash Drift             100%  0:00:01
@@ -428,10 +438,10 @@ Running 30 modules (600+ tests)...
 ┌──────────┬───────┐
 │ CRITICAL │   0   │
 │ HIGH     │   0   │
-│ MEDIUM   │  60   │
+│ MEDIUM   │  59   │
 │ LOW      │  10   │
-│ INFO     │  18   │
-│ PASS     │ 534   │
+│ INFO     │   1   │
+│ PASS     │ 762   │
 └──────────┴───────┘
 
 Reports saved:
@@ -473,7 +483,17 @@ mcpsafe/
 │   ├── t17_hash_drift.py           # T17 — SHA-256 cross-session fingerprints ✨
 │   ├── t18_ssrf.py                 # T18 — resource URI SSRF (10 payloads) ✨
 │   ├── t19_homoglyph.py            # T19 — Unicode confusables ✨
-│   └── t20_memory_leak.py          # T20 — RSS / latency / size drift ✨
+│   ├── t20_memory_leak.py          # T20 — RSS / latency / size drift ✨
+│   ├── t21_path_traversal.py       # T21 — 12 traversal encodings ✨ v0.3.0
+│   ├── t22_command_injection.py    # T22 — shell-metachar canary tests ✨
+│   ├── t23_sql_injection.py        # T23 — UNION / boolean / time-based SQLi ✨
+│   ├── t24_deserialization.py     # T24 — pickle / YAML / XXE / Java magic ✨
+│   ├── t25_idor.py                 # T25 — resource URI ID substitution ✨
+│   ├── t26_ssti.py                 # T26 — Jinja / ERB / Velocity / Razor ✨
+│   ├── t27_session_token.py        # T27 — token entropy / reuse / leak ✨
+│   ├── t28_header_injection.py     # T28 — CRLF / Unicode newline injection ✨
+│   ├── t29_redos.py                # T29 — catastrophic-backtracking DoS ✨
+│   └── t30_oauth_flow.py           # T30 — OAuth redirect-URI / state ✨
 └── reporter/
     ├── _common.py      # canonical server_slug() used by all reporters
     ├── json_reporter.py
@@ -557,10 +577,10 @@ mcpsafe scan "uvx mcp-server-git" --verbose
 
 ### Adding a Test Module
 
-1. Create `mcpsafe/tests/t21_yourmodule.py` (next available number after T20)
+1. Create `mcpsafe/tests/t31_yourmodule.py` (next available number after T30)
 2. Implement `async def run(session, server_info, config) -> list[TestResult]`
 3. Register in `mcpsafe/runner.py` (both the import block and the execution plan)
-4. Use test IDs in format `T21-001`, `T21-002`, …
+4. Use test IDs in format `T31-001`, `T31-002`, …
 5. Return `TestResult` dataclasses — never raise exceptions; catch everything and wrap with `TestResult.from_exception()`
 6. If your module needs rate limiting on auth-gated HTTP servers, use `RateLimiter(config)` from `mcpsafe.tests._helpers`
 

@@ -9,7 +9,7 @@ The top-level JSON object mirrors ``ScanReport.to_dict()``:
 
     {
       "scan_id":         "...",
-      "mcpsafe_version": "0.2.0",
+      "mcpsafe_version": "0.3.0",
       "started_at":      "2024-...",
       "finished_at":     "2024-...",
       "server_info":     { ... },
