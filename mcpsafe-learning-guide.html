@@ -979,6 +979,232 @@ mcpsafe scan <span class="str">"https://api.example.com/mcp"</span> --transport 
       </div>
     </div>
 
+    <!-- ═════════ NEW IN v0.3.0 — CVE-class web security applied to MCP ═════════ -->
+
+    <!-- T21 -->
+    <div>
+      <div class="module-card" style="border-color:#ef4444" onclick="toggleModule('m21')">
+        <div class="module-id" style="color:#fca5a5">T21</div>
+        <div class="module-name">Path Traversal Deep <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">12 traversal encodings against every path-like parameter and resource URI. URL / double-URL / UTF-8 overlong / Unicode slash / NUL truncation / absolute paths. Content-marker detection (``root:x:0:0:``, ``[fonts]``, ``/proc/self/environ``) confirms real file disclosure.</div>
+        <div class="module-count" style="background:rgba(239,68,68,.15);color:#fca5a5">12 payloads × tools · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m21">
+        <h4>Payload matrix</h4>
+        <ul class="test-list">
+          <li><span class="tid">PT-001</span><span class="tdesc">Plain Unix ``../../../etc/passwd``</span></li>
+          <li><span class="tid">PT-002</span><span class="tdesc">Plain Windows ``..\..\..\Windows\win.ini``</span></li>
+          <li><span class="tid">PT-003</span><span class="tdesc">URL-encoded ``..%2F..%2Fetc%2Fpasswd``</span></li>
+          <li><span class="tid">PT-004</span><span class="tdesc">Double URL-encoded ``..%252F..``</span></li>
+          <li><span class="tid">PT-005</span><span class="tdesc">UTF-8 overlong</span></li>
+          <li><span class="tid">PT-006</span><span class="tdesc">Mixed backslash + forward</span></li>
+          <li><span class="tid">PT-007</span><span class="tdesc">Unicode slash U+2215</span></li>
+          <li><span class="tid">PT-008</span><span class="tdesc">NUL byte truncation</span></li>
+          <li><span class="tid">PT-009</span><span class="tdesc">Absolute Unix path</span></li>
+          <li><span class="tid">PT-010</span><span class="tdesc">Absolute Windows path</span></li>
+          <li><span class="tid">PT-011</span><span class="tdesc">Resource ``file://`` scheme</span></li>
+          <li><span class="tid">PT-012</span><span class="tdesc">Proto-smuggling single-slash</span></li>
+          <li><span class="tid">T21-001</span><span class="tdesc"><span class="sev sev-critical">CRITICAL</span> Summary when any primitive disclosed sensitive file content</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- T22 -->
+    <div>
+      <div class="module-card" style="border-color:#dc2626" onclick="toggleModule('m22')">
+        <div class="module-id" style="color:#f87171">T22</div>
+        <div class="module-name">Command Injection <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">8 shell metacharacter primitives with per-call random canaries. Strips JSON-unicode-escaped payload variants + gates against ``echo``-prefixed echoes so a transformed echo of our payload no longer reads as shell evaluation.</div>
+        <div class="module-count" style="background:rgba(220,38,38,.15);color:#f87171">8 primitives × tools · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m22">
+        <h4>Shell primitives</h4>
+        <ul class="test-list">
+          <li><span class="tid">CI-001</span><span class="tdesc">Semicolon chain ``safe; echo {CANARY}``</span></li>
+          <li><span class="tid">CI-002</span><span class="tdesc">Pipe ``safe | echo {CANARY}``</span></li>
+          <li><span class="tid">CI-003</span><span class="tdesc">Background ampersand</span></li>
+          <li><span class="tid">CI-004</span><span class="tdesc">Logical AND ``&&``</span></li>
+          <li><span class="tid">CI-005</span><span class="tdesc">Logical OR ``||``</span></li>
+          <li><span class="tid">CI-006</span><span class="tdesc">Command substitution ``$()``</span></li>
+          <li><span class="tid">CI-007</span><span class="tdesc">Backtick cmdsub</span></li>
+          <li><span class="tid">CI-010</span><span class="tdesc">Windows cmd chain</span></li>
+          <li><span class="tid">T22-001</span><span class="tdesc"><span class="sev sev-critical">CRITICAL</span> Summary when canary survives stripping AND not preceded by ``echo``</span></li>
+        </ul>
+        <div class="highlight-box" style="margin-top:12px">
+          <strong style="color:#c4b5fd">💡 Echo-prefix guard:</strong> A real shell executing ``echo X`` emits bare ``X`` on stdout. If our canary appears preceded by the word ``echo`` within ~30 chars, the server reflected our payload through some transformation — not command execution. This kills transformed-echo false positives from Stripe's JSON-unicode-encode and GitHub's repo-name sanitiser.
+        </div>
+      </div>
+    </div>
+
+    <!-- T23 -->
+    <div>
+      <div class="module-card" style="border-color:#b91c1c" onclick="toggleModule('m23')">
+        <div class="module-id" style="color:#fca5a5">T23</div>
+        <div class="module-name">SQL Injection Deep <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">Beyond T02's quote probe. UNION version extraction, boolean-based blind (1=1 vs 1=2), time-based blind (pg_sleep / WAITFOR / SLEEP), MongoDB NoSQL ($ne / $gt). Baseline-timing comparison with 3× ratio + 2s delta threshold.</div>
+        <div class="module-count" style="background:rgba(185,28,28,.15);color:#fca5a5">10 payloads × tools · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m23">
+        <h4>SQL primitives</h4>
+        <ul class="test-list">
+          <li><span class="tid">SQL-001</span><span class="tdesc">UNION ``version()`` extraction (PostgreSQL / MySQL / MariaDB)</span></li>
+          <li><span class="tid">SQL-002</span><span class="tdesc">UNION ``sqlite_version()`` extraction</span></li>
+          <li><span class="tid">SQL-003</span><span class="tdesc">Boolean true ``' OR '1'='1``</span></li>
+          <li><span class="tid">SQL-004</span><span class="tdesc">Boolean false ``' AND '1'='2``</span></li>
+          <li><span class="tid">SQL-005</span><span class="tdesc"><span class="sev sev-high">HIGH</span> Time blind PostgreSQL ``pg_sleep(3)``</span></li>
+          <li><span class="tid">SQL-006</span><span class="tdesc"><span class="sev sev-high">HIGH</span> Time blind MS-SQL ``WAITFOR DELAY``</span></li>
+          <li><span class="tid">SQL-007</span><span class="tdesc"><span class="sev sev-high">HIGH</span> Time blind MySQL ``SLEEP(3)``</span></li>
+          <li><span class="tid">SQL-008</span><span class="tdesc">Stacked ``DROP TABLE``</span></li>
+          <li><span class="tid">SQL-009</span><span class="tdesc">NoSQL ``$ne``</span></li>
+          <li><span class="tid">SQL-010</span><span class="tdesc">NoSQL ``$gt``</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- T24 -->
+    <div>
+      <div class="module-card" style="border-color:#7c2d12" onclick="toggleModule('m24')">
+        <div class="module-id" style="color:#fdba74">T24</div>
+        <div class="module-name">Deserialisation <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">Python pickle, PyYAML ``!!python/object``, XML XXE, Java ObjectInputStream magic, Ruby Marshal, JSON ``__proto__`` pollution. Canary-in-response detection for primitives where the canary is outside the payload. Error-marker LOW-severity fallback for all others.</div>
+        <div class="module-count" style="background:rgba(124,45,18,.15);color:#fdba74">8 primitives × tools · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m24">
+        <h4>Deserialiser payloads</h4>
+        <ul class="test-list">
+          <li><span class="tid">DS-001</span><span class="tdesc"><span class="sev sev-critical">CRITICAL</span> Python pickle (base64-encoded ``print(CANARY)`` reduce)</span></li>
+          <li><span class="tid">DS-002</span><span class="tdesc"><span class="sev sev-low">LOW</span> YAML ``!!python/object/apply:builtins.print`` (canary inside payload — error-marker only)</span></li>
+          <li><span class="tid">DS-003</span><span class="tdesc"><span class="sev sev-low">LOW</span> YAML ``!!python/object/apply:os.popen`` (canary inside payload — error-marker only)</span></li>
+          <li><span class="tid">DS-004</span><span class="tdesc"><span class="sev sev-critical">CRITICAL</span> XML XXE ``file:///etc/passwd``</span></li>
+          <li><span class="tid">DS-005</span><span class="tdesc"><span class="sev sev-critical">CRITICAL</span> XML XXE parameter entity</span></li>
+          <li><span class="tid">DS-006</span><span class="tdesc"><span class="sev sev-critical">CRITICAL</span> Java serialised magic bytes ``aced0005``</span></li>
+          <li><span class="tid">DS-007</span><span class="tdesc"><span class="sev sev-critical">CRITICAL</span> Ruby Marshal magic ``\x04\x08``</span></li>
+          <li><span class="tid">DS-008</span><span class="tdesc"><span class="sev sev-low">LOW</span> JSON ``__proto__`` pollution (canary inside payload — error-marker only)</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- T25 -->
+    <div>
+      <div class="module-card" style="border-color:#c2410c" onclick="toggleModule('m25')">
+        <div class="module-id" style="color:#fdba74">T25</div>
+        <div class="module-name">IDOR <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">Numeric ID increment/decrement (±1, ±10, ±100, 0) and user-token substitution (``user`` → ``admin``/``root``/``user1``/``guest``/``test``) in resource URIs. Flags HIGH when a forged URI returns non-trivial content not in the advertised resource list.</div>
+        <div class="module-count" style="background:rgba(194,65,12,.15);color:#fdba74">N × resources · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m25">
+        <h4>Probe strategy</h4>
+        <ul class="test-list">
+          <li><span class="tid">Strategy 1</span><span class="tdesc">Parse each advertised resource URI for numeric IDs. Forge ID ± 1/10/100 and 0.</span></li>
+          <li><span class="tid">Strategy 2</span><span class="tdesc">Detect user-like tokens (``user``, ``me``) and substitute (``admin``, ``root``).</span></li>
+          <li><span class="tid">Signal</span><span class="tdesc"><span class="sev sev-high">HIGH</span> Forged URI returns non-empty content AND is not in the advertised list.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- T26 -->
+    <div>
+      <div class="module-card" style="border-color:#9333ea" onclick="toggleModule('m26')">
+        <div class="module-id" style="color:#c4b5fd">T26</div>
+        <div class="module-name">SSTI <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">10 template-engine primitives wrapped in marker brackets (``mcpsafe-{payload}-probe``). Detects evaluation only when the arithmetic result appears BETWEEN the marker prefix and suffix — prevents accidental matches on unrelated ``49`` in response text.</div>
+        <div class="module-count" style="background:rgba(147,51,234,.15);color:#c4b5fd">10 engines × tools · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m26">
+        <h4>Template engines probed</h4>
+        <ul class="test-list">
+          <li><span class="tid">SSTI-001</span><span class="tdesc">Jinja / Twig ``{{7*7}}`` → expect ``49``</span></li>
+          <li><span class="tid">SSTI-002</span><span class="tdesc">Jinja string concat ``{{"foo"+"bar"}}`` → expect ``foobar``</span></li>
+          <li><span class="tid">SSTI-003</span><span class="tdesc">Handlebars ``{{#with 7}}{{this}}{{/with}}``</span></li>
+          <li><span class="tid">SSTI-004</span><span class="tdesc">ERB Ruby inline ``&lt;%= 7*7 %&gt;``</span></li>
+          <li><span class="tid">SSTI-005</span><span class="tdesc">Freemarker ``${7*7}``</span></li>
+          <li><span class="tid">SSTI-006</span><span class="tdesc">Velocity ``#set($x=7*7)$x``</span></li>
+          <li><span class="tid">SSTI-007</span><span class="tdesc">JSP EL ``${7*7}``</span></li>
+          <li><span class="tid">SSTI-008</span><span class="tdesc">Smarty ``{$x=7*7}{$x}``</span></li>
+          <li><span class="tid">SSTI-009</span><span class="tdesc">Razor C# ``@(7*7)``</span></li>
+          <li><span class="tid">SSTI-010</span><span class="tdesc">Mako ``&lt;%= 7*7 %&gt;``</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- T27 -->
+    <div>
+      <div class="module-card" style="border-color:#0891b2" onclick="toggleModule('m27')">
+        <div class="module-id" style="color:#67e8f9">T27</div>
+        <div class="module-name">Session Tokens <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">Token reuse after session close, Shannon-entropy check (&lt; 2 bits/char = weak RNG), token leak into tool responses. HTTP/SSE transports only — best-effort extraction from the SDK internals.</div>
+        <div class="module-count" style="background:rgba(8,145,178,.15);color:#67e8f9">3 checks · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m27">
+        <h4>Token checks</h4>
+        <ul class="test-list">
+          <li><span class="tid">T27-001</span><span class="tdesc"><span class="sev sev-high">HIGH</span> Token reuse after close — old token still accepted on a new connection</span></li>
+          <li><span class="tid">T27-002</span><span class="tdesc"><span class="sev sev-medium">MEDIUM</span> Shannon entropy below 2 bits/char suggests weak or sequential token generator</span></li>
+          <li><span class="tid">T27-003</span><span class="tdesc"><span class="sev sev-high">HIGH</span> Session token appeared in the body of a tool response</span></li>
+          <li><span class="tid">T27-004</span><span class="tdesc">Summary</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- T28 -->
+    <div>
+      <div class="module-card" style="border-color:#be123c" onclick="toggleModule('m28')">
+        <div class="module-id" style="color:#fda4af">T28</div>
+        <div class="module-name">Header Injection <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">CRLF / URL-encoded CRLF / double-encoded / Content-Length smuggling / Unicode newline injection. Detection via distinctive header name (``X-MCPSafe-Injected``) surviving JSON-escape-aware payload-stripping AND NOT inside a JSON string value.</div>
+        <div class="module-count" style="background:rgba(190,18,60,.15);color:#fda4af">5 payloads × tools · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m28">
+        <h4>CRLF primitives</h4>
+        <ul class="test-list">
+          <li><span class="tid">HDR-001</span><span class="tdesc">Classic CRLF + header ``safe\r\nX-MCPSafe-Injected: yes``</span></li>
+          <li><span class="tid">HDR-002</span><span class="tdesc">URL-encoded CRLF ``safe%0d%0aX-MCPSafe-Injected:%20yes``</span></li>
+          <li><span class="tid">HDR-003</span><span class="tdesc">Double-encoded CRLF ``safe%250d%250a``</span></li>
+          <li><span class="tid">HDR-004</span><span class="tdesc"><span class="sev sev-high">HIGH</span> Content-Length smuggling</span></li>
+          <li><span class="tid">HDR-005</span><span class="tdesc">Unicode newline ``safe\u000d\u000a``</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- T29 -->
+    <div>
+      <div class="module-card" style="border-color:#ea580c" onclick="toggleModule('m29')">
+        <div class="module-id" style="color:#fdba74">T29</div>
+        <div class="module-name">ReDoS <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">5 catastrophic-backtracking patterns (nested quantifiers, alternation overlap, polynomial) vs benign baseline timing. MEDIUM on 5× ratio + 3s delta, HIGH when attack input hits the client timeout.</div>
+        <div class="module-count" style="background:rgba(234,88,12,.15);color:#fdba74">5 patterns × tools · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m29">
+        <h4>Evil patterns</h4>
+        <ul class="test-list">
+          <li><span class="tid">ReDoS-001</span><span class="tdesc">Nested quantifier ``(a+)+$``</span></li>
+          <li><span class="tid">ReDoS-002</span><span class="tdesc">Alternation overlap ``(a|a)+$``</span></li>
+          <li><span class="tid">ReDoS-003</span><span class="tdesc">Polynomial ``a*a*$``</span></li>
+          <li><span class="tid">ReDoS-004</span><span class="tdesc">Email-like pathological</span></li>
+          <li><span class="tid">ReDoS-005</span><span class="tdesc">Classic quote backtrack</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- T30 -->
+    <div>
+      <div class="module-card" style="border-color:#4338ca" onclick="toggleModule('m30')">
+        <div class="module-id" style="color:#a5b4fc">T30</div>
+        <div class="module-name">OAuth Flow <span style="color:#fbbf24;font-size:.7rem">✨ v0.3.0</span></div>
+        <div class="module-desc">``.well-known/oauth-authorization-server`` discovery. Redirect-URI manipulation test (only flags CRITICAL when the Location hostname is attacker-controlled — urlparse-based, not substring). State-parameter entropy check.</div>
+        <div class="module-count" style="background:rgba(67,56,202,.15);color:#a5b4fc">4 checks · SECURITY</div>
+      </div>
+      <div class="detail-panel" id="m30">
+        <h4>OAuth probes</h4>
+        <ul class="test-list">
+          <li><span class="tid">T30-001</span><span class="tdesc">Discover ``/.well-known/oauth-authorization-server`` endpoint</span></li>
+          <li><span class="tid">T30-002</span><span class="tdesc"><span class="sev sev-critical">CRITICAL</span> Redirect-URI manipulation — attacker URL accepted as Location host</span></li>
+          <li><span class="tid">T30-003</span><span class="tdesc"><span class="sev sev-medium">MEDIUM</span> State parameter absent or predictable (entropy check)</span></li>
+          <li><span class="tid">T30-099</span><span class="tdesc">Summary</span></li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </div>
 
